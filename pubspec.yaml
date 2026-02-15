@@ -1,0 +1,64 @@
+name: ltc
+description: "Legacy Talent Calculator Pro"
+
+publish_to: 'none'
+
+version: 1.0.0+7
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  cupertino_icons: ^1.0.8
+  exui: ^1.0.9
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: ^3.0.0-dev.17
+  http: ^1.5.0
+  intl: ^0.20.2
+  material_symbols_icons: ^4.2858.1
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  provider: ^6.1.5+1
+  riverpod_annotation: ^3.0.0-dev.17
+  share_plus: ^11.1.0
+  sqflite: ^2.4.2
+  sqflite_common_ffi: ^2.3.6
+
+dev_dependencies:
+  build_runner:
+  custom_lint:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+  riverpod_generator: ^3.0.0-dev.17
+  riverpod_lint: ^3.0.0-dev.17
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/db/
+    - assets/images/icons/
+    - assets/images/bgs/
+    - lib/l10n/
+  fonts:
+    - family: LifeCraft
+      fonts:
+        - asset: assets/fonts/LifeCraft.ttf
+
+flutter_intl:
+  enabled: true
+  arb_dir: l10n
+  output_dir: lib/l10n
+  class_name: AppLocalizations
+  synthetic_package: true
+
+better_imports:
+  ignore_files:
+    - app_localizations
+    - app_localizations_de
+    - app_localizations_en
