@@ -29,7 +29,9 @@ Feature-first: `lib/features/<feature>/` holds a feature's screen, widgets, prov
 ## Bundled databases
 
 - `assets/db/*.db.sql` are the source of truth. Edit the SQL, then rebuild the `.db` with `/rebuild-db`. Never edit a `.db` directly.
-- The app copies a bundled DB only if the file is not already on the device (`lib/core/db/db.dart`), so rebuilt DBs do not reach existing installs. Those need a migration in `lib/core/db/migrations.dart` and a `dbVersion` bump.
+- Data DB: installs replace their copy whenever its version differs. After changing the data, bump `dataDbVersion` in `lib/core/db/db_constants.dart` and `PRAGMA user_version` in the SQL; a test enforces this.
+- User DB: holds the user's builds and is never replaced. A schema change needs a step in `lib/core/db/migrations.dart`, a bump of `userDbVersion` and the SQL's `PRAGMA user_version`, and the change in the bundled SQL too.
+- Saved builds refer to talent ids, so never change an existing talent's id.
 
 To check bundled data against game clients, see `tool/README.md`.
 

@@ -23,8 +23,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await Db.initializeDataDb();
-  await Db.initializeUserDb();
+  await Db.getDataDbInstance();
+  await Db.getUserDbInstance();
   await SettingsService().initSettings();
 
   runApp(const ProviderScope(child: MyApp()));

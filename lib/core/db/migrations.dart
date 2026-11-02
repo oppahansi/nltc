@@ -3,21 +3,13 @@ import "package:sqflite/sqflite.dart";
 
 typedef Migration = Future<void> Function(Database db);
 
+/// Schema changes for the user DB, whose builds must survive every update. The
+/// data DB doesn't use these, since it's replaced as a whole.
 class DbMigrations {
   // Key = target version. Each step upgrades from (version-1) -> version.
   static final Map<int, Migration> upgraders = <int, Migration>{
-    // 1: baseline. If you ship an asset that already contains the full v1 schema,
-    // you typically don't need to do anything here.
-    1: (db) async {
-      // No-op (asset contains v1 schema). Keep for completeness.
-    },
-
-    // 2: example migration (add a column)
-    // 2: (db) async {
-    //   await db.execute(
-    //     'ALTER TABLE item_transaction ADD COLUMN example_flag INTEGER NOT NULL DEFAULT 0',
-    //   );
-    // },
+    // 1: baseline, which every shipped version has had. No changes.
+    1: (db) async {},
   };
 
   static Future<void> run(Database db, int from, int to) async {

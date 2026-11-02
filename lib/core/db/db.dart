@@ -15,7 +15,9 @@ import "package:ltc/core/db/db_constants.dart";
 import "package:ltc/core/db/migrations.dart";
 
 class Db {
-  static const int dbVersion = 1;
+  static const _sqliteMagic = "SQLite format 3";
+  static const _sqliteHeaderSize = 100;
+  static const _sqliteUserVersionOffset = 60;
 
   static Database? _dataDbInstance;
   static Database? _userDbInstance;
@@ -84,6 +86,50 @@ class Db {
     }
   }
 
+  /// The version stamped in a database file's header, or null if there is no
+  /// readable database at [path]. Reads the file directly, because opening a
+  /// database that's about to be replaced could leave files behind.
+  static Future<int?> _fileVersion(String path) async {
+    final file = File(path);
+    if (!await file.exists()) return null;
+    RandomAccessFile? handle;
+    try {
+      handle = await file.open();
+      final header = await handle.read(_sqliteHeaderSize);
+      if (header.length < _sqliteHeaderSize) return null;
+      if (String.fromCharCodes(header, 0, _sqliteMagic.length) !=
+          _sqliteMagic) {
+        return null;
+      }
+      return ByteData.sublistView(header).getInt32(_sqliteUserVersionOffset);
+    } on FileSystemException {
+      return null;
+    } finally {
+      await handle?.close();
+    }
+  }
+
+  /// Copies a bundled database to [path]. The swap is atomic, so a crash leaves
+  /// either the old file or the new one, never part of one.
+  static Future<void> _installBundled(String assetPath, String path) async {
+    final data = await rootBundle.load(assetPath);
+    await File(path).parent.create(recursive: true);
+
+    final temp = File("$path.tmp");
+    await temp.writeAsBytes(
+      data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+      flush: true,
+    );
+    // A leftover journal would be replayed against the new file.
+    for (final suffix in ["-journal", "-wal", "-shm"]) {
+      final sidecar = File("$path$suffix");
+      if (await sidecar.exists()) await sidecar.delete();
+    }
+    await temp.rename(path);
+  }
+
+  /// The game data is read-only and holds nothing of the user's, so any other
+  /// version is replaced outright, also when an older app version comes back.
   static Future<Database> getDataDbInstance() async {
     if (_dataDbInstance != null) {
       return _dataDbInstance!;
@@ -95,34 +141,16 @@ class Db {
     // Migrate from old location if required
     await _migrateIfNeeded(dataDbName);
 
-    if (!await File(path).exists()) {
-      ByteData data = await rootBundle.load(dataDbPath);
-      List<int> bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
-
-      await File(path).writeAsBytes(bytes, flush: true);
+    if (await _fileVersion(path) != dataDbVersion) {
+      await _installBundled(dataDbPath, path);
     }
 
-    _dataDbInstance = await openDatabase(
-      path,
-      version: dbVersion,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await DbMigrations.run(db, 0, version);
-      },
-      onUpgrade: (db, from, to) async {
-        await DbMigrations.run(db, from, to);
-      },
-      onDowngrade: onDatabaseDowngradeDelete,
-    );
-
+    _dataDbInstance = await openDatabase(path, onConfigure: _configure);
     return _dataDbInstance!;
   }
 
+  /// The user's builds are never replaced: an older file is migrated, and a
+  /// newer one, from a downgrade or a restored backup, is opened as it is.
   static Future<Database> getUserDbInstance() async {
     if (_userDbInstance != null) {
       return _userDbInstance!;
@@ -135,98 +163,27 @@ class Db {
     await _migrateIfNeeded(userDbName);
 
     if (!await File(path).exists()) {
-      ByteData data = await rootBundle.load(userDbPath);
-      List<int> bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
+      await _installBundled(userDbPath, path);
+    }
 
-      await File(path).writeAsBytes(bytes, flush: true);
+    final version = await _fileVersion(path);
+    if (version != null && version > userDbVersion) {
+      _userDbInstance = await openDatabase(path, onConfigure: _configure);
+      return _userDbInstance!;
     }
 
     _userDbInstance = await openDatabase(
       path,
-      version: dbVersion,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await DbMigrations.run(db, 0, version);
-      },
-      onUpgrade: (db, from, to) async {
-        await DbMigrations.run(db, from, to);
-      },
-      onDowngrade: onDatabaseDowngradeDelete,
+      version: userDbVersion,
+      onConfigure: _configure,
+      onCreate: (db, version) => DbMigrations.run(db, 0, version),
+      onUpgrade: DbMigrations.run,
     );
-
     return _userDbInstance!;
   }
 
-  static Future<Database> initializeDataDb() async {
-    final dir = await getDatabaseDirectory();
-    final path = join(dir.path, dataDbName);
-
-    // Migrate from old location if required
-    await _migrateIfNeeded(dataDbName);
-
-    if (!await File(path).exists()) {
-      ByteData data = await rootBundle.load(dataDbPath);
-      List<int> bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
-
-      await File(path).writeAsBytes(bytes, flush: true);
-    }
-
-    return openDatabase(
-      path,
-      version: dbVersion,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await DbMigrations.run(db, 0, version);
-      },
-      onUpgrade: (db, from, to) async {
-        await DbMigrations.run(db, from, to);
-      },
-      onDowngrade: onDatabaseDowngradeDelete,
-    );
-  }
-
-  static Future<Database> initializeUserDb() async {
-    final dir = await getDatabaseDirectory();
-    final path = join(dir.path, userDbName);
-
-    // Migrate from old location if required
-    await _migrateIfNeeded(userDbName);
-
-    if (!await File(path).exists()) {
-      ByteData data = await rootBundle.load(userDbPath);
-      List<int> bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
-
-      await File(path).writeAsBytes(bytes, flush: true);
-    }
-
-    return openDatabase(
-      path,
-      version: dbVersion,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await DbMigrations.run(db, 0, version);
-      },
-      onUpgrade: (db, from, to) async {
-        await DbMigrations.run(db, from, to);
-      },
-      onDowngrade: onDatabaseDowngradeDelete,
-    );
-  }
+  static Future<void> _configure(Database db) =>
+      db.execute("PRAGMA foreign_keys = ON");
 
   /// Close the open database so the file can be safely copied or replaced.
   static Future<void> close() async {
@@ -245,5 +202,4 @@ class Db {
     final dir = await getDatabaseDirectory();
     return join(dir.path, userDbName);
   }
-
 }

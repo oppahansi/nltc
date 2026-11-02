@@ -1,3 +1,4 @@
+PRAGMA user_version = 1;
 BEGIN TRANSACTION;
 DROP TABLE IF EXISTS "build_points";
 CREATE TABLE build_points (

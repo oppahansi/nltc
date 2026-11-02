@@ -1,3 +1,4 @@
+PRAGMA user_version = 2;
 BEGIN TRANSACTION;
 
 DROP TABLE IF EXISTS "class_names";

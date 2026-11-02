@@ -23,4 +23,4 @@ Before replacing anything, check that:
 
 If any check fails, stop and report the output, leaving `assets/db/$name.db` untouched. Otherwise run `mv "$tmp" "assets/db/$name.db"`.
 
-Report row-count changes for the tables touched by the SQL edit. Remind the user that rebuilt DBs reach new installs only, so existing installs need a migration in `lib/core/db/migrations.dart` and a `dbVersion` bump.
+Report row-count changes for the tables touched by the SQL edit. If the data DB's content changed, bump `dataDbVersion` in `lib/core/db/db_constants.dart` and `PRAGMA user_version` in the SQL before the final rebuild, or existing installs won't get it. A schema change to the user DB also needs a step in `lib/core/db/migrations.dart`.

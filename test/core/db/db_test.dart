@@ -1,7 +1,9 @@
 // Dart Imports
 import "dart:io";
+import "dart:typed_data";
 
 // Package Imports
+import "package:crypto/crypto.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:path/path.dart";
 import "package:sqflite/sqflite.dart";
@@ -12,6 +14,11 @@ import "package:ltc/core/db/db_constants.dart";
 
 // Relative Project Imports
 import "../../helpers/test_db.dart";
+
+/// The SQL that [dataDbVersion] stands for. See "data changes come with a
+/// version bump".
+const dataSqlHash =
+    "2c7833cb09f87638a5b2fef3ccb7b3422189bb6d0178cf9d496fba68eff960c0";
 
 void main() {
   late Directory dir;
@@ -27,6 +34,127 @@ void main() {
       await db.rawQuery("SELECT COUNT(*) FROM talents"),
     );
     expect(count, greaterThanOrEqualTo(1840));
+  });
+
+  group("bundled files", () {
+    int stamped(String name) {
+      final bytes = File("assets/db/$name").readAsBytesSync();
+      return ByteData.sublistView(bytes).getInt32(60);
+    }
+
+    test("carry the versions the code expects", () {
+      expect(stamped(dataDbName), dataDbVersion);
+      expect(stamped(userDbName), userDbVersion);
+    });
+
+    test("data changes come with a version bump", () {
+      final sql = File("assets/db/$dataDbName.sql").readAsBytesSync();
+      expect(
+        sha256.convert(sql).toString(),
+        dataSqlHash,
+        reason:
+            "The bundled data changed. Installs only get it through a new "
+            "version: bump dataDbVersion and PRAGMA user_version, rebuild the "
+            "DB, then update dataSqlHash.",
+      );
+    });
+  });
+
+  group("data DB", () {
+    String path() => join(dir.path, dataDbName);
+
+    /// Puts the bundled DB in place as if another version had installed it.
+    Future<void> install(int version) async {
+      File(join("assets/db", dataDbName)).copySync(path());
+      final db = await openDatabase(path());
+      await db.execute("DROP TABLE dependencies");
+      await db.setVersion(version);
+      await db.close();
+    }
+
+    Future<bool> wasReplaced() async {
+      final db = await Db.getDataDbInstance();
+      final tables = await db.rawQuery(
+        "SELECT 1 FROM sqlite_master WHERE name = 'dependencies'",
+      );
+      return tables.isNotEmpty;
+    }
+
+    test("an older version is replaced", () async {
+      await install(dataDbVersion - 1);
+      expect(await wasReplaced(), isTrue);
+      expect(await (await Db.getDataDbInstance()).getVersion(), dataDbVersion);
+    });
+
+    test("a newer version is replaced", () async {
+      await install(dataDbVersion + 1);
+      expect(await wasReplaced(), isTrue);
+    });
+
+    test("the current version is left alone", () async {
+      await install(dataDbVersion);
+      expect(await wasReplaced(), isFalse);
+    });
+
+    test("an unreadable file is replaced", () async {
+      File(path()).writeAsStringSync("not a database");
+      expect(await wasReplaced(), isTrue);
+    });
+
+    test("no temporary file or stale journal stays behind", () async {
+      await install(dataDbVersion - 1);
+      File("${path()}-journal").writeAsStringSync("stale");
+      await Db.getDataDbInstance();
+      expect(File("${path()}.tmp").existsSync(), isFalse);
+      expect(File("${path()}-journal").existsSync(), isFalse);
+    });
+  });
+
+  group("user DB", () {
+    String path() => join(dir.path, userDbName);
+
+    /// A file holding one build, as if another app version had saved it.
+    Future<void> install(int version) async {
+      File(join("assets/db", userDbName)).copySync(path());
+      final db = await openDatabase(path());
+      await db.insert("class_builds", {
+        "title": "Kept",
+        "expansion_id": 1,
+        "expansion_code": "vanilla",
+        "class_id": 0,
+        "class_name": "Druid",
+        "talent_ranks": "{}",
+        "talents_build_sequence": "[]",
+      });
+      await db.setVersion(version);
+      await db.close();
+    }
+
+    Future<int> builds() async => Sqflite.firstIntValue(
+      await (await Db.getUserDbInstance()).rawQuery(
+        "SELECT COUNT(*) FROM class_builds WHERE title = 'Kept'",
+      ),
+    )!;
+
+    test("the same version keeps its builds", () async {
+      await install(userDbVersion);
+      expect(await builds(), 1);
+    });
+
+    test("a newer version keeps its builds and its version", () async {
+      await install(userDbVersion + 1);
+      expect(await builds(), 1);
+      expect(
+        await (await Db.getUserDbInstance()).getVersion(),
+        userDbVersion + 1,
+      );
+    });
+
+    test("an unversioned file keeps its builds", () async {
+      await install(0);
+      expect(await builds(), 1);
+      expect(await (await Db.getUserDbInstance()).getVersion(), userDbVersion);
+    });
   });
 
   test("copies the bundled user DB on first open, with no builds", () async {
