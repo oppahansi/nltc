@@ -2,9 +2,9 @@
 import "dart:core";
 
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/models/data_entities.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
-import "package:ltc/core/utils/constants.dart";
 
 String buildShareUrl(ClassBuild build) {
   final expansion = build.expansionCode.toLowerCase(); // already canonical

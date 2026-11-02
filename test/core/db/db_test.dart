@@ -9,8 +9,8 @@ import "package:path/path.dart";
 import "package:sqflite/sqflite.dart";
 
 // Project Imports
+import "package:ltc/core/db/db_constants.dart";
 import "package:ltc/core/db/db.dart";
-import "package:ltc/core/utils/constants.dart";
 
 import "../../helpers/test_db.dart";
 

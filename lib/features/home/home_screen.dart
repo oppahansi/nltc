@@ -9,9 +9,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
-import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/widgets/saved_builds.dart";

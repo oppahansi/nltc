@@ -6,9 +6,9 @@ import "package:exui/exui.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
+import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/repos/data_providers.dart";
-import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/utils/text_styles.dart";

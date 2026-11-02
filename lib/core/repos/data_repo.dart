@@ -1,7 +1,7 @@
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/models/data_entities.dart";
-import "package:ltc/core/utils/constants.dart";
 
 class DataRepo {
   static final DataRepo _instance = DataRepo._internal();
@@ -10,7 +10,7 @@ class DataRepo {
 
   /// Fetches all expansions with their localized names.
   Future<List<Expansion>> getExpansions({String? languageCode}) async {
-    final langCode = languageCode ?? settingsValueLocaleDefault;
+    final langCode = languageCode ?? defaultLanguageCode;
     final db = await Db.getDataDbInstance();
     final result = await db.rawQuery(
       '''
@@ -38,7 +38,7 @@ class DataRepo {
     int expansionId, {
     String? languageCode,
   }) async {
-    final langCode = languageCode ?? settingsValueLocaleDefault;
+    final langCode = languageCode ?? defaultLanguageCode;
     final db = await Db.getDataDbInstance();
     final result = await db.rawQuery(
       '''
@@ -70,7 +70,7 @@ class DataRepo {
     int classId = 1,
     String? languageCode,
   }) async {
-    final langCode = languageCode ?? settingsValueLocaleDefault;
+    final langCode = languageCode ?? defaultLanguageCode;
     final db = await Db.getDataDbInstance();
     final result = await db.rawQuery(
       '''
@@ -121,7 +121,7 @@ class DataRepo {
     int classId = 0,
     String? languageCode,
   }) async {
-    final langCode = languageCode ?? settingsValueLocaleDefault;
+    final langCode = languageCode ?? defaultLanguageCode;
 
     final db = await Db.getDataDbInstance();
     // Fetch talents

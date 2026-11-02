@@ -1,42 +1,6 @@
 // Flutter Imports
 import "package:flutter/material.dart";
 
-// Project Imports
-import "package:ltc/core/utils/constants.dart";
-
-Map<String, String> classColors = {
-  "druid": "#FF7D0A",
-  "hunter": "#ABD473",
-  "mage": "#69CCF0",
-  "paladin": "#F58CBA",
-  "priest": "#FFFFFF",
-  "rogue": "#FFF569",
-  "shaman": "#0070DE",
-  "warlock": "#9482C9",
-  "warrior": "#C79C6E",
-  "deathknight": "#C41E3A",
-  "druide": "#FF7D0A",
-  "jäger": "#ABD473",
-  "magier": "#69CCF0",
-  "priester": "#FFFFFF",
-  "schurke": "#FFF569",
-  "schamane": "#0070DE",
-  "hexenmeister": "#9482C9",
-  "krieger": "#C79C6E",
-  "todesritter": "#C41E3A",
-};
-
-Color getExpansionColor(String expansion) {
-  switch (expansion) {
-    case 'tbc':
-      return expColors['tbc']!.first;
-    case 'wotlk':
-      return expColors['wotlk']![1];
-    default:
-      return expColors['vanilla']!.first;
-  }
-}
-
 Color primaryColor(BuildContext context) =>
     Theme.of(context).colorScheme.primary;
 

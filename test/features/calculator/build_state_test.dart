@@ -9,10 +9,10 @@ import "package:flutter_test/flutter_test.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
+import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/models/data_entities.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
-import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/share_util.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";

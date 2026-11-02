@@ -11,8 +11,8 @@ import "package:path_provider/path_provider.dart";
 import "package:sqflite/sqflite.dart";
 
 // Project Imports
+import "package:ltc/core/db/db_constants.dart";
 import "package:ltc/core/db/migrations.dart";
-import "package:ltc/core/utils/constants.dart";
 
 class Db {
   static const int dbVersion = 1;
@@ -129,10 +129,10 @@ class Db {
     }
 
     final dir = await getDatabaseDirectory();
-    final path = join(dir.path, userDbNane);
+    final path = join(dir.path, userDbName);
 
     // Migrate from old location if required
-    await _migrateIfNeeded(userDbNane);
+    await _migrateIfNeeded(userDbName);
 
     if (!await File(path).exists()) {
       ByteData data = await rootBundle.load(userDbPath);
@@ -197,10 +197,10 @@ class Db {
 
   static Future<Database> initializeUserDb() async {
     final dir = await getDatabaseDirectory();
-    final path = join(dir.path, userDbNane);
+    final path = join(dir.path, userDbName);
 
     // Migrate from old location if required
-    await _migrateIfNeeded(userDbNane);
+    await _migrateIfNeeded(userDbName);
 
     if (!await File(path).exists()) {
       ByteData data = await rootBundle.load(userDbPath);
@@ -243,7 +243,7 @@ class Db {
   /// Absolute path to the active database file in the app documents directory.
   static Future<String> getDbPath() async {
     final dir = await getDatabaseDirectory();
-    return join(dir.path, userDbNane);
+    return join(dir.path, userDbName);
   }
 
 }
