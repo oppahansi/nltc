@@ -10,6 +10,7 @@ import "package:ltc/core/talent_build/class_build.dart";
 import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/talent_build/share_util.dart";
+import "package:ltc/core/settings/setting_keys.dart";
 import 'package:ltc/core/settings/settings_service_provider.dart';
 import "package:ltc/features/calculator/logic/talent_rules.dart"
     as talent_rules;
@@ -395,12 +396,12 @@ class BuildState extends _$BuildState {
       expansionId,
       languageCode: settings.locale.languageCode,
     );
+    // Forever has Legacy trees for any class, so its trees alone don't prove the
+    // class exists in this expansion.
+    final clazz = classes.where((c) => c.id == classId).firstOrNull;
+    if (clazz == null) return false;
     final className =
-        classes
-            .where((c) => c.id == classId)
-            .firstOrNull
-            ?.names[settings.locale.languageCode] ??
-        parsed.classCode;
+        clazz.names[settings.locale.languageCode] ?? parsed.classCode;
     final build = ClassBuild(
       id: null,
       title: "",
@@ -419,7 +420,21 @@ class BuildState extends _$BuildState {
       return false;
     }
 
+    // The code decides the version and class, whatever is selected right now, so
+    // the rest of the app needs to follow. Changing settings rebuilds this
+    // provider, which has to find the imported build rather than an empty one.
     _preloadedBuild = build;
+    state = AsyncData(build);
+    final settingsNotifier = ref.read(settingsProvider.notifier);
+    await settingsNotifier.setSetting(
+      settingsKeySelectedExpId,
+      expansionId.toString(),
+    );
+    _preloadedBuild = build;
+    await settingsNotifier.setSetting(
+      settingsKeySelectedClassId,
+      classId.toString(),
+    );
     state = AsyncData(build);
     return true;
   }

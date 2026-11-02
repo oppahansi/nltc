@@ -428,6 +428,38 @@ void main() {
       }
     });
 
+    test(
+      "a code from another version loads, and selects that version",
+      () async {
+        await select(tbc, mage);
+        expect(
+          await notifier().importFromShareCode("vanilla-druid-5-0-0"),
+          isTrue,
+        );
+        await container.read(buildStateProvider.future);
+
+        final settings = container.read(settingsProvider).value!;
+        expect(settings.selectedExpId, vanilla);
+        expect(settings.selectedClassId, druid);
+        expect(settings.selectedExp.code, "vanilla");
+        expect(build().expansionCode, "vanilla");
+        expect(build().classId, druid);
+        expect(total(), 5);
+      },
+    );
+
+    test("a code that fails to import leaves the selection alone", () async {
+      await select(tbc, mage);
+      expect(
+        await notifier().importFromShareCode("forever-deathknight-1-2-3"),
+        isFalse,
+      );
+
+      final settings = container.read(settingsProvider).value!;
+      expect(settings.selectedExpId, tbc);
+      expect(settings.selectedClassId, mage);
+    });
+
     test("sharing includes points added after loading a build", () async {
       await select(vanilla, mage);
       final t = firstInTree(0);
@@ -482,6 +514,9 @@ void main() {
 
         expect(build().expansionCode, "wotlk");
         expect(sequence(), spent);
+        final settings = container.read(settingsProvider).value!;
+        expect(settings.selectedExpId, wotlk);
+        expect(settings.selectedClassId, 9);
         expect({for (final t in talents()) t.id: t.currentRank}, ranks);
         expect(buildShareCode(build()), code);
       });
