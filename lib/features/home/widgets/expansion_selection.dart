@@ -6,6 +6,10 @@ import "package:exui/exui.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
+import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/edition.dart";
+import "package:ltc/core/game/editions.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/data_providers.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
@@ -31,23 +35,48 @@ class ExpansionSelection extends ConsumerWidget {
 
     return expansionsAsync.when(
       data: (expansions) {
+        Future<void> select(Expansion exp) => ref
+            .read(settingsProvider.notifier)
+            .setSetting(settingsKeySelectedExpId, exp.id.toString());
+
+        final editions = availableEditions(expansions);
+        final shown = expansions.where((e) => e.edition == selectedExp.edition);
+
         return [
           loc.expansion.capitalize().text(style: style.withColor(expColor)),
           gapSize(context).gapColumn,
+          if (editions.length > 1) ...[
+            SegmentedButton<Edition>(
+              showSelectedIcon: false,
+              style: SegmentedButton.styleFrom(
+                foregroundColor: Colors.grey,
+                selectedForegroundColor: Colors.black,
+                selectedBackgroundColor: expColor,
+                side: BorderSide(color: expColor),
+              ),
+              segments: [
+                for (final edition in editions)
+                  ButtonSegment(
+                    value: edition,
+                    label: Text(_editionLabel(loc, edition)),
+                  ),
+              ],
+              selected: {selectedExp.edition},
+              onSelectionChanged: (selection) => select(
+                expansionAfterSwitch(expansions, selectedExp, selection.first),
+              ),
+            ),
+            gapSize(context).gapColumn,
+          ],
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: expansions.map((exp) {
-              final selected = selectedExp.id == exp.id;
-
+            children: shown.map((exp) {
               return ExpansionChip(
-                label: exp.code.capitalize(),
-                iconAsset: "assets/images/icons/${exp.code}_icon.webp",
-                selected: selected,
-                onTap: () async {
-                  await ref
-                      .read(settingsProvider.notifier)
-                      .setSetting(settingsKeySelectedExpId, exp.id.toString());
-                },
+                label: eraLabel(exp.era ?? exp.code),
+                iconAsset:
+                    "assets/images/icons/${exp.era ?? exp.code}_icon.webp",
+                selected: selectedExp.id == exp.id,
+                onTap: () => select(exp),
               );
             }).toList(),
           ),
@@ -59,4 +88,11 @@ class ExpansionSelection extends ConsumerWidget {
           .center(),
     );
   }
+
+  String _editionLabel(AppLocalizations loc, Edition edition) =>
+      switch (edition) {
+        Edition.legacy => loc.edition_legacy,
+        Edition.classic => loc.edition_classic,
+        Edition.forever => loc.edition_forever,
+      };
 }

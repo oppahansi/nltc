@@ -619,6 +619,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got it'**
   String get tutorialGotIt;
+
+  /// No description provided for @edition_legacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy'**
+  String get edition_legacy;
+
+  /// No description provided for @edition_classic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get edition_classic;
+
+  /// No description provided for @edition_forever.
+  ///
+  /// In en, this message translates to:
+  /// **'Forever'**
+  String get edition_forever;
 }
 
 class _AppLocalizationsDelegate

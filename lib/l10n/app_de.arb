@@ -86,5 +86,8 @@
   "tutorialDependenciesBody": "Pfeile zeigen Voraussetzungen; maximiere das Quell-Talent, um das abhängige freizuschalten.",
   "tutorialRowGating": "Reihenbegrenzung",
   "tutorialRowGatingBody": "Pro Reihenstufe werden 5 Punkte benötigt, bevor du tiefer investieren kannst (Reihe * 5-Regel).",
-  "tutorialGotIt": "Verstanden"
+  "tutorialGotIt": "Verstanden",
+  "edition_legacy": "Legacy",
+  "edition_classic": "Classic",
+  "edition_forever": "Forever"
 }

@@ -86,5 +86,8 @@
   "tutorialDependenciesBody": "Arrows show prerequisites; max the source talent to unlock its dependent.",
   "tutorialRowGating": "Row Gating",
   "tutorialRowGatingBody": "Need 5 points per row tier before investing deeper (row * 5 rule).",
-  "tutorialGotIt": "Got it"
+  "tutorialGotIt": "Got it",
+  "edition_legacy": "Legacy",
+  "edition_classic": "Classic",
+  "edition_forever": "Forever"
 }

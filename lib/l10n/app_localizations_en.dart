@@ -287,4 +287,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialGotIt => 'Got it';
+
+  @override
+  String get edition_legacy => 'Legacy';
+
+  @override
+  String get edition_classic => 'Classic';
+
+  @override
+  String get edition_forever => 'Forever';
 }

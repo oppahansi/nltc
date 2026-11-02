@@ -288,4 +288,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tutorialGotIt => 'Verstanden';
+
+  @override
+  String get edition_legacy => 'Legacy';
+
+  @override
+  String get edition_classic => 'Classic';
+
+  @override
+  String get edition_forever => 'Forever';
 }
