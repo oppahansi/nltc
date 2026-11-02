@@ -150,6 +150,41 @@ String? normalizeShareInputToCode(String input) {
   return null;
 }
 
+enum ShareInputError {
+  empty,
+  notWowhead,
+  unsupportedWowheadLink,
+  invalidFormat,
+}
+
+/// What pasted share input resolved to: a share code, or why it can't be used.
+typedef ShareInputResult = ({String? code, ShareInputError? error});
+
+ShareInputResult classifyShareInput(String input) {
+  final raw = input.trim();
+  if (raw.isEmpty) return (code: null, error: ShareInputError.empty);
+
+  final lower = raw.toLowerCase();
+  final isUrl =
+      lower.startsWith("http://") ||
+      lower.startsWith("https://") ||
+      lower.startsWith("www.") ||
+      lower.startsWith("wowhead.com");
+  final isWowhead = lower.contains("wowhead.com");
+  if (isUrl && !isWowhead) {
+    return (code: null, error: ShareInputError.notWowhead);
+  }
+
+  final code = normalizeShareInputToCode(raw);
+  if (code != null) return (code: code, error: null);
+  return (
+    code: null,
+    error: isUrl
+        ? ShareInputError.unsupportedWowheadLink
+        : ShareInputError.invalidFormat,
+  );
+}
+
 String _encodeTree(List<Talent> talents) {
   final sorted = [...talents]
     ..sort((a, b) {

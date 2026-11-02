@@ -84,9 +84,8 @@ class _ShareCodeImportState extends ConsumerState<ShareCodeImport> {
                 fillColor: Colors.black26,
                 hintText:
                     "${loc.e_g} tbc-shaman-5530020103-0500315003-500050031",
-                hintStyle: bodySmall(
-                  context,
-                ).withColor(expColor.withAlpha(175)),
+                hintStyle: bodySmall(context)
+                    .withColor(expColor.withAlpha(175)),
                 errorText: _importError,
                 errorMaxLines: 2,
                 enabledBorder: OutlineInputBorder(
@@ -112,50 +111,19 @@ class _ShareCodeImportState extends ConsumerState<ShareCodeImport> {
               onPressed: _importing
                   ? null
                   : () async {
-                      final rawInput = _importCtrl.text.trim();
-                      if (rawInput.isEmpty) {
-                        setState(() => _importError = loc.import_empty);
-                        return;
-                      }
-
-                      bool looksLikeUrl(String s) {
-                        final l = s.toLowerCase();
-                        return l.startsWith("http://") ||
-                            l.startsWith("https://") ||
-                            l.startsWith("www.") ||
-                            l.startsWith("wowhead.com");
-                      }
-
-                      final isUrl = looksLikeUrl(rawInput);
-                      final isWowhead = rawInput.toLowerCase().contains(
-                        "wowhead.com",
-                      );
-
-                      // If it's a URL but NOT wowhead, show specific error.
-                      if (isUrl && !isWowhead) {
+                      final input = classifyShareInput(_importCtrl.text);
+                      if (input.error != null) {
                         setState(() {
-                          _importError = loc.import_vlaidation_only_wowhead;
-                        });
-                        return;
-                      }
-
-                      // Normalize (share code or supported wowhead url)
-                      final normalized = normalizeShareInputToCode(rawInput);
-
-                      if (normalized == null) {
-                        // If it was a wowhead URL but not a supported TBC/WotLK talent calc pattern.
-                        if (isUrl && isWowhead) {
-                          setState(() {
-                            _importError =
-                                "${loc.import_vlaidation_only_wowhead} (${loc.e_g} https://www.wowhead.com/tbc/talent-calc/shaman/5530020103-0500315003-500050031)";
-                          });
-                          return;
-                        }
-
-                        setState(
-                          () => _importError =
+                          _importError = switch (input.error!) {
+                            ShareInputError.empty => loc.import_empty,
+                            ShareInputError.notWowhead =>
+                              loc.import_vlaidation_only_wowhead,
+                            ShareInputError.unsupportedWowheadLink =>
+                              "${loc.import_vlaidation_only_wowhead} (${loc.e_g} https://www.wowhead.com/tbc/talent-calc/shaman/5530020103-0500315003-500050031)",
+                            ShareInputError.invalidFormat =>
                               "${loc.invalid_format} (exp-class-tree1-tree2-tree3 or wowhead url)",
-                        );
+                          };
+                        });
                         return;
                       }
 
@@ -166,7 +134,7 @@ class _ShareCodeImportState extends ConsumerState<ShareCodeImport> {
 
                       final ok = await ref
                           .read(buildStateProvider.notifier)
-                          .importFromShareCode(normalized);
+                          .importFromShareCode(input.code!);
 
                       if (!mounted) return;
                       setState(() => _importing = false);
