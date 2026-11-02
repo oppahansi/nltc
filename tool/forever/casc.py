@@ -65,11 +65,19 @@ def blte_decode(buf, allow_partial=False):
 
 
 class Casc:
-    def __init__(self, install):
+    def __init__(self, install, product=None):
+        """product selects a row of a shared install's .build.info; default is the first."""
         self.install = install
         info_lines = open(os.path.join(install, ".build.info")).read().splitlines()
         hdr = [h.split("!")[0] for h in info_lines[0].split("|")]
-        self.info = dict(zip(hdr, info_lines[1].split("|")))
+        rows = [dict(zip(hdr, line.split("|"))) for line in info_lines[1:] if line.strip()]
+        if product is None:
+            self.info = rows[0]
+        else:
+            match = [r for r in rows if r.get("Product") == product]
+            if len(match) != 1:
+                raise ValueError("product %s: %d rows in .build.info" % (product, len(match)))
+            self.info = match[0]
         bk = self.info["Build Key"]
         self.build = parse_config(
             os.path.join(install, "Data", "config", bk[:2], bk[2:4], bk))
