@@ -8,6 +8,7 @@ import "package:material_symbols_icons/symbols.dart";
 import "package:share_plus/share_plus.dart";
 
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
 import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/settings/setting_keys.dart";
@@ -42,7 +43,7 @@ class SavedBuildTile extends ConsumerWidget {
         ? classBuild.title
         : classBuild.className.capitalize();
     final subTitle =
-        "${classBuild.className.capitalize()} • ${classBuild.expansionCode.capitalize()}";
+        "${classBuild.className.capitalize()} • ${expansionLabel(classBuild.expansionCode)}";
 
     final deleteButton = IconButton(
       tooltip: loc.delete.capitalize(),
@@ -85,9 +86,9 @@ class SavedBuildTile extends ConsumerWidget {
     return ListTile(
       dense: true,
       title: title.text(
-        style: bodyMedium(
-          context,
-        ).withColor(expColors[classBuild.expansionCode]!.first),
+        style: bodyMedium(context).withColor(
+          expColors[eraOf(classBuild.expansionCode)]?.first ?? expColor,
+        ),
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),
@@ -96,7 +97,7 @@ class SavedBuildTile extends ConsumerWidget {
       ),
       trailing: [
         deleteButton,
-        if (classBuild.expansionCode != "vanilla") linkButton,
+        if (canShareBuild(classBuild)) linkButton,
         shareButton,
         Symbols.arrow_forward.icon(color: expColor),
       ].row(mainAxisSize: MainAxisSize.min),

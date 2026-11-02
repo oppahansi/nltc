@@ -12,6 +12,7 @@ import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/talent_build/class_build.dart";
+import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 
@@ -240,6 +241,27 @@ void main() {
         expect(total(), 1, reason: name);
       }
     });
+
+    test(
+      "a save from a newer version's expansion doesn't crash the list",
+      () async {
+        final id = await (await Db.getUserDbInstance()).insert(
+          ClassBuild.tableName,
+          {
+            "title": "from the future",
+            "expansion_id": 99,
+            "expansion_code": "unknown",
+            "class_id": mage,
+            "class_name": "Mage",
+            "talent_ranks": "{}",
+            "talents_build_sequence": "[]",
+          },
+        );
+        final saved = await ClassBuildsRepo().fetch(id);
+        expect(saved, isNotNull);
+        expect(saved!.getClassColor, returnsNormally);
+      },
+    );
   });
 
   group("share codes", () {
@@ -251,7 +273,11 @@ void main() {
       );
       expect(pairs.length, 9 + 9 + 10);
       for (final pair in pairs) {
-        final expansion = const {1: "vanilla", 2: "tbc", 3: "wotlk"}[pair["e"]]!;
+        final expansion = const {
+          1: "vanilla",
+          2: "tbc",
+          3: "wotlk",
+        }[pair["e"]]!;
         final classCode = (pair["code"] as String).toLowerCase();
         final counts = await db.rawQuery(
           "SELECT COUNT(*) n FROM talents WHERE expansion = ? AND classId = ? "

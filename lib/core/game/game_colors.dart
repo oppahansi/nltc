@@ -1,6 +1,9 @@
 // Dart Imports
 import "dart:ui";
 
+// Project Imports
+import "package:ltc/core/game/game_catalog.dart";
+
 Map<String, List<Color>> expColors = {
   "vanilla": [
     Color(0xFFFFD700), // Gold for classic WoW logo
@@ -35,8 +38,8 @@ Map<String, String> classColors = {
   "deathknight": "#C41E3A",
 };
 
-Color getExpansionColor(String expansion) {
-  switch (expansion) {
+Color getExpansionColor(String expansionCode) {
+  switch (eraOf(expansionCode)) {
     case 'tbc':
       return expColors['tbc']!.first;
     case 'wotlk':

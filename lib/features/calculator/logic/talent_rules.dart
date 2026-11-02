@@ -8,7 +8,7 @@ const pointsPerRow = 5;
 /// Whether [talent] can take another point: the build is under its point cap,
 /// the tree has enough points for the talent's row, and any prerequisite is full.
 bool isTalentEnabled(ClassBuild build, Talent talent) {
-  final maxPoints = expansionToMaxTalentPoints[build.expansionCode]!;
+  final maxPoints = maxTalentPoints(build.expansionCode);
   if (build.pointsSpentPerTree.reduce((a, b) => a + b) >= maxPoints) {
     return false;
   }

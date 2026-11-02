@@ -1,7 +1,37 @@
 const String defaultLanguageCode = "en";
 
-const expansionsToIds = {"vanilla": 1, "tbc": 2, "wotlk": 3};
-const expansionToMaxTalentPoints = {"vanilla": 51, "tbc": 61, "wotlk": 71};
+const expansionsToIds = {
+  "vanilla": 1,
+  "tbc": 2,
+  "wotlk": 3,
+  "classic_vanilla": 4,
+  "classic_tbc": 5,
+  "classic_wotlk": 6,
+};
+
+const _classicPrefix = "classic_";
+const _maxTalentPointsByEra = {"vanilla": 51, "tbc": 61, "wotlk": 71};
+const _eraLabels = {"vanilla": "Vanilla", "tbc": "TBC", "wotlk": "WotLK"};
+
+/// The game era of an expansion code: `classic_tbc` and `tbc` are both `tbc`.
+String eraOf(String expansionCode) => expansionCode.startsWith(_classicPrefix)
+    ? expansionCode.substring(_classicPrefix.length)
+    : expansionCode;
+
+/// 0 for an expansion this version doesn't know, such as from a newer backup.
+int maxTalentPoints(String expansionCode) =>
+    _maxTalentPointsByEra[eraOf(expansionCode)] ?? 0;
+
+String eraLabel(String era) => _eraLabels[era] ?? era;
+
+/// How saved builds name their expansion, for example `Classic TBC`.
+String expansionLabel(String expansionCode) {
+  final edition = expansionCode.startsWith(_classicPrefix)
+      ? "Classic"
+      : "Legacy";
+  return "$edition ${eraLabel(eraOf(expansionCode))}";
+}
+
 const maxColumns = 4;
 const classNamesToIds = {
   "druid": 0,
