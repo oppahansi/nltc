@@ -26,9 +26,11 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 
 ## Features
 
+- **Three editions:** Original, Classic and Forever, each with its own talent data.
 - **Talent calculator:** interactive trees that enforce row requirements, prerequisites and point limits, with undo and a build order view.
+- **Forever's Legacy system:** spend Legacy points across its three trees, with their own cap and build order.
 - **Saved builds:** save builds on your device with your own titles.
-- **Sharing:** export and import compact share codes that carry the build order.
+- **Sharing:** export and import compact share codes that carry the build order, and load the right edition and class by themselves.
 - **Backups:** export and restore your saved builds through the system file picker.
 - **English and German:** switch language at any time.
 
@@ -37,14 +39,19 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 | Edition | Versions | Status |
 |---|---|---|
 | **Original**, the clients from back then | Vanilla 1.12.1, TBC 2.4.3, WotLK 3.3.5a | Available |
-| **Classic**, today's re-releases | Vanilla, TBC, WotLK | Planned |
-| **Forever** | Its own talent trees | Planned |
+| **Classic**, today's re-releases | Classic Era 1.15.9, TBC Anniversary 2.5.6 | Available |
+| | WotLK Classic 3.4.5 | Available, provisional |
+| **Forever** | Its own talent trees and Legacy system, build 1.60.1 | Available, provisional |
 
-Original edition data is checked against the original game clients. German Vanilla text is the exception: it hasn't been compared with a German client yet.
+Original and Classic data is extracted from or checked against the game clients. There are three exceptions:
+
+- **Original German Vanilla:** this text hasn't been compared with a German client yet.
+- **WotLK Classic:** this comes from [wago.tools](https://wago.tools) tables, because no client was available. It will be checked again when WotLK Anniversary launches.
+- **Forever:** this comes from the client before launch, and will be updated from the live version.
 
 ## Getting started
 
-You need [Flutter](https://docs.flutter.dev/get-started/install) 3.47 or newer. The app runs on iOS 15 or newer, and on Android versions supported by your Flutter release.
+You need [Flutter](https://docs.flutter.dev/get-started/install) 3.47 or newer. The app runs on iOS 15 or newer, and on Android 7.0 (API 24) or newer.
 
 ```bash
 flutter pub get
@@ -54,8 +61,8 @@ flutter run
 Release builds:
 
 ```bash
-flutter build apk --release   # Android: needs android/key.properties for signing
-flutter build ios --release   # iOS: needs your own signing team
+flutter build appbundle --release   # Android: needs android/key.properties for signing
+flutter build ios --release         # iOS: needs your own signing team
 ```
 
 ## Development
@@ -72,8 +79,9 @@ Generated `*.g.dart` and `lib/l10n/app_localizations*.dart` files are committed,
 ### Talent data
 
 - `assets/db/*.db.sql` is the source of truth. Edit the SQL, then rebuild the matching `.db` from it.
-- Bundled databases are only copied on first install, so existing installs need a migration to receive changes.
-- Talent and expansion ids must not change, because saved builds and share codes refer to them. The tests guard this.
+- After changing talent data, bump `dataDbVersion` in `lib/core/db/db_constants.dart` and `PRAGMA user_version` in the SQL. Installs on another version replace their copy, and a test enforces the bump.
+- The user database holds saved builds and is never replaced. A schema change needs a step in `lib/core/db/migrations.dart`, along with a bump of `userDbVersion`.
+- Talent and expansion ids must not change, because saved builds refer to them. The tests guard this for the Original edition.
 - `tool/` has read-only scripts for checking data against game clients. See [tool/README.md](tool/README.md).
 
 ### Project structure
