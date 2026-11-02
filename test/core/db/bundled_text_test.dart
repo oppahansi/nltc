@@ -45,6 +45,16 @@ void main() {
     expect(await offenders("description LIKE '%..%'"), isEmpty);
   });
 
+  test("descriptions contain no misread or unevaluated values", () async {
+    expect(
+      await offenders("description GLOB '*[0-9][0-9][0-9][0-9][0-9][0-9]*'"),
+      isEmpty,
+    );
+    expect(await offenders("description LIKE '%[%'"), isEmpty);
+    expect(await offenders("description LIKE '%Attack power \\*%'"), isEmpty);
+    expect(await offenders("description LIKE '%ignore 0 of%'"), isEmpty);
+  });
+
   test("descriptions contain no unrendered client tokens", () async {
     expect(await offenders("description LIKE '%\$%'"), isEmpty);
   });
