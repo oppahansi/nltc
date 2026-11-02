@@ -51,3 +51,5 @@ desiredFileName.txt
 
 # Python
 __pycache__/
+# Widget Preview related
+.widget_preview/
