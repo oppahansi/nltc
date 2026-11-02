@@ -90,5 +90,7 @@
   "edition_original": "Original",
   "edition_classic": "Classic",
   "edition_forever": "Forever",
-  "legacyPointsSpent": "Vermächtnis: {spent}/{cap}"
+  "legacyPointsSpent": "Vermächtnis: {spent}/{cap}",
+  "buildOrderTalents": "Talente",
+  "buildOrderLegacy": "Vermächtnis"
 }

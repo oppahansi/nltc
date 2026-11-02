@@ -97,5 +97,7 @@
       "spent": {"type": "int"},
       "cap": {"type": "int"}
     }
-  }
+  },
+  "buildOrderTalents": "Talents",
+  "buildOrderLegacy": "Legacy"
 }

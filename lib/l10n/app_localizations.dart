@@ -643,6 +643,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Legacy: {spent}/{cap}'**
   String legacyPointsSpent(int spent, int cap);
+
+  /// No description provided for @buildOrderTalents.
+  ///
+  /// In en, this message translates to:
+  /// **'Talents'**
+  String get buildOrderTalents;
+
+  /// No description provided for @buildOrderLegacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy'**
+  String get buildOrderLegacy;
 }
 
 class _AppLocalizationsDelegate

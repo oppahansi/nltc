@@ -302,4 +302,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String legacyPointsSpent(int spent, int cap) {
     return 'Vermächtnis: $spent/$cap';
   }
+
+  @override
+  String get buildOrderTalents => 'Talente';
+
+  @override
+  String get buildOrderLegacy => 'Vermächtnis';
 }

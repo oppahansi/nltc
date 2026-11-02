@@ -24,7 +24,6 @@ class BuildSequenceSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncBuild = ref.watch(buildStateProvider);
     final loc = AppLocalizations.of(context)!;
-    final settings = ref.watch(settingsProvider).value!;
 
     return asyncBuild.when(
       loading: () => CircularProgressIndicator().center().sizedHeight(200),
@@ -46,13 +45,11 @@ class BuildSequenceSheet extends ConsumerWidget {
             t.id: t,
         };
 
+        // Legacy perks aren't part of the leveling order, so each side has its
+        // own order, and its own tab in a build that has both.
         final rankCounters = <int, int>{};
-        final entries = <_SeqRow>[];
-
-        // Legacy perks aren't part of the leveling order, so each side counts on
-        // its own.
-        var talentOrder = 0;
-        var legacyOrder = 0;
+        final talentRows = <_SeqRow>[];
+        final legacyRows = <_SeqRow>[];
         for (final bp in sequence) {
           final talent = talentMap[bp.talentId];
           if (talent == null) continue;
@@ -61,9 +58,10 @@ class BuildSequenceSheet extends ConsumerWidget {
             (v) => v + 1,
             ifAbsent: () => 1,
           ));
-          entries.add(
+          final rows = isLegacyTree(bp.treeId) ? legacyRows : talentRows;
+          rows.add(
             _SeqRow(
-              index: isLegacyTree(bp.treeId) ? ++legacyOrder : ++talentOrder,
+              index: rows.length + 1,
               talent: talent,
               rankAtStep: newRank,
               maxRank: talent.ranks.length,
@@ -72,64 +70,124 @@ class BuildSequenceSheet extends ConsumerWidget {
           );
         }
 
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.65,
-          maxChildSize: 0.9,
-          minChildSize: 0.4,
-          builder: (_, controller) => [
-            [
-              gapSize(context).gapRow,
-              loc.build_order.text(
-                style: titleLarge(context).withColor(Colors.white),
-              ),
-              const Spacer(),
-              IconButton(
-                icon: Symbols.close.icon(color: Colors.white70),
-                onPressed: () => context.pop(),
-              ),
-            ].row(),
-            gapSizeSmall(context).gapColumn,
-            ListView.separated(
-              controller: controller,
-              itemCount: entries.length,
-              separatorBuilder: (_, _) =>
-                  Divider(color: Colors.white12, height: 8),
-              itemBuilder: (_, i) {
-                final e = entries[i];
-                final talentColor = getExpansionColor(classBuild.expansionCode);
+        final hasLegacy = classBuild.talentTrees.any((t) => isLegacyTree(t.id));
+        final color = getExpansionColor(classBuild.expansionCode);
 
-                final treeName = classBuild.talentTrees
-                    .firstWhere((t) => t.id == e.treeIndex)
-                    .names[settings.locale.languageCode]!;
+        return DefaultTabController(
+          length: 2,
+          child: DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.65,
+            maxChildSize: 0.9,
+            minChildSize: 0.4,
+            builder: (_, controller) => [
+              [
+                gapSize(context).gapRow,
+                loc.build_order.text(
+                  style: titleLarge(context).withColor(Colors.white),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: Symbols.close.icon(color: Colors.white70),
+                  onPressed: () => context.pop(),
+                ),
+              ].row(),
+              if (hasLegacy)
+                TabBar(
+                  indicatorColor: color,
+                  labelColor: color,
+                  unselectedLabelColor: Colors.white70,
+                  dividerColor: Colors.white12,
+                  tabs: [
+                    Tab(text: loc.buildOrderTalents),
+                    Tab(text: loc.buildOrderLegacy),
+                  ],
+                ),
+              gapSizeSmall(context).gapColumn,
+              // One list at a time: the sheet's controller can only drive one, so
+              // the tabs switch by tapping rather than by swiping.
+              Builder(
+                builder: (context) {
+                  final tabs = DefaultTabController.of(context);
+                  return ListenableBuilder(
+                    listenable: tabs,
+                    builder: (context, _) {
+                      final legacy = hasLegacy && tabs.index == 1;
+                      return _SequenceList(
+                        key: ValueKey(legacy),
+                        rows: legacy ? legacyRows : talentRows,
+                        trees: classBuild.talentTrees,
+                        color: color,
+                        controller: controller,
+                      );
+                    },
+                  );
+                },
+              ).expanded1,
+            ].columnCrossStart(),
+          ),
+        );
+      },
+    );
+  }
+}
 
-                return ListTile(
-                  dense: true,
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: e.index.toString().text(
-                      style: bodySmall(context).withColor(talentColor),
-                    ),
-                  ),
-                  title: e.talent.names[settings.locale.languageCode]!.text(
-                    style: bodyMedium(context).withColor(Colors.white),
-                  ),
-                  subtitle:
-                      "${loc.rank.capitalize()} ${e.rankAtStep}/${e.maxRank}  •  in $treeName"
-                          .text(
-                            style: bodySmall(context).withColor(Colors.white70),
-                          ),
-                  trailing: Image.asset(
-                    "assets/images/icons/${e.talent.icon.toLowerCase()}.webp",
-                    width: gapSizeLarge(context),
-                    height: gapSizeLarge(context),
-                    errorBuilder: (_, _, _) =>
-                        Symbols.help_outline.icon(color: Colors.white54),
-                  ),
-                );
-              },
-            ).expanded1,
-          ].columnCrossStart(),
+class _SequenceList extends ConsumerWidget {
+  const _SequenceList({
+    super.key,
+    required this.rows,
+    required this.trees,
+    required this.color,
+    required this.controller,
+  });
+
+  final List<_SeqRow> rows;
+  final List<TalentTree> trees;
+  final Color color;
+  final ScrollController controller;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loc = AppLocalizations.of(context)!;
+    final settings = ref.watch(settingsProvider).value!;
+
+    if (rows.isEmpty) {
+      return loc.no_points_spent
+          .text(style: bodyLarge(context).withColor(Colors.white70))
+          .center();
+    }
+
+    return ListView.separated(
+      controller: controller,
+      itemCount: rows.length,
+      separatorBuilder: (_, _) => Divider(color: Colors.white12, height: 8),
+      itemBuilder: (_, i) {
+        final e = rows[i];
+        final treeName = trees
+            .firstWhere((t) => t.id == e.treeIndex)
+            .names[settings.locale.languageCode]!;
+
+        return ListTile(
+          dense: true,
+          leading: CircleAvatar(
+            backgroundColor: Colors.black,
+            child: e.index.toString().text(
+              style: bodySmall(context).withColor(color),
+            ),
+          ),
+          title: e.talent.names[settings.locale.languageCode]!.text(
+            style: bodyMedium(context).withColor(Colors.white),
+          ),
+          subtitle:
+              "${loc.rank.capitalize()} ${e.rankAtStep}/${e.maxRank}  •  in $treeName"
+                  .text(style: bodySmall(context).withColor(Colors.white70)),
+          trailing: Image.asset(
+            "assets/images/icons/${e.talent.icon.toLowerCase()}.webp",
+            width: gapSizeLarge(context),
+            height: gapSizeLarge(context),
+            errorBuilder: (_, _, _) =>
+                Symbols.help_outline.icon(color: Colors.white54),
+          ),
         );
       },
     );
