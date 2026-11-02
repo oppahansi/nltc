@@ -9,6 +9,8 @@ A free, open source talent calculator for World of Warcraft, for Android and iOS
 
 LTC is a non-commercial fan project. It has no ads or purchases, and it isn't for sale.
 
+<a href="https://play.google.com/store/apps/details?id=de.oppahansi.ltcfree"><img src="res/GetItOnGooglePlay_Badge.png" alt="Get it on Google Play" height="50" /></a>
+
 <img src="assets/nltc1.png" alt="Talent calculator" width="300" /> <img src="assets/nltc2.png" alt="Saved builds" width="300" />
 
 ## Features
