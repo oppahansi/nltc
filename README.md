@@ -94,6 +94,10 @@ Built with Flutter, [Riverpod](https://riverpod.dev) and SQLite.
 
 Bug reports and ideas are welcome, either in [issues](https://github.com/oppahansi/nltc/issues) or on [Discord](https://discord.gg/ncKmDEArqg). Please run `flutter test` and `flutter analyze` before opening a pull request.
 
+## Privacy
+
+LTC collects and shares no data. See the [privacy policy](PRIVACY.md).
+
 ## Disclaimer
 
 LTC is an unofficial fan project and isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft, its talent data and its artwork are trademarks or copyrights of Blizzard Entertainment, Inc. If you represent a rights holder and want something removed, please open an issue.
