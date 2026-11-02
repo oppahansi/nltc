@@ -8977,13 +8977,13 @@ Teufelswache: Erhöht jeglichen verursachten Schaden um 5% und alle Widerstände
 (915, 0, 'de', 'Erhöht Euren Zauberschaden um einen Betrag, der 4% der Summe von Ausdauer und Intelligenz Eures aktiven Dämonen entspricht.'),
 (915, 1, 'de', 'Erhöht Euren Zauberschaden um einen Betrag, der 8% der Summe von Ausdauer und Intelligenz Eures aktiven Dämonen entspricht.'),
 (915, 2, 'de', 'Erhöht Euren Zauberschaden um einen Betrag, der 12% der Summe von Ausdauer und Intelligenz Eures aktiven Dämonen entspricht.'),
-(916, 0, 'de', 'Bei Aktivierung wird Euer beschworener Dämon geopfert, um Euch einen Effekt zu gewähren, der 30 Min. lang anhält. Der Effekt wird abgebrochen, wenn ein Dämon beschworen wird.
+(916, 0, 'de', 'Bei Aktivierung wird Euer beschworener Begleiter geopfert, um Euch einen Effekt zu gewähren, der 30 Min. lang anhält. Der Effekt wird abgebrochen, wenn ein Dämon beschworen wird.
 
 Wichtel: Erhöht Euren Feuerschaden um 15%.
 
 Leerwandler: Stellt alle 4 Sek. 2% Eurer gesamten Gesundheit wieder her.
 
-Sukkubus/Inkubus: Erhöht Euren Schattenschaden um 15%.
+Sukkubus: Erhöht Euren Schattenschaden um 15%.
 
 Teufelsjäger: Stellt alle 4 Sek. 3% Eures gesamten Manas wieder her.
 
@@ -23204,7 +23204,7 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (915,1,'de','Erhöht Euren Zauberschaden um einen Betrag,der 8% der Summe von Ausdauer und Intelligenz Eures aktiven Dämonen entspricht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (915,2,'de','Erhöht Euren Zauberschaden um einen Betrag,der 12% der Summe von Ausdauer und Intelligenz Eures aktiven Dämonen entspricht.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (916,'de','Dämonische Opferung');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (916,0,'de','Bei Aktivierung wird Euer beschworener Dämon geopfert,um Euch einen Effekt zu gewähren,der 30 min lang anhält. Der Effekt wird abgebrochen,wenn ein Dämon beschworen wird.<br /><br />Wichtel: Erhöht Euren Feuerschaden um 15%.<br /><br />Leerwandler: Stellt alle 4 Sek. 2% Eurer gesamten Gesundheit wieder her.<br /><br />Sukkubus/Inkubus: Erhöht Euren Schattenschaden um 15%.<br /><br />Teufelsjäger: Stellt alle 4 Sek. 3% Eures gesamten Manas wieder her.<br /><br />Teufelswache: Erhöht Euren Schattenschaden um 10% und stellt alle 4 Sek. 2% Eures gesamten Manas wieder her.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (916,0,'de','Bei Aktivierung wird Euer beschworener Begleiter geopfert,um Euch einen Effekt zu gewähren,der 30 min lang anhält. Der Effekt wird abgebrochen,wenn ein Dämon beschworen wird.<br /><br />Wichtel: Erhöht Euren Feuerschaden um 15%.<br /><br />Leerwandler: Stellt alle 4 Sek. 2% Eurer gesamten Gesundheit wieder her.<br /><br />Sukkubus: Erhöht Euren Schattenschaden um 15%.<br /><br />Teufelsjäger: Stellt alle 4 Sek. 3% Eures gesamten Manas wieder her.<br /><br />Teufelswache: Erhöht Euren Schattenschaden um 10% und stellt alle 4 Sek. 2% Eures gesamten Manas wieder her.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (917,'de','Seelenverbindung');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (917,0,'de','Bei Aktivierung erleidet Euer Wichtel,Leerwandler,Sukkubus,Inkubus,Teufelsjäger,Eure Teufelswache oder Euer versklavter Dämon 20% des gesamten vom Zaubernden erlittenen Schadens. Dieser Schaden kann nicht vermieden werden. Zusätzlich verursachen der Dämon und Ihr 5% mehr Schaden. Hält an,solange der Dämon aktiv ist und kontrolliert wird.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (918,'de','Verbesserter Dämonensklave');
