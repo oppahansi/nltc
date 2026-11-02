@@ -59,6 +59,7 @@ void main() {
       isEmpty,
     );
     expect(await offenders("description LIKE '%ignore 0 of%'"), isEmpty);
+    expect(await offenders("description LIKE '%until cancelled an%'"), isEmpty);
   });
 
   test("descriptions contain no unrendered client tokens", () async {

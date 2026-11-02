@@ -53,7 +53,11 @@ void main() {
   });
 
   group("Classic rows", () {
-    for (final (classic, original, offset) in [(4, 1, 10000), (5, 2, 20000)]) {
+    for (final (classic, original, offset) in [
+      (4, 1, 10000),
+      (5, 2, 20000),
+      (6, 3, 30000),
+    ]) {
       test(
         "row $classic has the layout of row $original, ids offset",
         () async {

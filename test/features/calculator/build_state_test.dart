@@ -272,7 +272,7 @@ void main() {
         "FROM talents t JOIN classes c ON c.id = t.classId "
         "JOIN expansions x ON x.id = t.expansion ORDER BY 1, 3",
       );
-      expect(pairs.length, 9 + 9 + 10 + 9 + 9);
+      expect(pairs.length, 9 + 9 + 10 + 9 + 9 + 10);
       for (final pair in pairs) {
         final expansion = pair["exp"] as String;
         final classCode = (pair["code"] as String).toLowerCase();
@@ -294,20 +294,13 @@ void main() {
       }
     });
 
-    test(
-      "classic codes parse, but don't import until their data exists",
-      () async {
-        expect(
-          parseShareCode("classic_wotlk-mage-1-2-3")?.expansion,
-          "classic_wotlk",
-        );
-        expect(parseShareCode("retail-mage-1-2-3"), isNull);
-        expect(
-          await notifier().importFromShareCode("classic_wotlk-mage-1-2-3"),
-          isFalse,
-        );
-      },
-    );
+    test("classic codes parse, and unknown expansions don't", () async {
+      expect(
+        parseShareCode("classic_wotlk-mage-1-2-3")?.expansion,
+        "classic_wotlk",
+      );
+      expect(parseShareCode("retail-mage-1-2-3"), isNull);
+    });
 
     test("old codes shorter than the tree still import", () async {
       expect(
