@@ -27,6 +27,8 @@ Tests: `flutter test`. `test/helpers/test_db.dart` gives a test its own first-in
 - `assets/db/*.db.sql` are the source of truth. Edit the SQL, then rebuild the `.db` with `/rebuild-db`. Never edit a `.db` directly.
 - The app copies a bundled DB only if the file is not already on the device (`lib/core/db/db.dart`), so rebuilt DBs do not reach existing installs. Those need a migration in `lib/core/db/migrations.dart` and a `dbVersion` bump.
 
+To check bundled data against game clients, see `tool/README.md`.
+
 ## Battle.net import
 
 Removed along with its `ltcbackend` dependency. It will be revisited later; restore it from git history when that happens.
@@ -37,4 +39,4 @@ Commit directly to `main`, using scoped conventional commits: `type(scope): summ
 
 ## Game editions
 
-The app targets three editions: Legacy (original clients: vanilla, tbc, wotlk), Classic (today's re-releases: vanilla, tbc, wotlk) and Forever (standalone, not split into those expansions). Only compare data against a client from the same edition. The existing bundled data targets Legacy and may contain mistakes.
+The app targets three editions: Legacy (original clients: vanilla, tbc, wotlk), Classic (today's re-releases: vanilla, tbc, wotlk) and Forever (standalone, not split into those expansions). Only compare data against a client from the same edition. Work order: Legacy first, then Classic, then Forever. The existing bundled data is Legacy.
