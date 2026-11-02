@@ -1,4 +1,4 @@
-# LTC: Legacy Talent Calculator
+# LTC: Talent Calculator for World of Warcraft
 
 [![Discord](https://img.shields.io/static/v1?logo=discord&label=discord&message=Join&color=blue)](https://discord.gg/ncKmDEArqg)
 [![License: MIT](https://img.shields.io/github/license/oppahansi/nltc)](LICENSE)
