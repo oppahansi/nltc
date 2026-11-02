@@ -41,6 +41,26 @@ python3 -I tool/classic/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data
 
 ## `forever/`: WoW Forever client (CASC and DB2)
 
-`data/` holds the extract from pre-launch build 1.60.1.70707 and its Wowhead comparison. **This data is provisional**: re-extract from the live build before using it.
+- `extract_forever.py`: extracts regular talents and the Legacy system to one JSON per language. It reuses `classic/extract_classic.py`'s renderer, and anything it can't calculate stays visible as `[[?token]]` and is listed under `unresolved`.
+- `report.py`: lists counts, the Legacy layout, icons with no file in `assets/images/icons`, unresolved tokens, text defects and en/de structure differences.
+- `compare_wh.py`: compares an extract with Wowhead's talent data.
+- `diff_extracts.py`: lists what changed between two extracts, Legacy included.
 
-`run_pipeline.sh <install> <work_dir>` re-runs the extraction. `<work_dir>` needs WoWDBDefs at `dl/wowdbdefs` and the community listfile at `dl/listfile/community-listfile.csv`.
+`data/` holds an older extract from pre-launch build 1.60.1.70707 and its Wowhead comparison, from before the `wdc.py` palette fix and without Legacy. **All Forever data is provisional**: re-extract from the live build before using it.
+
+```sh
+tool/forever/run_pipeline.sh <install> <work_dir> [out_dir]
+```
+
+This writes `forever_<build>_all_enUS.json`, `forever_<build>_all_deDE.json` and `report_<build>.txt` to `<out_dir>`, by default `<work_dir>/out`. `<work_dir>` holds WoWDBDefs at `dl/wowdbdefs` and the community listfile at `dl/listfile/community-listfile.csv`, and both are downloaded when missing.
+
+Legacy tree IDs, the currency ID and the tree names come from the client's own UI files (`blizzard_legacysystem`, `legacyconstantsdocumentation.lua`), which are read as text and never run.
+
+After extracting, `fetch_icons.py` converts any icons the app lacks (needs Pillow), and `generate_sql.py` writes the extracts into `assets/db/ltc_data.db.sql`, replacing its generated block. Rebuild the DB afterwards.
+
+```sh
+<venv>/bin/python -I tool/forever/fetch_icons.py "/Applications/World of Warcraft" <extract_en.json> assets/images/icons
+python3 -I tool/forever/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data.db.sql <extract_en.json> <extract_de.json>
+```
+
+`generate_sql.py` stops on anything it doesn't expect: a new unresolved token, a changed point cap, or a talent breaking the layout rules.
