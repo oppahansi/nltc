@@ -1,114 +1,93 @@
-## Overview
+# LTC: Legacy Talent Calculator
 
-**LTC (Talent Calculator)** is a cross-platform Flutter application for planning World of Warcraft character talent builds across multiple expansions (Vanilla, TBC, WotLK). The app features an interactive talent tree calculator, build sharing via codes and Wowhead URLs, and local persistence.
+[![Discord](https://img.shields.io/static/v1?logo=discord&label=discord&message=Join&color=blue)](https://discord.gg/ncKmDEArqg)
+[![License: MIT](https://img.shields.io/github/license/oppahansi/nltc)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.47%2B-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-lightgrey)](#getting-started)
 
-This is a complete, production-ready Flutter project demonstrating modern app architecture with state management (Riverpod), localization, native platform integration, and a local SQLite database.
+A free, open source talent calculator for World of Warcraft, for Android and iOS. Plan a build, save it, and share it, in English or German.
+
+LTC is a non-commercial fan project. It has no ads or purchases, and it isn't for sale.
+
+<img src="assets/nltc1.png" alt="Talent calculator" width="300" /> <img src="assets/nltc2.png" alt="Saved builds" width="300" />
 
 ## Features
 
-- **Talent Calculator**
-  - Interactive talent tree UI with point allocation and undo functionality
-  - Support for Vanilla, TBC, and WotLK expansions
-  - Build order tracking with sequence visualization
-  - Real-time validation (row gating, dependencies, max points)
+- **Talent calculator:** interactive trees that enforce row requirements, prerequisites and point limits, with undo and a build order view.
+- **Saved builds:** save builds on your device with your own titles.
+- **Sharing:** export and import compact share codes (`expansion-class-tree1-tree2-tree3`), and open or import Wowhead links for TBC and WotLK.
+- **Backups:** export and restore your saved builds through the system file picker.
+- **English and German:** switch language at any time.
 
-- **Build Management**
-  - Save builds locally with custom titles
-  - Auto-localizing titles when switching languages
-  - Delete and manage saved builds
-  
-- **Build Sharing**
-  - Export builds as compact share codes (`exp-class-tree1-tree2-tree3`)
-  - Generate Wowhead talent calculator URLs (TBC & WotLK)
-  - Import builds from share codes or Wowhead links
+## Supported game versions
 
-- **Localization**
-  - Full German and English support
-  - Language switching with automatic title re-localization
+| Edition | Versions | Status |
+|---|---|---|
+| **Legacy**, the original clients | Vanilla 1.12.1, TBC 2.4.3, WotLK 3.3.5a | Available |
+| **Classic**, today's re-releases | Vanilla, TBC, WotLK | Planned |
+| **Forever** | Its own talent trees | Planned |
 
-- **Data Management**
-  - Export/Import database backups via native file pickers (iOS & Android)
-  - Local SQLite database with versioned migrations
-  - Asset-embedded reference data (expansions, classes, talents)
+Legacy data is checked against the original game clients. German Vanilla text is the exception: it hasn't been compared with a German client yet.
 
-- **User Experience**
-  - Interactive tutorial system
-  - Dark theme UI with expansion-specific color schemes
-  - Responsive design (phone and tablet optimized)
-  - Settings for build order display and language preferences
+## Getting started
 
-## Screenshots
-
-<img src="assets/nltc1.png" alt="Talent Calculator" width="300" />
-<img src="assets/nltc2.png" alt="Build Management" width="300" />
-
-## Tech Stack
-
-- **Framework**: Flutter, Material 3
-- **State Management**: Riverpod with Riverpod Annotations (code generation)
-- **Localization**: flutter_localizations, intl (ARB-based strings)
-- **Persistence**: SQLite via sqflite with versioned migrations
-- **Icons**: material_symbols_icons
-- **Code Generation**: build_runner, riverpod_generator
-- **UI Components**: exui (custom extension library)
-
-## Project Structure
-
-```
-lib/
-├── core/                    # Shared utilities and services
-│   ├── db/                  # SQLite database setup
-│   ├── models/              # Data entities
-│   ├── providers/           # Global Riverpod providers
-│   ├── repos/               # Data repository layer
-│   ├── services/            # Native integration (backup/restore)
-│   └── utils/               # Constants, extensions, helpers
-├── features/                # Feature-specific code
-│   ├── builds/              # Saved builds and share code import
-│   ├── calculator/          # Talent calculator feature
-│   ├── home/                # Home screen and navigation
-│   └── settings/            # User preferences
-├── l10n/                    # Localization (generated)
-└── main.dart                # App entry point
-```
-
-## Getting Started
-
-### Prerequisites
-- Flutter 3.47+ (check `pubspec.yaml`)
-- iOS 15.0+
-
-
-### Installation
+You need [Flutter](https://docs.flutter.dev/get-started/install) 3.47 or newer. The app runs on iOS 15 or newer, and on Android versions supported by your Flutter release.
 
 ```bash
-# Install dependencies
 flutter pub get
-
-# Generate code (Riverpod, localization, etc.)
-flutter pub run build_runner build
-
-# Run the app
 flutter run
 ```
 
-### Building for Release
+Release builds:
 
 ```bash
-# Android
-flutter build apk --release
-
-# iOS
-flutter build ios --release
+flutter build apk --release   # Android: needs android/key.properties for signing
+flutter build ios --release   # iOS: needs your own signing team
 ```
 
-## Development Notes
+## Development
 
-- **Code Generation**: Run `flutter pub run build_runner watch` during development
-- **Database Migrations**: Asset database at `assets/db/ltc_data.db` contains talent trees, classes, and expansions
-- **Localization**: Edit ARB files in `lib/l10n/` and regenerate with `flutter gen-l10n`
-- **Linting**: Configured via `analysis_options.yaml` for strict static analysis
+| Task | Command |
+|---|---|
+| Run the tests | `flutter test` |
+| Lint, including `riverpod_lint` | `flutter analyze` |
+| Regenerate Riverpod providers | `dart run build_runner build` |
+| Regenerate strings, after editing `lib/l10n/*.arb` | `flutter gen-l10n` |
+
+Generated `*.g.dart` and `lib/l10n/app_localizations*.dart` files are committed, so regenerate them along with any change to their source.
+
+### Talent data
+
+- `assets/db/*.db.sql` is the source of truth. Edit the SQL, then rebuild the matching `.db` from it.
+- Bundled databases are only copied on first install, so existing installs need a migration to receive changes.
+- Talent and expansion ids must not change, because saved builds and share codes refer to them. The tests guard this.
+- `tool/` has read-only scripts for checking data against game clients. See [tool/README.md](tool/README.md).
+
+### Project structure
+
+```
+lib/
+├── core/        Shared database, data models, settings and utilities
+├── features/
+│   ├── builds/       Saved builds and share code import
+│   ├── calculator/   Talent trees and rules
+│   ├── home/         Expansion and class selection
+│   └── settings/     Preferences and backups
+└── l10n/        Strings, in English and German
+```
+
+`test/architecture_test.dart` enforces which parts may depend on each other.
+
+Built with Flutter, [Riverpod](https://riverpod.dev) and SQLite.
+
+## Contributing
+
+Bug reports and ideas are welcome, either in [issues](https://github.com/oppahansi/nltc/issues) or on [Discord](https://discord.gg/ncKmDEArqg). Please run `flutter test` and `flutter analyze` before opening a pull request.
+
+## Disclaimer
+
+LTC is an unofficial fan project and isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft, its talent data and its artwork are trademarks or copyrights of Blizzard Entertainment, Inc. If you represent a rights holder and want something removed, please open an issue.
 
 ## License
 
-Licensed under the MIT License. See [LICENSE](LICENSE) for details.
+The source code is licensed under the [MIT License](LICENSE). This doesn't cover the game data and artwork described above.
