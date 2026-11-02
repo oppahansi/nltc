@@ -13,7 +13,7 @@ import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/utils/text_styles.dart";
-import "package:ltc/core/widgets/saved_build_tile.dart";
+import "package:ltc/features/builds/widgets/saved_build_tile.dart";
 import "package:ltc/core/widgets/shared.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
