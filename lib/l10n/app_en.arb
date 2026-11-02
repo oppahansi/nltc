@@ -87,7 +87,7 @@
   "tutorialRowGating": "Row Gating",
   "tutorialRowGatingBody": "Need 5 points per row tier before investing deeper (row * 5 rule).",
   "tutorialGotIt": "Got it",
-  "edition_legacy": "Legacy",
+  "edition_original": "Original",
   "edition_classic": "Classic",
   "edition_forever": "Forever"
 }

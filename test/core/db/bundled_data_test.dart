@@ -59,7 +59,7 @@ void main() {
         "SELECT code, edition, era FROM expansions",
       );
       for (final row in rows) {
-        expect(["legacy", "classic", "forever"], contains(row["edition"]));
+        expect(["original", "classic", "forever"], contains(row["edition"]));
         expect(row["era"] == null, row["edition"] == "forever", reason: "$row");
       }
     },

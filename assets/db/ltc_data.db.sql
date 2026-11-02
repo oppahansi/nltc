@@ -423,9 +423,9 @@ INSERT INTO "expansion_names" ("expansionId","languageCode","name") VALUES
  (2,'de','Der brennende Kreuzzug'),
  (3,'de','Zorn des Lichkönigs');
 INSERT INTO "expansions" ("id","code","edition","era") VALUES
- (1,'vanilla','legacy','vanilla'),
- (2,'tbc','legacy','tbc'),
- (3,'wotlk','legacy','wotlk');
+ (1,'vanilla','original','vanilla'),
+ (2,'tbc','original','tbc'),
+ (3,'wotlk','original','wotlk');
 INSERT INTO "languages" ("code","name") VALUES
 ('en','English'),
 ('de','German');

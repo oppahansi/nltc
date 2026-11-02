@@ -24,15 +24,15 @@ Expansion expansion(int id, Edition edition, String? era) =>
     Expansion(id: id, code: "$id", edition: edition, era: era, names: const {});
 
 void main() {
-  final legacyTbc = expansion(2, Edition.legacy, "tbc");
+  final originalTbc = expansion(2, Edition.original, "tbc");
   final classicTbc = expansion(5, Edition.classic, "tbc");
   final classicVanilla = expansion(4, Edition.classic, "vanilla");
   final forever = expansion(7, Edition.forever, null);
 
   test("switching edition keeps the era where it exists", () {
-    final all = [legacyTbc, classicVanilla, classicTbc, forever];
+    final all = [originalTbc, classicVanilla, classicTbc, forever];
     expect(availableEditions(all), Edition.values);
-    expect(expansionAfterSwitch(all, legacyTbc, Edition.classic), classicTbc);
+    expect(expansionAfterSwitch(all, originalTbc, Edition.classic), classicTbc);
     expect(expansionAfterSwitch(all, classicTbc, Edition.forever), forever);
     expect(expansionAfterSwitch(all, forever, Edition.classic), classicVanilla);
   });
@@ -74,7 +74,7 @@ void main() {
       await settle();
     }
 
-    testWidgets("stays hidden while only Legacy has data", (tester) async {
+    testWidgets("stays hidden while only Original has data", (tester) async {
       await pump(tester);
       expect(find.byType(SegmentedButton<Edition>), findsNothing);
       expect(find.text("TBC"), findsOneWidget);
@@ -105,7 +105,7 @@ void main() {
       expect(
         find.text("Vanilla"),
         findsOneWidget,
-        reason: "Legacy is selected",
+        reason: "Original is selected",
       );
 
       Future<void> waitForChange() async {

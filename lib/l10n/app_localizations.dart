@@ -620,11 +620,11 @@ abstract class AppLocalizations {
   /// **'Got it'**
   String get tutorialGotIt;
 
-  /// No description provided for @edition_legacy.
+  /// No description provided for @edition_original.
   ///
   /// In en, this message translates to:
-  /// **'Legacy'**
-  String get edition_legacy;
+  /// **'Original'**
+  String get edition_original;
 
   /// No description provided for @edition_classic.
   ///

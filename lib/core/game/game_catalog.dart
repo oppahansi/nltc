@@ -28,7 +28,7 @@ String eraLabel(String era) => _eraLabels[era] ?? era;
 String expansionLabel(String expansionCode) {
   final edition = expansionCode.startsWith(_classicPrefix)
       ? "Classic"
-      : "Legacy";
+      : "Original";
   return "$edition ${eraLabel(eraOf(expansionCode))}";
 }
 

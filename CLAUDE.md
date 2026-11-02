@@ -43,4 +43,4 @@ Commit directly to `main`, using scoped conventional commits: `type(scope): summ
 
 ## Game editions
 
-The app targets three editions: Legacy (original clients: vanilla, tbc, wotlk), Classic (today's re-releases: vanilla, tbc, wotlk) and Forever (standalone, not split into those expansions). Only compare data against a client from the same edition. Work order: Legacy first, then Classic, then Forever. The existing bundled data is Legacy.
+The app targets three editions: Original (the clients from back then: vanilla, tbc, wotlk), Classic (today's re-releases: vanilla, tbc, wotlk) and Forever (standalone, not split into those expansions). Only compare data against a client from the same edition. Work order: Original first, then Classic, then Forever. The existing bundled data is Original. Forever has its own unrelated "Legacy" talent system.

@@ -290,7 +290,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tutorialGotIt => 'Verstanden';
 
   @override
-  String get edition_legacy => 'Legacy';
+  String get edition_original => 'Original';
 
   @override
   String get edition_classic => 'Classic';

@@ -91,7 +91,7 @@ class ExpansionSelection extends ConsumerWidget {
 
   String _editionLabel(AppLocalizations loc, Edition edition) =>
       switch (edition) {
-        Edition.legacy => loc.edition_legacy,
+        Edition.original => loc.edition_original,
         Edition.classic => loc.edition_classic,
         Edition.forever => loc.edition_forever,
       };

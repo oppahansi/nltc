@@ -25,11 +25,11 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 
 | Edition | Versions | Status |
 |---|---|---|
-| **Legacy**, the original clients | Vanilla 1.12.1, TBC 2.4.3, WotLK 3.3.5a | Available |
+| **Original**, the clients from back then | Vanilla 1.12.1, TBC 2.4.3, WotLK 3.3.5a | Available |
 | **Classic**, today's re-releases | Vanilla, TBC, WotLK | Planned |
 | **Forever** | Its own talent trees | Planned |
 
-Legacy data is checked against the original game clients. German Vanilla text is the exception: it hasn't been compared with a German client yet.
+Original edition data is checked against the original game clients. German Vanilla text is the exception: it hasn't been compared with a German client yet.
 
 ## Getting started
 

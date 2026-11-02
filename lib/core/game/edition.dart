@@ -1,7 +1,7 @@
 /// Which line of the game an expansion belongs to.
 enum Edition {
   /// The original clients from back then.
-  legacy,
+  original,
 
   /// The re-releases played today.
   classic,
@@ -10,5 +10,5 @@ enum Edition {
   forever;
 
   static Edition fromCode(String code) =>
-      values.firstWhere((e) => e.name == code, orElse: () => legacy);
+      values.firstWhere((e) => e.name == code, orElse: () => original);
 }
