@@ -120,11 +120,28 @@ class ClassBuildsRepo {
       points.sort((a, b) => a.order.compareTo(b.order));
     }
 
+    final talentIdsByName = await _dataRepo.getTalentIdsByName(
+      expansionId: expansionId,
+      classId: classId,
+    );
+
+    // The stored class name is in the language it was saved in, and imports
+    // from older versions stored a tree name. Always show the real one.
+    final classes = await _dataRepo.getClassesByExpansion(
+      expansionId,
+      languageCode: settings.locale.languageCode,
+    );
+    final className = classes
+        .where((c) => c.id == classId)
+        .firstOrNull
+        ?.names[settings.locale.languageCode];
+
     return ClassBuild.fromDbRow(
-      row,
+      {...row, "class_name": className ?? row["class_name"]},
       talentTrees: talentTrees,
       talentTreeTalents: treeTalents,
       buildSequence: points,
+      talentIdsByName: talentIdsByName,
     );
   }
 

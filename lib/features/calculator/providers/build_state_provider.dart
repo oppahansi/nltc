@@ -3,7 +3,6 @@
 import "package:ltc/core/models/data_entities.dart";
 import 'package:ltc/core/providers/settings_service_provider.dart';
 import "package:ltc/core/repos/data_repo.dart";
-import "package:ltc/core/services/settings_service.dart";
 import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/share_util.dart";
 import "package:ltc/features/calculator/models/build_point.dart";
@@ -108,25 +107,6 @@ class BuildState extends _$BuildState {
     final saved = await _buildsRepo.fetch(id);
     if (saved == null) return;
 
-    for (final talentName in saved.talentRanks.keys) {
-      final talent = saved.talentTreeTalents
-          .expand((v) => v)
-          .firstWhere(
-            (t) =>
-                t.names[SettingsService.getSettings().locale.languageCode] ==
-                talentName,
-            orElse: () => saved.talentTreeTalents.expand((v) => v).first,
-          );
-      final rank = saved.talentRanks[talentName]!;
-      talent.currentRank = rank.clamp(0, talent.ranks.length);
-    }
-
-    for (final tree in saved.talentTrees) {
-      for (final talent in saved.talentTreeTalents[tree.id]) {
-        saved.pointsSpentPerTree[tree.id] += talent.currentRank;
-      }
-    }
-
     _preloadedBuild = saved;
     state = AsyncData(saved);
   }
@@ -144,7 +124,6 @@ class BuildState extends _$BuildState {
   }
 
   Future<int> saveBuild(String title) async {
-    final settings = ref.watch(settingsProvider).value!;
     final current = state.value;
     if (current == null) {
       throw StateError("No active build");
@@ -152,8 +131,7 @@ class BuildState extends _$BuildState {
 
     final refreshedTalentRanks = <String, int>{
       for (final t in current.talentTreeTalents.expand((v) => v))
-        if (t.currentRank > 0)
-          t.names[settings.locale.languageCode]!: t.currentRank,
+        if (t.currentRank > 0) "${t.id}": t.currentRank,
     };
 
     final buildToSave = current.copyWith(

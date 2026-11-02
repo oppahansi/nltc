@@ -3,26 +3,10 @@ import "dart:core";
 
 // Project Imports
 import "package:ltc/core/models/data_entities.dart";
-import "package:ltc/core/services/settings_service.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 import "package:ltc/core/utils/constants.dart";
-// added for idsToClasses
 
 String buildShareUrl(ClassBuild build) {
-  // Ensure talent.currentRank reflects talentRanks (localized keys) before encoding
-  for (final talentName in build.talentRanks.keys) {
-    final talent = build.talentTreeTalents
-        .expand((v) => v)
-        .firstWhere(
-          (t) =>
-              t.names[SettingsService.getSettings().locale.languageCode] ==
-              talentName,
-          orElse: () => build.talentTreeTalents.expand((v) => v).first,
-        );
-    final rank = build.talentRanks[talentName]!;
-    talent.currentRank = rank.clamp(0, talent.ranks.length);
-  }
-
   final expansion = build.expansionCode.toLowerCase(); // already canonical
 
   // Use stable internal class code (not localized name)
@@ -48,18 +32,6 @@ String buildShareUrl(ClassBuild build) {
 
 // New: compact import/export code: exp-class-tree1-tree2-tree3
 String buildShareCode(ClassBuild build) {
-  for (final talentName in build.talentRanks.keys) {
-    final talent = build.talentTreeTalents
-        .expand((v) => v)
-        .firstWhere(
-          (t) =>
-              t.names[SettingsService.getSettings().locale.languageCode] ==
-              talentName,
-          orElse: () => build.talentTreeTalents.expand((v) => v).first,
-        );
-    final rank = build.talentRanks[talentName]!;
-    talent.currentRank = rank.clamp(0, talent.ranks.length);
-  }
   final exp = build.expansionCode.toLowerCase();
 
   // Stable internal class code

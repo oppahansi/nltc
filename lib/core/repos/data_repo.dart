@@ -96,6 +96,26 @@ class DataRepo {
         .toList();
   }
 
+  /// Every name a class's talents have, in any language, mapped to talent id.
+  /// If two talents share a name, the lower id wins.
+  Future<Map<String, int>> getTalentIdsByName({
+    required int expansionId,
+    required int classId,
+  }) async {
+    final db = await Db.getDataDbInstance();
+    final rows = await db.rawQuery(
+      '''
+      SELECT tn.name, MIN(t.id) AS id
+      FROM talents t
+      JOIN talent_names tn ON t.id = tn.talentId
+      WHERE t.expansion = ? AND t.classId = ?
+      GROUP BY tn.name
+    ''',
+      [expansionId, classId],
+    );
+    return {for (final r in rows) r['name'] as String: r['id'] as int};
+  }
+
   Future<Map<int, List<Talent>>> getTalents({
     int expansionId = 1,
     int classId = 0,

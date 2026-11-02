@@ -4,8 +4,8 @@ import "dart:ui";
 
 // Project Imports
 import "package:ltc/core/models/data_entities.dart";
-import "package:ltc/core/services/settings_service.dart";
 import "package:ltc/core/utils/colors.dart";
+import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/features/calculator/models/build_point.dart";
 
@@ -60,46 +60,34 @@ class ClassBuild {
     required List<TalentTree> talentTrees,
     required List<List<Talent>> talentTreeTalents,
     List<BuildPoint> buildSequence = const [],
+    Map<String, int> talentIdsByName = const {},
   }) {
-    final settings = SettingsService.getSettings();
-    // Apply buildPoints to talents to reconstruct current ranks + points per tree.
-    final pointsPerTree = List<int>.filled(talentTrees.length, 0);
+    final decodedTalentRanks = _decodeTalentRanks(
+      row["talent_ranks"] as String?,
+      talentIdsByName,
+    );
 
-    // Decode talentRanks map (may contain normalized keys)
-    final decodedTalentRanks = (row["talent_ranks"] != null)
-        ? Map<String, dynamic>.from(
-            jsonDecode(row["talent_ranks"] as String),
-          ).map((k, v) => MapEntry(k, (v as num).toInt()))
-        : <String, int>{};
-
+    final talentsById = {
+      for (final t in talentTreeTalents.expand((v) => v)) t.id: t,
+    };
     if (buildSequence.isNotEmpty) {
-      // Map talentId -> Talent reference
-      final talentMap = {
-        for (final t in talentTreeTalents.expand((v) => v)) t.id: t,
-      };
       for (final bp in buildSequence) {
-        final t = talentMap[bp.talentId];
+        final t = talentsById[bp.talentId];
         if (t != null) {
           t.currentRank = (t.currentRank + 1).clamp(0, t.ranks.length);
-          pointsPerTree[t.talentTreeId] += 1;
         }
       }
-    } else if (decodedTalentRanks.isNotEmpty) {
-      // Fallback: no sequence -> apply ranks from talentRanks
-      String norm(String s) =>
-          s.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "");
-      final normalizedMap = <String, int>{
-        for (final e in decodedTalentRanks.entries) norm(e.key): e.value,
-      };
-      for (final talent in talentTreeTalents.expand((v) => v)) {
-        final r = normalizedMap[talent.names[settings.locale.languageCode]];
-        if (r != null && r > 0) {
-          final applied = r.clamp(0, talent.ranks.length);
-          talent.currentRank = applied;
-          pointsPerTree[talent.talentTreeId] =
-              (pointsPerTree[talent.talentTreeId] + applied).clamp(0, 999);
-        }
-      }
+    } else {
+      // Imported builds have no sequence, only ranks.
+      decodedTalentRanks.forEach((key, rank) {
+        final t = talentsById[int.parse(key)];
+        if (t != null) t.currentRank = rank.clamp(0, t.ranks.length);
+      });
+    }
+
+    final pointsPerTree = List<int>.filled(talentTrees.length, 0);
+    for (final t in talentsById.values) {
+      pointsPerTree[t.talentTreeId] += t.currentRank;
     }
 
     return ClassBuild(
@@ -115,6 +103,21 @@ class ClassBuild {
       buildSequence: buildSequence,
       pointsSpentPerTree: pointsPerTree,
     );
+  }
+
+  /// Ranks are stored by talent id. Saves from older versions used the talent's
+  /// localized name instead, so those are translated through [talentIdsByName].
+  static Map<String, int> _decodeTalentRanks(
+    String? json,
+    Map<String, int> talentIdsByName,
+  ) {
+    if (json == null) return {};
+    final ranks = <String, int>{};
+    (jsonDecode(json) as Map<String, dynamic>).forEach((key, value) {
+      final id = int.tryParse(key) ?? talentIdsByName[key];
+      if (id != null) ranks["$id"] = (value as num).toInt();
+    });
+    return ranks;
   }
 
   ClassBuild copyWith({
@@ -150,6 +153,6 @@ class ClassBuild {
   }
 
   Color getClassColor() {
-    return classColors[className.toLowerCase().replaceAll(" ", "")]!.toColor();
+    return classColors[idsToClasses[classId]]!.toColor();
   }
 }
