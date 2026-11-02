@@ -11,7 +11,18 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 
 <a href="https://play.google.com/store/apps/details?id=de.oppahansi.ltcfree"><img src="res/GetItOnGooglePlay_Badge.png" alt="Get it on Google Play" height="50" /></a>
 
-<img src="assets/nltc1.png" alt="Talent calculator" width="300" /> <img src="assets/nltc2.png" alt="Saved builds" width="300" />
+<table>
+  <tr>
+    <td align="center"><img src="res/screenshots/home.webp" alt="Home screen with the edition picker" width="260" /><br />Choose an edition, expansion and class</td>
+    <td align="center"><img src="res/screenshots/calculator.webp" alt="Talent calculator showing a Frost Mage in Forever" width="260" /><br />Plan your talents</td>
+    <td align="center"><img src="res/screenshots/forever-legacy.webp" alt="Forever's Adventure Legacy tree" width="260" /><br />Spend Forever's Legacy points</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="res/screenshots/build-order.webp" alt="Build order sheet with Talents and Legacy tabs" width="260" /><br />Follow the build order</td>
+    <td align="center"><img src="res/screenshots/talent-details.webp" alt="Talent details for Frostbite" width="260" /><br />Read every rank's details</td>
+    <td align="center"><img src="res/screenshots/classic-wotlk.webp" alt="Classic WotLK Death Knight Blood tree" width="260" /><br />Classic and Original too</td>
+  </tr>
+</table>
 
 ## Features
 
