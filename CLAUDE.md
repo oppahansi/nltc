@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Riverpod codegen: `dart run build_runner build` (the README's `flutter pub run` form is outdated)
 - Localizations: edit `lib/l10n/app_en.arb` and `app_de.arb`, then run `flutter gen-l10n`. Ignore the `flutter_intl` block in `pubspec.yaml`.
-- Lint: `flutter analyze`. `riverpod_lint` is not enabled as an analyzer plugin, so run it with `dart run custom_lint`.
+- Lint: `flutter analyze` (also runs `riverpod_lint`, enabled as an analyzer plugin in `analysis_options.yaml`).
 
 There are no tests (`test/` does not exist), so verify changes with `flutter analyze` and by running the app.
 

@@ -89,7 +89,7 @@ class BuildSequenceSheet extends ConsumerWidget {
             ListView.separated(
               controller: controller,
               itemCount: entries.length,
-              separatorBuilder: (_, __) =>
+              separatorBuilder: (_, _) =>
                   Divider(color: Colors.white12, height: 8),
               itemBuilder: (_, i) {
                 final e = entries[i];
@@ -119,7 +119,7 @@ class BuildSequenceSheet extends ConsumerWidget {
                     "assets/images/icons/${e.talent.icon.toLowerCase()}.webp",
                     width: gapSizeLarge(context),
                     height: gapSizeLarge(context),
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (_, _, _) =>
                         Symbols.help_outline.icon(color: Colors.white54),
                   ),
                 );

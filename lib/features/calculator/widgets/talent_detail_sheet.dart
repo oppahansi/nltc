@@ -77,7 +77,7 @@ class _TalentDetailSheetState extends ConsumerState<TalentDetailSheet> {
               width: talentImageWidth,
               height: talentImageWidth,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) =>
+              errorBuilder: (_, _, _) =>
                   Symbols.help_outline.icon(color: Colors.white),
             ).container(
               decoration: BoxDecoration(

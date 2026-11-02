@@ -133,7 +133,7 @@ class CalculatorTutorialSheet extends ConsumerWidget {
                   vertical: gapSizeSmall(context),
                 );
               },
-              separatorBuilder: (_, __) => const Divider(
+              separatorBuilder: (_, _) => const Divider(
                 color: Colors.white10,
                 height: 20,
               ).paddingSymmetric(horizontal: 8),

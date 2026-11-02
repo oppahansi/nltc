@@ -28,7 +28,7 @@ class ShowOrderNumbersSetting extends ConsumerWidget {
 
     return settingsAsync.when(
       loading: () => _placeholderTile(context, selectedExp.code, loc),
-      error: (_, __) => _placeholderTile(context, selectedExp.code, loc),
+      error: (_, _) => _placeholderTile(context, selectedExp.code, loc),
       data: (settings) {
         final enabled = settings.showOrderNumbers;
 

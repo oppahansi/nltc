@@ -74,7 +74,7 @@ class _TalentTreeViewState extends ConsumerState<TalentTreeView>
                   fit: StackFit.expand,
                   children: [
                     ...previousChildren,
-                    if (currentChild != null) currentChild,
+                    ?currentChild,
                   ],
                 ),
                 child: Image.asset(

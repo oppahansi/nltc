@@ -10,7 +10,7 @@ part of 'data_providers.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(expansions)
-const expansionsProvider = ExpansionsProvider._();
+final expansionsProvider = ExpansionsProvider._();
 
 final class ExpansionsProvider
     extends
@@ -20,7 +20,7 @@ final class ExpansionsProvider
           FutureOr<List<Expansion>>
         >
     with $FutureModifier<List<Expansion>>, $FutureProvider<List<Expansion>> {
-  const ExpansionsProvider._()
+  ExpansionsProvider._()
     : super(
         from: null,
         argument: null,
@@ -49,7 +49,7 @@ final class ExpansionsProvider
 String _$expansionsHash() => r'8fba4c8e89f2a9b64655df576be946b3a3a2df33';
 
 @ProviderFor(classes)
-const classesProvider = ClassesProvider._();
+final classesProvider = ClassesProvider._();
 
 final class ClassesProvider
     extends
@@ -59,7 +59,7 @@ final class ClassesProvider
           FutureOr<List<Class>>
         >
     with $FutureModifier<List<Class>>, $FutureProvider<List<Class>> {
-  const ClassesProvider._()
+  ClassesProvider._()
     : super(
         from: null,
         argument: null,

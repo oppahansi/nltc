@@ -10,11 +10,11 @@ part of 'build_state_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(BuildState)
-const buildStateProvider = BuildStateProvider._();
+final buildStateProvider = BuildStateProvider._();
 
 final class BuildStateProvider
     extends $AsyncNotifierProvider<BuildState, ClassBuild> {
-  const BuildStateProvider._()
+  BuildStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -33,14 +33,13 @@ final class BuildStateProvider
   BuildState create() => BuildState();
 }
 
-String _$buildStateHash() => r'7d3dcbb3b3973aa635431e4986900606f5affadb';
+String _$buildStateHash() => r'e200b0c505618125e8ae9373bc544e7792b0d1a8';
 
 abstract class _$BuildState extends $AsyncNotifier<ClassBuild> {
   FutureOr<ClassBuild> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<AsyncValue<ClassBuild>, ClassBuild>;
     final element =
         ref.element
@@ -50,6 +49,6 @@ abstract class _$BuildState extends $AsyncNotifier<ClassBuild> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

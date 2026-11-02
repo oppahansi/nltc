@@ -80,7 +80,7 @@ class _SavedBuildsState extends ConsumerState<SavedBuilds> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: isOnHomeScreen ? displayVisible.length : itemCount,
-          separatorBuilder: (_, __) =>
+          separatorBuilder: (_, _) =>
               Divider(color: expColor.withAlpha(75), height: 1),
           itemBuilder: (_, i) {
             // Load more row (only when not on home screen)

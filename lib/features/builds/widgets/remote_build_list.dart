@@ -41,7 +41,7 @@ class RemoteBuildsList extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: remoteBuilds.length,
-          separatorBuilder: (_, __) =>
+          separatorBuilder: (_, _) =>
               Divider(color: Colors.white12, height: 1),
           itemBuilder: (_, i) {
             final remoteBuild = remoteBuilds[i];

@@ -10,10 +10,10 @@ part of 'calculator_providers.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(TreeIndex)
-const treeIndexProvider = TreeIndexProvider._();
+final treeIndexProvider = TreeIndexProvider._();
 
 final class TreeIndexProvider extends $NotifierProvider<TreeIndex, int> {
-  const TreeIndexProvider._()
+  TreeIndexProvider._()
     : super(
         from: null,
         argument: null,
@@ -46,8 +46,7 @@ abstract class _$TreeIndex extends $Notifier<int> {
   int build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -57,12 +56,12 @@ abstract class _$TreeIndex extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(savedBuilds)
-const savedBuildsProvider = SavedBuildsFamily._();
+final savedBuildsProvider = SavedBuildsFamily._();
 
 final class SavedBuildsProvider
     extends
@@ -72,7 +71,7 @@ final class SavedBuildsProvider
           FutureOr<List<ClassBuild>>
         >
     with $FutureModifier<List<ClassBuild>>, $FutureProvider<List<ClassBuild>> {
-  const SavedBuildsProvider._({
+  SavedBuildsProvider._({
     required SavedBuildsFamily super.from,
     required int super.argument,
   }) : super(
@@ -120,7 +119,7 @@ String _$savedBuildsHash() => r'86f1ab4a6a8a9ce94c6c43b84ce3302e9238219c';
 
 final class SavedBuildsFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<ClassBuild>>, int> {
-  const SavedBuildsFamily._()
+  SavedBuildsFamily._()
     : super(
         retry: null,
         name: r'savedBuildsProvider',

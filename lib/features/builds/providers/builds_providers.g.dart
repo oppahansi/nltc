@@ -10,11 +10,11 @@ part of 'builds_providers.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SelectedRegion)
-const selectedRegionProvider = SelectedRegionProvider._();
+final selectedRegionProvider = SelectedRegionProvider._();
 
 final class SelectedRegionProvider
     extends $NotifierProvider<SelectedRegion, String> {
-  const SelectedRegionProvider._()
+  SelectedRegionProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,8 +47,7 @@ abstract class _$SelectedRegion extends $Notifier<String> {
   String build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<String, String>;
     final element =
         ref.element
@@ -58,12 +57,12 @@ abstract class _$SelectedRegion extends $Notifier<String> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(realms)
-const realmsProvider = RealmsFamily._();
+final realmsProvider = RealmsFamily._();
 
 final class RealmsProvider
     extends
@@ -73,7 +72,7 @@ final class RealmsProvider
           FutureOr<List<Realm>>
         >
     with $FutureModifier<List<Realm>>, $FutureProvider<List<Realm>> {
-  const RealmsProvider._({
+  RealmsProvider._({
     required RealmsFamily super.from,
     required String super.argument,
   }) : super(
@@ -121,7 +120,7 @@ String _$realmsHash() => r'60f164e15929e03fc3694daef19fb4eb517dfd14';
 
 final class RealmsFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<Realm>>, String> {
-  const RealmsFamily._()
+  RealmsFamily._()
     : super(
         retry: null,
         name: r'realmsProvider',
@@ -138,11 +137,11 @@ final class RealmsFamily extends $Family
 }
 
 @ProviderFor(SelectedRealm)
-const selectedRealmProvider = SelectedRealmProvider._();
+final selectedRealmProvider = SelectedRealmProvider._();
 
 final class SelectedRealmProvider
     extends $NotifierProvider<SelectedRealm, String?> {
-  const SelectedRealmProvider._()
+  SelectedRealmProvider._()
     : super(
         from: null,
         argument: null,
@@ -175,8 +174,7 @@ abstract class _$SelectedRealm extends $Notifier<String?> {
   String? build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<String?, String?>;
     final element =
         ref.element
@@ -186,16 +184,16 @@ abstract class _$SelectedRealm extends $Notifier<String?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(SelectedCharName)
-const selectedCharNameProvider = SelectedCharNameProvider._();
+final selectedCharNameProvider = SelectedCharNameProvider._();
 
 final class SelectedCharNameProvider
     extends $NotifierProvider<SelectedCharName, String> {
-  const SelectedCharNameProvider._()
+  SelectedCharNameProvider._()
     : super(
         from: null,
         argument: null,
@@ -228,8 +226,7 @@ abstract class _$SelectedCharName extends $Notifier<String> {
   String build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<String, String>;
     final element =
         ref.element
@@ -239,16 +236,16 @@ abstract class _$SelectedCharName extends $Notifier<String> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(RemoteClassBuilds)
-const remoteClassBuildsProvider = RemoteClassBuildsProvider._();
+final remoteClassBuildsProvider = RemoteClassBuildsProvider._();
 
 final class RemoteClassBuildsProvider
     extends $NotifierProvider<RemoteClassBuilds, AsyncValue<List<ClassBuild>>> {
-  const RemoteClassBuildsProvider._()
+  RemoteClassBuildsProvider._()
     : super(
         from: null,
         argument: null,
@@ -282,8 +279,7 @@ abstract class _$RemoteClassBuilds
   AsyncValue<List<ClassBuild>> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref =
         this.ref
             as $Ref<AsyncValue<List<ClassBuild>>, AsyncValue<List<ClassBuild>>>;
@@ -298,6 +294,6 @@ abstract class _$RemoteClassBuilds
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
