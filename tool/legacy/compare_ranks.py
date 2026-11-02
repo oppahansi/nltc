@@ -1,6 +1,6 @@
 """Compare the app's English rank descriptions with an original client's spells.
 
-Usage: python3 -I compare_ranks.py <vanilla|tbc|wotlk> <client Data dir> <ltc_data.db>
+Usage: python3 -I compare_ranks.py <vanilla|tbc|wotlk> <client Data dir> <ltc_data.db> [en|de]
 
 Client descriptions are templates such as "Increases damage by $s1%.". Each
 template becomes a pattern, so literal text must match exactly. Tokens simple
@@ -82,17 +82,38 @@ def relaxed(text):
     return re.sub(r"\bsecs?\b", "sec", text)
 
 
+LOCALES = {"en": "enGB", "de": "deDE"}
+
+
+def relaxed_de(text):
+    text = re.sub(r",\s*", ",", clean(text))
+    text = re.sub(r"\bSek\.?(?=\W|$)", "Sek", text)
+    return re.sub(r"\bSekunden?\b", "Sek", text)
+
+
+def localized(dbc, row, start):
+    """Text from whichever locale slot a client filled in."""
+    for slot in range(17):
+        text = dbc.string(row[start + slot])
+        if text:
+            return text
+    return ""
+
+
 def main():
     kind, data_dir, db_path = sys.argv[1:4]
+    lang = sys.argv[4] if len(sys.argv) > 4 else "en"
+    normalize = relaxed if lang == "en" else relaxed_de
     layout, fields = LAYOUTS[kind], EFFECTS[kind]
-    client = Client(data_dir)
+    client = Client(data_dir, "enGB" if kind == "wotlk" else None)
 
     tab_dbc = Dbc(client.read("DBFilesClient\\TalentTab.dbc"))
     tabs = {
         r[0]: (r[layout["tab_class"]], tab_dbc.string(r[layout["tab_name"]]))
         for r in tab_dbc.rows()
     }
-    spell_dbc = Dbc(client.read("DBFilesClient\\Spell.dbc"))
+    source = Client(data_dir, LOCALES[lang]) if lang != "en" else client
+    spell_dbc = Dbc(source.read("DBFilesClient\\Spell.dbc"))
     spells = {r[0]: r for r in spell_dbc.rows()}
 
     bits = {bit: code for code, bit in CLASS_BITS.items()}
@@ -112,8 +133,8 @@ def main():
             continue
         rows = db.execute(
             "SELECT rank, description FROM rank_descriptions "
-            "WHERE talentId = ? AND languageCode = 'en' ORDER BY rank",
-            (talent["id"],),
+            "WHERE talentId = ? AND languageCode = ? ORDER BY rank",
+            (talent["id"], lang),
         ).fetchall()
         for rank, text in rows:
             counts["ranks"] += 1
@@ -123,12 +144,12 @@ def main():
                 report.append(f"no_spell: {where}")
                 continue
             row = spells[ranks[rank]]
-            template = relaxed(spell_dbc.string(row[layout["spell_desc"]]))
+            template = normalize(localized(spell_dbc, row, layout["spell_desc"]))
             pattern, tokens = template_pattern(template)
-            match = pattern.match(relaxed(text))
+            match = pattern.match(normalize(text))
             if not match:
                 counts["text"] += 1
-                report.append(f"text: {where}\n  client: {template}\n  app:    {relaxed(text)}")
+                report.append(f"text: {where}\n  client: {template}\n  app:    {normalize(text)}")
                 continue
             counts["text_ok"] += 1
             for token, actual in zip(tokens, match.groups()):
@@ -141,7 +162,7 @@ def main():
                     counts["value"] += 1
                     report.append(
                         f"value: {where} {token} client={expected!r} app={actual!r}\n"
-                        f"  client: {template}\n  app:    {relaxed(text)}"
+                        f"  client: {template}\n  app:    {normalize(text)}"
                     )
 
     print(dict(sorted(counts.items())))

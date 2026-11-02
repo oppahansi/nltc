@@ -59,7 +59,7 @@ CLASS_BITS = {
 
 def load_client(kind, data_dir):
     layout = LAYOUTS[kind]
-    client = Client(data_dir)
+    client = Client(data_dir, "enGB" if kind == "wotlk" else None)
     sources = {
         name: os.path.basename(client.provider(f"DBFilesClient\\{name}.dbc").path)
         for name in ("Talent", "TalentTab", "Spell")
@@ -81,6 +81,8 @@ def load_client(kind, data_dir):
 
     talents = {}
     for row in Dbc(client.read("DBFilesClient\\Talent.dbc")).rows():
+        if not tabs[row[1]][0]:  # Pet talent trees have no class, and the app omits them.
+            continue
         ranks = [spell for spell in row[4:13] if spell]
         talents[row[0]] = dict(
             id=row[0],
@@ -163,6 +165,9 @@ def main():
             note("ranks", f"{k} {c['name']} client={len(c['ranks'])} app={a['ranks']}")
         if len(c["prereqs"]) > 1:
             note("multi_prereq", f"{k} {c['name']} {c['prereqs']}")
+        if c["prereqs"] and c["prereqs"][0][0] not in client:
+            note("prereq_unknown", f"{k} {c['name']} -> Talent.dbc id {c['prereqs'][0][0]}")
+            continue
         client_dep = client[c["prereqs"][0][0]] if c["prereqs"] else None
         app_dep = app.get(a["dep"]) if a["dep"] is not None else None
         c_pos = (client_dep["row"], client_dep["column"]) if client_dep else None

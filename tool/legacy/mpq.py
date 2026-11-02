@@ -174,10 +174,14 @@ class Mpq:
 class Client:
     """A client's archives, with later patches taking priority."""
 
-    def __init__(self, data_dir):
+    def __init__(self, data_dir, locale=None):
+        """Pass locale when a client ships several, or their patches collide."""
         self.data_dir = data_dir
         paths = []
         for root, _, names in os.walk(data_dir):
+            folder = os.path.relpath(root, data_dir).split(os.sep)[0]
+            if locale and folder not in (".", locale):
+                continue
             paths += [os.path.join(root, n) for n in names if n.lower().endswith(".mpq")]
         self.archives = [Mpq(p) for p in sorted(paths, key=self._priority, reverse=True)]
 
