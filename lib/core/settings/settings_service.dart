@@ -47,10 +47,7 @@ class SettingsService {
   Future<void> initSettings() async {
     final settingsMap = await _repo.getAllSettings();
 
-    settingsMap.putIfAbsent(
-      settingsKeyLocale,
-      () => defaultLanguageCode,
-    );
+    settingsMap.putIfAbsent(settingsKeyLocale, () => defaultLanguageCode);
     settingsMap.putIfAbsent(
       settingsKeyShowOrderNumbers,
       () => false.toString(),
@@ -97,16 +94,7 @@ class SettingsService {
       _selectedClassId = 0;
     }
 
-    _settings = Settings(
-      locale: _locale,
-      showOrderNumbers: _showOrderNumbers,
-      tutorialSeen: _tutorialSeen,
-      selectedExpId: _selectedExpId,
-      selectedClassId: _selectedClassId,
-    );
-
-    await updateExpAndClass();
-    updateColors();
+    await _publishSettings();
   }
 
   Future<void> _update(String key, String value) async {
@@ -130,7 +118,13 @@ class SettingsService {
         break;
     }
 
-    _settings = Settings(
+    await _publishSettings();
+  }
+
+  /// Replaces the current settings only once they are complete, so nothing can
+  /// read settings that have no expansion or class yet.
+  Future<void> _publishSettings() async {
+    final next = Settings(
       locale: _locale,
       showOrderNumbers: _showOrderNumbers,
       tutorialSeen: _tutorialSeen,
@@ -138,38 +132,29 @@ class SettingsService {
       selectedClassId: _selectedClassId,
     );
 
-    await updateExpAndClass();
-    updateColors();
-  }
-
-  Future<void> updateExpAndClass() async {
     final exps = await dataRepo.getExpansions(
       languageCode: locale.languageCode,
     );
-    final exp = exps.firstWhere(
+    next.selectedExp = exps.firstWhere(
       (e) => e.id == selectedExpId,
       orElse: () => exps.first,
     );
-    _settings.selectedExp = exp;
 
     final classes = await dataRepo.getClassesByExpansion(
-      exp.id,
+      next.selectedExp.id,
       languageCode: locale.languageCode,
     );
-    final clazz = classes.firstWhere(
+    next.selectedClass = classes.firstWhere(
       (c) => c.id == selectedClassId,
       orElse: () => classes.first,
     );
 
-    _settings.selectedClass = clazz;
+    next.expColor = getExpansionColor(next.selectedExp.code);
+    next.classColor = next.selectedClass.color.toColor();
+    _settings = next;
   }
 
   static Settings getSettings() {
     return _settings;
-  }
-
-  void updateColors() {
-    _settings.expColor = getExpansionColor(selectedExp.code);
-    _settings.classColor = selectedClass.color.toColor();
   }
 }
