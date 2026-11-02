@@ -1,9 +1,9 @@
 name: ltc
-description: "Legacy Talent Calculator Pro"
+description: "Legacy Talent Calculator"
 
 publish_to: 'none'
 
-version: 1.0.0+7
+version: 1.1.0+8
 
 environment:
   sdk: ^3.13.0

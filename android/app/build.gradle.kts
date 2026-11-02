@@ -12,7 +12,7 @@ val keystoreProps = Properties().apply {
 }
 
 configure<com.android.build.api.dsl.ApplicationExtension> {
-    namespace = "de.oppahansi.ltcpro"
+    namespace = "de.oppahansi.ltcfree"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -22,7 +22,7 @@ configure<com.android.build.api.dsl.ApplicationExtension> {
     }
 
     defaultConfig {
-        applicationId = "de.oppahansi.ltcpro"
+        applicationId = "de.oppahansi.ltcfree"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

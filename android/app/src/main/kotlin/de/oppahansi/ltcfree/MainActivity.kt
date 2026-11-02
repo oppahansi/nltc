@@ -1,4 +1,4 @@
-package de.oppahansi.ltcpro
+package de.oppahansi.ltcfree
 
 import android.app.Activity
 import android.content.Intent
