@@ -1178,7 +1178,7 @@ Unleashing this Seal''s energy will judge an enemy, instantly causing 46.5 to 55
 (240, 0, 'en', 'Increases the duration of your Slice and Dice ability by 15%.'),
 (240, 1, 'en', 'Increases the duration of your Slice and Dice ability by 30%.'),
 (240, 2, 'en', 'Increases the duration of your Slice and Dice ability by 45%.'),
-(244, 0, 'en', 'Your finishing moves have a 1101000000% chance per combo point to restore 25 energy.'),
+(244, 0, 'en', 'Your finishing moves have a 20% chance per combo point to restore 25 energy.'),
 (241, 0, 'en', 'Increases the armor reduced by your Expose Armor ability by 25%.'),
 (241, 1, 'en', 'Increases the armor reduced by your Expose Armor ability by 50%.'),
 (234, 0, 'en', 'Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Ghostly Strike, and Hemorrhage abilities by 6%.'),
@@ -1300,9 +1300,9 @@ Unleashing this Seal''s energy will judge an enemy, instantly causing 46.5 to 55
 (273, 0, 'en', 'Gives you a 30% chance to return to stealth mode after using your Sap ability.'),
 (273, 1, 'en', 'Gives you a 60% chance to return to stealth mode after using your Sap ability.'),
 (273, 2, 'en', 'Gives you a 90% chance to return to stealth mode after using your Sap ability.'),
-(280, 0, 'en', 'Causes your attacks to ignore 1.67% per your level of your target''s Armor and increases the damage dealt by your Rupture ability by 10%.  The amount of Armor reduced increases with your level.'),
-(280, 1, 'en', 'Causes your attacks to ignore 3.34% per your level of your target''s Armor and increases the damage dealt by your Rupture ability by 20%.  The amount of Armor reduced increases with your level.'),
-(280, 2, 'en', 'Causes your attacks to ignore 5% per your level of your target''s Armor and increases the damage dealt by your Rupture ability by 30%.  The amount of Armor reduced increases with your level.'),
+(280, 0, 'en', 'Causes your attacks to ignore 100 of your target''s Armor and increases the damage dealt by your Rupture ability by 10%.  The amount of Armor reduced increases with your level.'),
+(280, 1, 'en', 'Causes your attacks to ignore 200 of your target''s Armor and increases the damage dealt by your Rupture ability by 20%.  The amount of Armor reduced increases with your level.'),
+(280, 2, 'en', 'Causes your attacks to ignore 300 of your target''s Armor and increases the damage dealt by your Rupture ability by 30%.  The amount of Armor reduced increases with your level.'),
 (282, 0, 'en', 'Increases your Stealth detection and reduces the chance you are hit by spells and ranged attacks by 2%.'),
 (282, 1, 'en', 'Increases your Stealth detection and reduces the chance you are hit by spells and ranged attacks by 4%.  More effective than Heightened Senses (Rank 1).'),
 (276, 0, 'en', 'When activated, this ability immediately finishes the cooldown on your other Rogue abilities.'),
@@ -2053,8 +2053,8 @@ The act of shapeshifting frees the caster of Polymorph and Movement Impairing ef
 (506, 2, 'en', 'Increases the damage done by your pets by 12%.'),
 (506, 3, 'en', 'Increases the damage done by your pets by 16%.'),
 (506, 4, 'en', 'Increases the damage done by your pets by 20%.'),
-(497, 0, 'en', 'Reduces the mana cost of your Mend Pet spell by 10% and gives the Mend Pet spell a 25% chance of cleansing 7 Curse, Disease, Magic or Poison effect from the pet each tick.'),
-(497, 1, 'en', 'Reduces the mana cost of your Mend Pet spell by 20% and gives the Mend Pet spell a 50% chance of cleansing 7 Curse, Disease, Magic or Poison effect from the pet each tick.'),
+(497, 0, 'en', 'Reduces the mana cost of your Mend Pet spell by 10% and gives the Mend Pet spell a 25% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick.'),
+(497, 1, 'en', 'Reduces the mana cost of your Mend Pet spell by 20% and gives the Mend Pet spell a 50% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick.'),
 (504, 0, 'en', 'Increases the critical strike chance of your pet by 2%.'),
 (504, 1, 'en', 'Increases the critical strike chance of your pet by 4%.'),
 (504, 2, 'en', 'Increases the critical strike chance of your pet by 6%.'),
@@ -2970,9 +2970,9 @@ Unleashing this Seal''s energy will judge an enemy, instantly causing 46 to 50 H
 (801, 2, 'en', 'Gives you a 45% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells.'),
 (802, 0, 'en', 'Reduces the cooldown of your Vanish and Blind abilities by 45 sec.'),
 (802, 1, 'en', 'Reduces the cooldown of your Vanish and Blind abilities by 90 sec.'),
-(811, 0, 'en', 'Causes your attacks to ignore 0 of your target''s Armor and increases the damage dealt by your Rupture ability by 10%.  The amount of Armor reduced increases with your level.'),
-(811, 1, 'en', 'Causes your attacks to ignore 0 of your target''s Armor and increases the damage dealt by your Rupture ability by 20%.  The amount of Armor reduced increases with your level.'),
-(811, 2, 'en', 'Causes your attacks to ignore 0 of your target''s Armor and increases the damage dealt by your Rupture ability by 30%.  The amount of Armor reduced increases with your level.'),
+(811, 0, 'en', 'Causes your attacks to ignore 186 of your target''s Armor and increases the damage dealt by your Rupture ability by 10%.  The amount of Armor reduced increases with your level.'),
+(811, 1, 'en', 'Causes your attacks to ignore 373 of your target''s Armor and increases the damage dealt by your Rupture ability by 20%.  The amount of Armor reduced increases with your level.'),
+(811, 2, 'en', 'Causes your attacks to ignore 560 of your target''s Armor and increases the damage dealt by your Rupture ability by 30%.  The amount of Armor reduced increases with your level.'),
 (813, 0, 'en', 'Increases your Stealth detection and reduces the chance you are hit by spells and ranged attacks by 2%.'),
 (813, 1, 'en', 'Increases your Stealth detection and reduces the chance you are hit by spells and ranged attacks by 4%.  More effective than Heightened Senses (Rank 1).'),
 (807, 0, 'en', 'When activated, this ability immediately finishes the cooldown on your Evasion, Sprint, Vanish, Cold Blood, Shadowstep and Premeditation abilities.'),
@@ -4639,8 +4639,8 @@ Snake Trap - Increases the number of snakes summoned by 6.'),
 (1358, 0, 'en', 'Reduces the mana cost of your Flash Heal by 5%, and increases the critical effect chance of your Flash Heal by 4% on friendly targets at or below 50% health.'),
 (1358, 1, 'en', 'Reduces the mana cost of your Flash Heal by 10%, and increases the critical effect chance of your Flash Heal by 7% on friendly targets at or below 50% health.'),
 (1358, 2, 'en', 'Reduces the mana cost of your Flash Heal by 15%, and increases the critical effect chance of your Flash Heal by 10% on friendly targets at or below 50% health.'),
-(1367, 0, 'en', 'Increases the critical effect chance of your Flash Heal, Greater Heal and Penance (Heal) spells by 2% on targets afflicted by the Weakened Soul effect, and you have a 50% chance to reduce all damage taken by 3% for 1 min to all friendly party and raid targets when you cast Power Word: Shield. This effect has a 0 sec cooldown.'),
-(1367, 1, 'en', 'Increases the critical effect chance of your Flash Heal, Greater Heal and Penance (Heal) spells by 4% on targets afflicted by the Weakened Soul effect, and you have a 100% chance to reduce all damage taken by 3% for 1 min to all friendly party and raid targets when you cast Power Word: Shield. This effect has a 0 sec cooldown.'),
+(1367, 0, 'en', 'Increases the critical effect chance of your Flash Heal, Greater Heal and Penance (Heal) spells by 2% on targets afflicted by the Weakened Soul effect, and you have a 50% chance to reduce all damage taken by 3% for 1 min to all friendly party and raid targets when you cast Power Word: Shield. This effect has a 15 sec cooldown.'),
+(1367, 1, 'en', 'Increases the critical effect chance of your Flash Heal, Greater Heal and Penance (Heal) spells by 4% on targets afflicted by the Weakened Soul effect, and you have a 100% chance to reduce all damage taken by 3% for 1 min to all friendly party and raid targets when you cast Power Word: Shield. This effect has a 15 sec cooldown.'),
 (1363, 0, 'en', 'When your Power Word: Shield is completely absorbed or dispelled you are instantly energized with 1.5% of your total mana, and you have a 33% chance to energize your shielded target with 2% total mana, 8 rage, 16 energy or 32 runic power. This effect can only occur once every 12 sec.'),
 (1363, 1, 'en', 'When your Power Word: Shield is completely absorbed or dispelled you are instantly energized with 2% of your total mana, and you have a 66% chance to energize your shielded target with 2% total mana, 8 rage, 16 energy or 32 runic power. This effect can only occur once every 12 sec.'),
 (1363, 2, 'en', 'When your Power Word: Shield is completely absorbed or dispelled you are instantly energized with 2.5% of your total mana, and you have a 100% chance to energize your shielded target with 2% total mana, 8 rage, 16 energy or 32 runic power. This effect can only occur once every 12 sec.'),
@@ -6768,7 +6768,7 @@ Wenn Ihr die Energie dieses Siegels entfesselt, wird ein Urteil über den Gegner
 (242, 1, 'de', 'Solange Euer Ziel von Eurer Fähigkeit ''Nierenhieb'' betroffen ist, erleidet es 6% zusätzlichen Schaden aus allen Quellen.'),
 (242, 2, 'de', 'Solange Euer Ziel von Eurer Fähigkeit ''Nierenhieb'' betroffen ist, erleidet es 9% zusätzlichen Schaden aus allen Quellen.'),
 (243, 0, 'de', 'Wenn aktiviert, erhöht dieses Talent die kritische Trefferchance Eures nächsten Finsteren Stoßes, Meuchelns, Hinterhalts oder Ausweidens um 100%.'),
-(244, 0, 'de', 'Eure Finishing-Moves haben eine Chance von 1101000000% pro Combopunkt, 25 Energie wiederherzustellen.'),
+(244, 0, 'de', 'Eure Finishing-Moves haben eine Chance von 20% pro Combopunkt, 25 Energie wiederherzustellen.'),
 (245, 0, 'de', 'Eure kritischen Treffer mit Fähigkeiten, die Combopunkte hinzufügen, haben eine Chance von 20%, einen zusätzlichen Combopunkt hinzuzufügen.'),
 (245, 1, 'de', 'Eure kritischen Treffer mit Fähigkeiten, die Combopunkte hinzufügen, haben eine Chance von 40%, einen zusätzlichen Combopunkt hinzuzufügen.'),
 (245, 2, 'de', 'Eure kritischen Treffer mit Fähigkeiten, die Combopunkte hinzufügen, haben eine Chance von 60%, einen zusätzlichen Combopunkt hinzuzufügen.'),
@@ -6877,9 +6877,9 @@ Wenn Ihr die Energie dieses Siegels entfesselt, wird ein Urteil über den Gegner
 (277, 0, 'de', 'Ein Schlag, der 125% Waffenschaden verursacht und Eure Ausweichchance 7 Sek. lang um 15% erhöht. Gewährt 1 Combopunkt.'),
 (278, 0, 'de', 'Fügt dem Ziel 2 Combopunkte hinzu. Ihr müsst diese Combopunkte innerhalb von 10 Sek. hinzufügen oder verwenden, sonst gehen sie verloren.'),
 (279, 0, 'de', 'Ein sofortiger Schlag, der dem Gegner Schaden zufügt und das Ziel bluten lässt, was den physischen Schaden, den es erleidet, um bis zu 3 erhöht. Hält 30 Aufladungen oder 15 Sek. lang an. Gewährt 1 Combopunkt.'),
-(280, 0, 'de', 'Eure Angriffe ignorieren 1,67% pro Eurem Level der Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 10%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
-(280, 1, 'de', 'Eure Angriffe ignorieren 3,34% pro Eurem Level der Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 20%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
-(280, 2, 'de', 'Eure Angriffe ignorieren 5% pro Eurem Level der Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 30%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
+(280, 0, 'de', 'Eure Angriffe ignorieren 100 Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 10%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
+(280, 1, 'de', 'Eure Angriffe ignorieren 200 Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 20%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
+(280, 2, 'de', 'Eure Angriffe ignorieren 300 Rüstung des Ziels und erhöhen den Schaden, der durch Eure Fähigkeit ''Blutung'' verursacht wird, um 30%. Die Menge der reduzierten Rüstung steigt mit Eurem Level.'),
 (281, 0, 'de', 'Verringert die Chance, von Nahkampf- und Fernkampfangriffen kritisch getroffen zu werden, um 1% und erhöht die Bedrohungsverringerung durch Eure Fähigkeit ''Finte'' um 10%.'),
 (281, 1, 'de', 'Verringert die Chance, von Nahkampf- und Fernkampfangriffen kritisch getroffen zu werden, um 2% und erhöht die Bedrohungsverringerung durch Eure Fähigkeit ''Finte'' um 20%.'),
 (282, 0, 'de', 'Erhöht Eure Verstohlenheitsentdeckung und verringert die Chance, von Zaubern und Fernkampfangriffen getroffen zu werden, um 2%.'),
@@ -8609,9 +8609,9 @@ Die Entfesselung der Energie dieses Siegels richtet einen Feind und verursacht s
 (808, 0, 'de', 'Ein Schlag, der 125% Waffenschaden zufügt und Eure Ausweichchance 7 Sek. lang um 15% erhöht. Gewährt 1 Combopunkt.'),
 (809, 0, 'de', 'Bei Benutzung werden Eurem Ziel 2 Combopunkte hinzugefügt. Wenn auf diese Weise erhaltene Combopunkte nicht innerhalb von 10 Sek. verbraucht oder weitere hinzugefügt werden, gehen die Combopunkte verloren.'),
 (810, 0, 'de', 'Ein sofortiger Stoß, der 110% Waffenschaden sowie einen Blutsturz beim Ziel verursacht und so den dem Ziel zugefügten körperlichen Schaden um bis zu 13 erhöht. Hält 10 Aufladungen oder 15 Sek. lang an. Gewährt 1 Combopunkt.'),
-(811, 0, 'de', 'Eure Angriffe ignorieren 0 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 10% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
-(811, 1, 'de', 'Eure Angriffe ignorieren 0 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 20% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
-(811, 2, 'de', 'Eure Angriffe ignorieren 0 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 30% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
+(811, 0, 'de', 'Eure Angriffe ignorieren 186 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 10% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
+(811, 1, 'de', 'Eure Angriffe ignorieren 373 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 20% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
+(811, 2, 'de', 'Eure Angriffe ignorieren 560 Rüstung Eures Ziels. Außerdem wird der Schaden Eurer Fähigkeit ''Blutung'' um 30% erhöht. Die Rüstungsverringerung steigt mit Eurer Stufe.'),
 (812, 0, 'de', 'Die Bedrohungsverringerung Eurer Fähigkeit ''Finte'' wird um 10% verbessert und die Chance, dass Ihr einen kritischen Treffer durch Nahkampf- oder Distanzangriffe erleidet, um 1% verringert.'),
 (812, 1, 'de', 'Die Bedrohungsverringerung Eurer Fähigkeit ''Finte'' wird um 20% verbessert und die Chance, dass Ihr einen kritischen Treffer durch Nahkampf- oder Distanzangriffe erleidet, um 2% verringert.'),
 (813, 0, 'de', 'Erhöht Eure Verstohlenheitsentdeckung und verringert die Chance, dass Ihr von Zaubern und Distanzangriffen getroffen werdet, um 2%.'),
@@ -9180,7 +9180,7 @@ Teufelswache: Erhöht Euren Schattenschaden um 10% und stellt alle 4 Sek. 2% Eur
 (977, 0, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 40%.'),
 (977, 1, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 80%.'),
 (977, 2, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 120%.'),
-(978, 0, 'de', 'Greift das Ziel sofort an und verursacht (Attack power * 45 / 100) Schaden. Zusätzlich werden die nächsten erfolgreichen 5 Nahkampfangriffe 10 Gesundheit wiederherstellen. Dieser Effekt hält 8 Sek. lang an. Schaden basiert auf Angriffskraft.'),
+(978, 0, 'de', 'Greift das Ziel sofort an und verursacht (45% der Angriffskraft) Schaden. Zusätzlich werden die nächsten erfolgreichen 5 Nahkampfangriffe 10 Gesundheit wiederherstellen. Dieser Effekt hält 8 Sek. lang an. Schaden basiert auf Angriffskraft.'),
 (979, 0, 'de', 'Verringert die Zauberzeit Eurer Fähigkeit ''Zerschmettern'' um 0.5 Sek.'),
 (979, 1, 'de', 'Verringert die Zauberzeit Eurer Fähigkeit ''Zerschmettern'' um 1 Sek.'),
 (980, 0, 'de', 'Stellt im Verlauf von 6 Sek. 1% Eurer Gesundheit wieder her, nachdem Ihr Opfer eines kritischen Treffers wurdet.'),
@@ -9517,7 +9517,7 @@ Baumgestalt - Erhöht Heilung um 4%.'),
 (1090, 2, 'de', 'Beim Zaubern von ''Blühendes Leben'' wird Euer gesamtes Zaubertempo um 6% erhöht und Eure globale Abklingzeit um 6% verringert.'),
 (1090, 3, 'de', 'Beim Zaubern von ''Blühendes Leben'' wird Euer gesamtes Zaubertempo um 8% erhöht und Eure globale Abklingzeit um 8% verringert.'),
 (1090, 4, 'de', 'Beim Zaubern von ''Blühendes Leben'' wird Euer gesamtes Zaubertempo um 10% erhöht und Eure globale Abklingzeit um 10% verringert.'),
-(1091, 0, 'de', 'Heilt bis zu 5 verbündete Gruppen- oder Schlachtzugsmitglieder innerhalb von 15 Metern um das Ziel im Verlauf von 7 Sek. um [98 * 7 * ((((1))))] Gesundheit. Die Heilung wird zunächst schnell und mit zunehmender Dauer von ''Wildwuchs'' langsamer angewendet.'),
+(1091, 0, 'de', 'Heilt bis zu 5 verbündete Gruppen- oder Schlachtzugsmitglieder innerhalb von 15 Metern um das Ziel im Verlauf von 7 Sek. um 686 Gesundheit. Die Heilung wird zunächst schnell und mit zunehmender Dauer von ''Wildwuchs'' langsamer angewendet.'),
 (1092, 0, 'de', 'Wenn Ihr mit Euren Zaubern ''Rasche Heilung'', ''Nachwachsen'', ''Pflege'' oder ''Heilende Berührung'' einen kritischen Treffer erzielt, habt Ihr eine Chance von 33%, dem Ziel für 30% des geheilten Wertes ein ''Samenkorn des Lebens'' einzupflanzen. Das Samenkorn wird erblühen, wenn das Ziel das nächste Mal angegriffen wird. Hält 15 Sek. lang an.'),
 (1092, 1, 'de', 'Wenn Ihr mit Euren Zaubern ''Rasche Heilung'', ''Nachwachsen'', ''Pflege'' oder ''Heilende Berührung'' einen kritischen Treffer erzielt, habt Ihr eine Chance von 66%, dem Ziel für 30% des geheilten Wertes ein ''Samenkorn des Lebens'' einzupflanzen. Das Samenkorn wird erblühen, wenn das Ziel das nächste Mal angegriffen wird. Hält 15 Sek. lang an.'),
 (1092, 2, 'de', 'Wenn Ihr mit Euren Zaubern ''Rasche Heilung'', ''Nachwachsen'', ''Pflege'' oder ''Heilende Berührung'' einen kritischen Treffer erzielt, habt Ihr eine Chance von 100%, dem Ziel für 30% des geheilten Wertes ein ''Samenkorn des Lebens'' einzupflanzen. Das Samenkorn wird erblühen, wenn das Ziel das nächste Mal angegriffen wird. Hält 15 Sek. lang an.'),
@@ -9724,11 +9724,11 @@ Schlangenfalle - Erhöht die Anzahl der beschworenen Schlangen um 6.'),
 (1155, 0, 'de', 'Erhöht Eure Parierchance um 1% und verringert die Dauer aller auf Euch angewandten Entwaffnungseffekte um 16%. Dieser Effekt ist mit anderen Effekten, welche die Entwaffnungsdauer verringern, nicht stapelbar.'),
 (1155, 1, 'de', 'Erhöht Eure Parierchance um 2% und verringert die Dauer aller auf Euch angewandten Entwaffnungseffekte um 25%. Dieser Effekt ist mit anderen Effekten, welche die Entwaffnungsdauer verringern, nicht stapelbar.'),
 (1155, 2, 'de', 'Erhöht Eure Parierchance um 3% und verringert die Dauer aller auf Euch angewandten Entwaffnungseffekte um 50%. Dieser Effekt ist mit anderen Effekten, welche die Entwaffnungsdauer verringern, nicht stapelbar.'),
-(1156, 0, 'de', 'Ein Schlag, der aktiv wird, nachdem ein gegnerischer Angriff pariert wurde. Dieser Angriff verursacht (Attack power * 0.2 + 48) Schaden und macht das Ziel 5 Sek. lang bewegungsunfähig. Auf ''Gegenangriff'' kann nicht mit ''Blocken'', ''Ausweichen'' oder ''Parieren'' reagiert werden.'),
+(1156, 0, 'de', 'Ein Schlag, der aktiv wird, nachdem ein gegnerischer Angriff pariert wurde. Dieser Angriff verursacht (0,2*Angriffskraft + 48) Schaden und macht das Ziel 5 Sek. lang bewegungsunfähig. Auf ''Gegenangriff'' kann nicht mit ''Blocken'', ''Ausweichen'' oder ''Parieren'' reagiert werden.'),
 (1157, 0, 'de', 'Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 1%.'),
 (1157, 1, 'de', 'Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 2%.'),
 (1157, 2, 'de', 'Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 3%.'),
-(1158, 0, 'de', 'Feuert einen schwarzen Pfeil auf das Ziel ab, der Euren verursachten Schaden am Ziel um 6% erhöht und im Verlauf von 15 Sek. (Ranged attack power * 0.1 + 157 * 5) Schattenschaden zufügt. Der schwarze Pfeil teilt sich eine Abklingzeit mit Fallenzaubern.'),
+(1158, 0, 'de', 'Feuert einen schwarzen Pfeil auf das Ziel ab, der Euren verursachten Schaden am Ziel um 6% erhöht und im Verlauf von 15 Sek. (0,1*Distanzangriffskraft + 785) Schattenschaden zufügt. Der schwarze Pfeil teilt sich eine Abklingzeit mit Fallenzaubern.'),
 (1159, 0, 'de', 'Verschießt einen Stachel, der das Ziel 30 Sek. lang einschläfert. Jeglicher erlittene Schaden hebt den Effekt wieder auf. Wenn das Ziel wieder aufwacht, verursacht der Stich im Verlauf von 6 Sek. insgesamt 300 Naturschaden. Auf dem Ziel kann gleichzeitig nur ein Biss oder Stich pro Jäger aktiv sein.'),
 (1160, 0, 'de', 'Erhöht die Chance für einen kritischen Treffer Eurer Fähigkeiten ''Raptorstoß'', ''Mungobiss'' und ''Gegenangriff'' um 10%.'),
 (1160, 1, 'de', 'Erhöht die Chance für einen kritischen Treffer Eurer Fähigkeiten ''Raptorstoß'', ''Mungobiss'' und ''Gegenangriff'' um 20%.'),
@@ -9773,7 +9773,7 @@ Schlangenfalle - Erhöht die Anzahl der beschworenen Schlangen um 6.'),
 (1173, 0, 'de', 'Erhöht Eure gesamte Beweglichkeit um zusätzliche 1%. Die kritischen Treffer Eurer Fähigkeiten ''Arkaner Schuss'', ''Explosivschuss'' und ''Zuverlässiger Schuss'' haben eine Chance von 33%, bei bis zu 10 Gruppen- oder Schlachtzugsmitgliedern alle 5 Sek. 1% ihres maximalen Manas wiederherzustellen. Hält 15 Sek. lang an.'),
 (1173, 1, 'de', 'Erhöht Eure gesamte Beweglichkeit um zusätzliche 2%. Die kritischen Treffer Eurer Fähigkeiten ''Arkaner Schuss'', ''Explosivschuss'' und ''Zuverlässiger Schuss'' haben eine Chance von 66%, bei bis zu 10 Gruppen- oder Schlachtzugsmitgliedern alle 5 Sek. 1% ihres maximalen Manas wiederherzustellen. Hält 15 Sek. lang an.'),
 (1173, 2, 'de', 'Erhöht Eure gesamte Beweglichkeit um zusätzliche 3%. Die kritischen Treffer Eurer Fähigkeiten ''Arkaner Schuss'', ''Explosivschuss'' und ''Zuverlässiger Schuss'' haben eine Chance von 100%, bei bis zu 10 Gruppen- oder Schlachtzugsmitgliedern alle 5 Sek. 1% ihres maximalen Manas wiederherzustellen. Hält 15 Sek. lang an.'),
-(1174, 0, 'de', 'Feuert ein Explosivgeschoss, das beim feindlichen Ziel (Ranged attack power * 0.14 + 144) bis (Ranged attack power * 0.14 + 172) Feuerschaden verursacht. Die Sprengladungen verursachen 2 Sek. lang pro Sekunde weiteren Schaden.'),
+(1174, 0, 'de', 'Feuert ein Explosivgeschoss, das beim feindlichen Ziel (0,14*Distanzangriffskraft + 144 bis 172) Feuerschaden verursacht. Die Sprengladungen verursachen 2 Sek. lang pro Sekunde weiteren Schaden.'),
 (1175, 0, 'de', 'Erhöht Eure Nahkampf- und Distanzangriffskraft und die Eures Tieres um einen Wert, der 10% Eurer gesamten Ausdauer entspricht.'),
 (1175, 1, 'de', 'Erhöht Eure Nahkampf- und Distanzangriffskraft und die Eures Tieres um einen Wert, der 20% Eurer gesamten Ausdauer entspricht.'),
 (1175, 2, 'de', 'Erhöht Eure Nahkampf- und Distanzangriffskraft und die Eures Tieres um einen Wert, der 30% Eurer gesamten Ausdauer entspricht.'),
@@ -10005,7 +10005,7 @@ Schlangenfalle - Erhöht die Anzahl der beschworenen Schlangen um 6.'),
 (1260, 2, 'de', 'Erhöht den von Euren Zaubern ''Frostblitz'', ''Frostfeuerblitz'' und ''Eislanze'' verursachten Schaden um 3% und verringert das Bewegungstempo aller Ziele, welche von Kälteeffekten betroffen sind, um zusätzliche 6%.'),
 (1260, 3, 'de', 'Erhöht den von Euren Zaubern ''Frostblitz'', ''Frostfeuerblitz'' und ''Eislanze'' verursachten Schaden um 4% und verringert das Bewegungstempo aller Ziele, welche von Kälteeffekten betroffen sind, um zusätzliche 8%.'),
 (1260, 4, 'de', 'Erhöht den von Euren Zaubern ''Frostblitz'', ''Frostfeuerblitz'' und ''Eislanze'' verursachten Schaden um 5% und verringert das Bewegungstempo aller Ziele, welche von Kälteeffekten betroffen sind, um zusätzliche 10%.'),
-(1261, 0, 'de', 'Betäubt das Ziel 5 Sek. lang. Funktioniert nur bei eingefrorenen Zielen. Fügt Zielen, die dauerhaft gegen Betäubungseffekte immun sind, [1469 * ((((1))) * (1))] bis [1741 * ((((1))) * (1))] Schaden zu.'),
+(1261, 0, 'de', 'Betäubt das Ziel 5 Sek. lang. Funktioniert nur bei eingefrorenen Zielen. Fügt Zielen, die dauerhaft gegen Betäubungseffekte immun sind, 1469 bis 1741 Schaden zu.'),
 (1262, 0, 'de', 'Verleiht Eurer ''Eisbarriere'' eine Chance von 50%, 8 Sek. lang alle Feinde im Umkreis von 10 Metern festzufrieren, wenn sie zerstört wird.'),
 (1262, 1, 'de', 'Verleiht Eurer ''Eisbarriere'' eine Chance von 100%, 8 Sek. lang alle Feinde im Umkreis von 10 Metern festzufrieren, wenn sie zerstört wird.'),
 (1263, 0, 'de', 'Verringert die Dauer der durch erlittenen Schaden verursachten Zauberzeiterhöhung beim Wirken von ''Lichtblitz'' und ''Heiliges Licht'' um 14%.'),
@@ -10131,7 +10131,7 @@ Schlangenfalle - Erhöht die Anzahl der beschworenen Schlangen um 6.'),
 (1304, 0, 'de', 'Erhöht Eure Waffenkunde um 2, Eure gesamte Ausdauer und kritische Trefferchance um 2%.'),
 (1304, 1, 'de', 'Erhöht Eure Waffenkunde um 4, Eure gesamte Ausdauer und kritische Trefferchance um 4%.'),
 (1304, 2, 'de', 'Erhöht Eure Waffenkunde um 6, Eure gesamte Ausdauer und kritische Trefferchance um 6%.'),
-(1305, 0, 'de', 'Schleudert einen heiligen Schild auf den Gegner, der (440 + 0.07 * Spell power + 0.07 * Attack power) bis (536 + 0.07 * Spell power + 0.07 * Attack power) Heiligschaden verursacht, ihn benommen macht, und dann auf weitere nahe Gegner überspringt. Wirkt auf insgesamt 3 Ziele. Hält 10 Sek. lang an.'),
+(1305, 0, 'de', 'Schleudert einen heiligen Schild auf den Gegner, der (440 bis 536) + 7% der Zaubermacht + 7% der Angriffskraft Heiligschaden verursacht, ihn benommen macht, und dann auf weitere nahe Gegner überspringt. Wirkt auf insgesamt 3 Ziele. Hält 10 Sek. lang an.'),
 (1306, 0, 'de', 'Erhöht Eure gesamte Stärke um 3%.'),
 (1306, 1, 'de', 'Erhöht Eure gesamte Stärke um 6%.'),
 (1306, 2, 'de', 'Erhöht Eure gesamte Stärke um 9%.'),
@@ -10169,9 +10169,9 @@ Schlangenfalle - Erhöht die Anzahl der beschworenen Schlangen um 6.'),
 (1322, 0, 'de', 'Neben ihren normalen Effekten erhöhen Eure Richturteile die kritische Trefferchance aller Angriffe gegen das betroffene Ziel um zusätzliche 1%.'),
 (1322, 1, 'de', 'Neben ihren normalen Effekten erhöhen Eure Richturteile die kritische Trefferchance aller Angriffe gegen das betroffene Ziel um zusätzliche 2%.'),
 (1322, 2, 'de', 'Neben ihren normalen Effekten erhöhen Eure Richturteile die kritische Trefferchance aller Angriffe gegen das betroffene Ziel um zusätzliche 3%.'),
-(1323, 0, 'de', 'Alle Nahkampfangriffe verursachen (0.36 * Mainhand weapon Min. damage) bis (0.36 * Mainhand weapon max damage) zusätzlichen Heiligschaden. Wird dieser Zauber mit Angriffen oder Fähigkeiten genutzt, die ein einzelnes Ziel treffen, trifft der zusätzliche Heiligschaden bis zu 2 zusätzliche Ziele. Hält 30 Min. lang an.
+(1323, 0, 'de', 'Alle Nahkampfangriffe verursachen 36% des Waffenschadens der Waffenhand zusätzlichen Heiligschaden. Wird dieser Zauber mit Angriffen oder Fähigkeiten genutzt, die ein einzelnes Ziel treffen, trifft der zusätzliche Heiligschaden bis zu 2 zusätzliche Ziele. Hält 30 Min. lang an.
 
-Die Entfesselung der Energie dieses Siegels richtet einen Feind und verursacht sofort (0.19 * Mainhand weapon Min. damage + 0.08 * Attack power + 0.13 * Spell power) bis (0.19 * Mainhand weapon max damage + 0.08 * Attack power + 0.13 * Spell power) Heiligschaden.'),
+Die Entfesselung der Energie dieses Siegels richtet einen Feind und verursacht sofort 19% des Waffenschadens der Waffenhand + 8% der Angriffskraft + 13% der Zaubermacht Heiligschaden.'),
 (1324, 0, 'de', 'Verringert die Abklingzeit Eurer Richturteile um 1 Sek.'),
 (1324, 1, 'de', 'Verringert die Abklingzeit Eurer Richturteile um 2 Sek.'),
 (1325, 0, 'de', 'Ein Angreifer erleidet durch kritische Treffer gegen Euch 5% seines verursachten Schadens. Der von ''Auge um Auge'' verursachte Schaden kann nie 50% der gesamten Gesundheit des Paladins überschreiten.'),
@@ -10280,8 +10280,8 @@ Die Entfesselung der Energie dieses Siegels richtet einen Feind und verursacht s
 (1365, 4, 'de', 'Erhöht den Schaden und die Heilung Eurer Spontanzauber um 5%.'),
 (1366, 0, 'de', 'Eure Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' haben eine Chance von 50%, das Ziel mit Barmherzigkeit zu segnen, die seine durch den Priester erhaltene Heilung um 3% erhöht. Dieser Effekt ist bis zu 3-mal stapelbar und hält 15 Sek. lang an. ''Barmherzigkeit'' kann jeweils nur auf ein Ziel wirken.'),
 (1366, 1, 'de', 'Eure Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' haben eine Chance von 100%, das Ziel mit Barmherzigkeit zu segnen, die seine durch den Priester erhaltene Heilung um 3% erhöht. Dieser Effekt ist bis zu 3-mal stapelbar und hält 15 Sek. lang an. ''Barmherzigkeit'' kann jeweils nur auf ein Ziel wirken.'),
-(1367, 0, 'de', 'Erhöht die Chance auf kritische Effekte Eurer Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' (Heilung) um 2%, wenn das Ziel von ''Geschwächte Seele'' betroffen ist. Zudem besteht beim Wirken von ''Machtwort: Schild'' eine Chance von 50%, jeglichen erlittenen Schaden aller Gruppen- und Schlachtzugsmitglieder 1 Min. lang um 3% zu verringern. Dieser Effekt hat eine Abklingzeit von 2 Sek.'),
-(1367, 1, 'de', 'Erhöht die Chance auf kritische Effekte Eurer Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' (Heilung) um 4%, wenn das Ziel von ''Geschwächte Seele'' betroffen ist. Zudem besteht beim Wirken von ''Machtwort: Schild'' eine Chance von 100%, jeglichen erlittenen Schaden aller Gruppen- und Schlachtzugsmitglieder 1 Min. lang um 3% zu verringern. Dieser Effekt hat eine Abklingzeit von 2 Sek.'),
+(1367, 0, 'de', 'Erhöht die Chance auf kritische Effekte Eurer Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' (Heilung) um 2%, wenn das Ziel von ''Geschwächte Seele'' betroffen ist. Zudem besteht beim Wirken von ''Machtwort: Schild'' eine Chance von 50%, jeglichen erlittenen Schaden aller Gruppen- und Schlachtzugsmitglieder 1 Min. lang um 3% zu verringern. Dieser Effekt hat eine Abklingzeit von 15 Sek.'),
+(1367, 1, 'de', 'Erhöht die Chance auf kritische Effekte Eurer Zauber ''Blitzheilung'', ''Große Heilung'' und ''Sühne'' (Heilung) um 4%, wenn das Ziel von ''Geschwächte Seele'' betroffen ist. Zudem besteht beim Wirken von ''Machtwort: Schild'' eine Chance von 100%, jeglichen erlittenen Schaden aller Gruppen- und Schlachtzugsmitglieder 1 Min. lang um 3% zu verringern. Dieser Effekt hat eine Abklingzeit von 15 Sek.'),
 (1368, 0, 'de', '22% des Schadens, den Ihr durch ''Machtwort: Schild'' absorbiert, werden auf den Angreifer zurückgeworfen. Dieser Schaden verursacht keine Bedrohung.'),
 (1368, 1, 'de', '45% des Schadens, den Ihr durch ''Machtwort: Schild'' absorbiert, werden auf den Angreifer zurückgeworfen. Dieser Schaden verursacht keine Bedrohung.'),
 (1369, 0, 'de', 'Verringert den erlittenen körperlichen Schaden Eures Ziels 15 Sek. lang um 3%, nachdem dieses einen kritischen Effekt von Eurem Zauber ''Blitzheilung'', ''Heilen'', ''Große Heilung'', ''Verbindende Heilung'', ''Sühne'', ''Gebet der Besserung'', ''Gebet der Heilung'' oder ''Kreis der Heilung'' erhalten hat.'),
@@ -11284,7 +11284,7 @@ Teufelswache - Erhöht das Angriffstempo Eurer Teufelswache um 20%, entfernt all
 (1707, 0, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 40%.'),
 (1707, 1, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 80%.'),
 (1707, 2, 'de', 'Erhöht den von Eurer Fähigkeit ''Spalten'' zusätzlich angerichteten Schaden um 120%.'),
-(1708, 0, 'de', 'Greift das Ziel sofort an und verursacht (Attack power * 50 / 100) Schaden. Zusätzlich werden die nächsten erfolgreichen 3 Nahkampfangriffe 1% der maximalen Gesundheit wiederherstellen. Dieser Effekt hält 8 Sek. lang an. Schaden basiert auf Angriffskraft.'),
+(1708, 0, 'de', 'Greift das Ziel sofort an und verursacht (50% der Angriffskraft) Schaden. Zusätzlich werden die nächsten erfolgreichen 3 Nahkampfangriffe 1% der maximalen Gesundheit wiederherstellen. Dieser Effekt hält 8 Sek. lang an. Schaden basiert auf Angriffskraft.'),
 (1709, 0, 'de', 'Stellt im Verlauf von 6 Sek. 2% Eurer Gesundheit wieder her, nachdem Ihr Opfer eines kritischen Treffers wurdet.'),
 (1709, 1, 'de', 'Stellt im Verlauf von 6 Sek. 4% Eurer Gesundheit wieder her, nachdem Ihr Opfer eines kritischen Treffers wurdet.'),
 (1709, 2, 'de', 'Stellt im Verlauf von 6 Sek. 6% Eurer Gesundheit wieder her, nachdem Ihr Opfer eines kritischen Treffers wurdet.'),
@@ -11358,7 +11358,7 @@ Teufelswache - Erhöht das Angriffstempo Eurer Teufelswache um 20%, entfernt all
 (1734, 1, 'de', 'Verringert die Abklingzeit Eurer Fähigkeiten ''Schildwall'', ''Gegenschlag'' und ''Tollkühnheit'' um 60 Sek.'),
 (1735, 0, 'de', 'Verringert die Abklingzeit Eurer Fähigkeit ''Entwaffnen'' um 10 Sek. und lässt das Ziel, während es entwaffnet ist, 5% zusätzlichen Schaden erleiden.'),
 (1735, 1, 'de', 'Verringert die Abklingzeit Eurer Fähigkeit ''Entwaffnen'' um 20 Sek. und lässt das Ziel, während es entwaffnet ist, 10% zusätzlichen Schaden erleiden.'),
-(1736, 0, 'de', 'Betäubt 5 Sek. lang den Gegner und verursacht (38 / 100 * Attack power) Schaden (basierend auf Angriffskraft).'),
+(1736, 0, 'de', 'Betäubt 5 Sek. lang den Gegner und verursacht 38% der Angriffskraft Schaden (basierend auf Angriffskraft).'),
 (1737, 0, 'de', 'Wenn diese Fähigkeit aktiviert wird, gewährt sie Euch 20 Sek. lang vorübergehend 30% Eurer maximalen Gesundheit. Wenn der Effekt abklingt, geht die zusätzliche Gesundheit wieder verloren.'),
 (1738, 0, 'de', 'Erhöht den körperlichen zugefügten Schaden, wenn Ihr eine Einhandnahkampfwaffe angelegt habt, um 2%.'),
 (1738, 1, 'de', 'Erhöht den körperlichen zugefügten Schaden, wenn Ihr eine Einhandnahkampfwaffe angelegt habt, um 4%.'),
@@ -11386,7 +11386,7 @@ Teufelswache - Erhöht das Angriffstempo Eurer Teufelswache um 20%, entfernt all
 (1746, 0, 'de', 'Erhöht die kritische Trefferchance von ''Verwüsten'' um 5%, und wenn Eure Fähigkeit ''Verwüsten'' oder ''Rache'' Schaden verursacht, besteht eine Chance von 10%, dass die Abklingzeit von ''Schildschlag'' abgeschlossen und die Kosten der Fähigkeit 5 Sek. lang um 100% verringert werden.'),
 (1746, 1, 'de', 'Erhöht die kritische Trefferchance von ''Verwüsten'' um 10%, und wenn Eure Fähigkeit ''Verwüsten'' oder ''Rache'' Schaden verursacht, besteht eine Chance von 20%, dass die Abklingzeit von ''Schildschlag'' abgeschlossen und die Kosten der Fähigkeit 5 Sek. lang um 100% verringert werden.'),
 (1746, 2, 'de', 'Erhöht die kritische Trefferchance von ''Verwüsten'' um 15%, und wenn Eure Fähigkeit ''Verwüsten'' oder ''Rache'' Schaden verursacht, besteht eine Chance von 30%, dass die Abklingzeit von ''Schildschlag'' abgeschlossen und die Kosten der Fähigkeit 5 Sek. lang um 100% verringert werden.'),
-(1747, 0, 'de', 'Schickt dem Krieger eine Druckwelle voraus, die (75 / 100 * Attack power) Schaden verursacht (basierend auf Angriffskraft) und in einem kegelförmigen Bereich von 10 Metern alle gegnerischen Ziele 4 Sek. lang betäubt.'),
+(1747, 0, 'de', 'Schickt dem Krieger eine Druckwelle voraus, die 75% der Angriffskraft Schaden verursacht (basierend auf Angriffskraft) und in einem kegelförmigen Bereich von 10 Metern alle gegnerischen Ziele 4 Sek. lang betäubt.'),
 (1748, 0, 'de', 'Jedes erfolgreiche Blocken hat eine Chance von 20%, das Doppelte der normalen Menge zu blocken und erhöht Eure Chance, mit Eurer Fähigkeit ''Schildschlag'' einen kritischen Treffer zu erzielen, um zusätzliche 5%.'),
 (1748, 1, 'de', 'Jedes erfolgreiche Blocken hat eine Chance von 40%, das Doppelte der normalen Menge zu blocken und erhöht Eure Chance, mit Eurer Fähigkeit ''Schildschlag'' einen kritischen Treffer zu erzielen, um zusätzliche 10%.'),
 (1748, 2, 'de', 'Jedes erfolgreiche Blocken hat eine Chance von 60%, das Doppelte der normalen Menge zu blocken und erhöht Eure Chance, mit Eurer Fähigkeit ''Schildschlag'' einen kritischen Treffer zu erzielen, um zusätzliche 15%.'),
@@ -11616,7 +11616,7 @@ Teufelswache - Erhöht das Angriffstempo Eurer Teufelswache um 20%, entfernt all
 (1835, 2, 'de', 'Erhöht Eure Ausweichchance um 3%.'),
 (1835, 3, 'de', 'Erhöht Eure Ausweichchance um 4%.'),
 (1835, 4, 'de', 'Erhöht Eure Ausweichchance um 5%.'),
-(1836, 0, 'de', 'Platziert ein großes, ortsgebundenes, antimagisches Feld, das den erlittenen Zauberschaden aller darin befindlichen Gruppen- oder Schlachtzugsmitglieder um 75% verringert. Das antimagische Feld hält 10 Sek. lang an, oder bis (10000 + 2 * Attack power) Zauberschaden absorbiert wurden.'),
+(1836, 0, 'de', 'Platziert ein großes, ortsgebundenes, antimagisches Feld, das den erlittenen Zauberschaden aller darin befindlichen Gruppen- oder Schlachtzugsmitglieder um 75% verringert. Das antimagische Feld hält 10 Sek. lang an, oder bis (10000 + 2*Angriffskraft) Zauberschaden absorbiert wurden.'),
 (1837, 0, 'de', 'Verringert die Abklingzeit Eures Zaubers ''Totenerweckung'' um 45 Sek. und die Abklingzeit von ''Armee der Toten'' um 2 Min. Verringert zudem den von Eurem Begleiter durch Kreaturen erlittenen Flächenschaden um 45%.'),
 (1837, 1, 'de', 'Verringert die Abklingzeit Eures Zaubers ''Totenerweckung'' um 90 Sek. und die Abklingzeit von ''Armee der Toten'' um 4 Min. Verringert zudem den von Eurem Begleiter durch Kreaturen erlittenen Flächenschaden um 90%.'),
 (1838, 0, 'de', 'Eure Fähigkeiten ''Seuchenstoß'' und ''Geißelstoß'' verursachen den Effekt ''Entweihter Boden''. Das Bewegungstempo von Zielen in diesem Bereich wird von den gierig klammernden Armen der Toten um 25% verringert. Hält 20 Sek. lang an.'),
@@ -24131,13 +24131,13 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1155,1,'de','Erhöht Eure Parierchance um 2% und verringert die Dauer aller auf Euch angewandten Entwaffnungseffekte um 25%. Dieser Effekt ist mit anderen Effekten,welche die Entwaffnungsdauer verringern,nicht stapelbar.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1155,2,'de','Erhöht Eure Parierchance um 3% und verringert die Dauer aller auf Euch angewandten Entwaffnungseffekte um 50%. Dieser Effekt ist mit anderen Effekten,welche die Entwaffnungsdauer verringern,nicht stapelbar.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1156,'de','Gegenangriff');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1156,0,'de','Ein Schlag,der aktiv wird,nachdem ein gegnerischer Angriff pariert wurde. Dieser Angriff verursacht (Attack power * 0.2 + 48) Schaden und macht das Ziel 5 sec lang bewegungsunfähig. Auf ''Gegenangriff'' kann nicht mit ''Blocken'',''Ausweichen'' oder ''Parieren'' reagiert werden.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1156,0,'de','Ein Schlag,der aktiv wird,nachdem ein gegnerischer Angriff pariert wurde. Dieser Angriff verursacht (0,2*Angriffskraft + 48) Schaden und macht das Ziel 5 sec lang bewegungsunfähig. Auf ''Gegenangriff'' kann nicht mit ''Blocken'',''Ausweichen'' oder ''Parieren'' reagiert werden.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1157,'de','Tötungstrieb');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1157,0,'de','Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 1%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1157,1,'de','Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 2%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1157,2,'de','Erhöht Eure Chance mit jeglichem Angriff einen kritischen Treffer zu erzielen um 3%.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1158,'de','Schwarzer Pfeil');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1158,0,'de','Feuert einen schwarzen Pfeil auf das Ziel ab,der Euren verursachten Schaden am Ziel um 6% erhöht und im Verlauf von 15 sec (Ranged attack power * 0.1 + 157 * 5) Schattenschaden zufügt. Der schwarze Pfeil teilt sich eine Abklingzeit mit Fallenzaubern.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1158,0,'de','Feuert einen schwarzen Pfeil auf das Ziel ab,der Euren verursachten Schaden am Ziel um 6% erhöht und im Verlauf von 15 sec (0,1*Distanzangriffskraft + 785) Schattenschaden zufügt. Der schwarze Pfeil teilt sich eine Abklingzeit mit Fallenzaubern.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1159,'de','Stich des Flügeldrachen');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1159,0,'de','Verschießt einen Stachel,der das Ziel 30 sec lang einschläfert. Jeglicher erlittene Schaden hebt den Effekt wieder auf. Wenn das Ziel wieder aufwacht,verursacht der Stich im Verlauf von 6 sec insgesamt 300 Naturschaden. Auf dem Ziel kann gleichzeitig nur ein Biss oder Stich pro Jäger aktiv sein.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1160,'de','Wilde Schläge');
@@ -24198,7 +24198,7 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1173,1,'de','Erhöht Eure gesamte Beweglichkeit um zusätzliche 2%. Die kritischen Treffer Eurer Fähigkeiten ''Arkaner Schuss'',''Explosivschuss'' und ''Zuverlässiger Schuss'' haben eine Chance von 66%,bei bis zu 10 Gruppen- oder Schlachtzugsmitgliedern alle 5 Sek. 1% ihres maximalen Manas wiederherzustellen. Hält 15 sec lang an.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1173,2,'de','Erhöht Eure gesamte Beweglichkeit um zusätzliche 3%. Die kritischen Treffer Eurer Fähigkeiten ''Arkaner Schuss'',''Explosivschuss'' und ''Zuverlässiger Schuss'' haben eine Chance von 100%,bei bis zu 10 Gruppen- oder Schlachtzugsmitgliedern alle 5 Sek. 1% ihres maximalen Manas wiederherzustellen. Hält 15 sec lang an.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1174,'de','Explosivschuss');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1174,0,'de','Feuert ein Explosivgeschoss,das beim feindlichen Ziel (Ranged attack power * 0.14 + 144) bis (Ranged attack power * 0.14 + 172) Feuerschaden verursacht. Die Sprengladungen verursachen 2 sec lang pro Sekunde weiteren Schaden.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1174,0,'de','Feuert ein Explosivgeschoss,das beim feindlichen Ziel (0,14*Distanzangriffskraft + 144 bis 172) Feuerschaden verursacht. Die Sprengladungen verursachen 2 sec lang pro Sekunde weiteren Schaden.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1175,'de','Jäger vs. Natur');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1175,0,'de','Erhöht Eure Nahkampf- und Distanzangriffskraft und die Eures Tieres um einen Wert,der 10% Eurer gesamten Ausdauer entspricht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1175,1,'de','Erhöht Eure Nahkampf- und Distanzangriffskraft und die Eures Tieres um einen Wert,der 20% Eurer gesamten Ausdauer entspricht.');
@@ -24687,7 +24687,7 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1304,1,'de','Erhöht Eure Waffenkunde um 4,Eure gesamte Ausdauer und kritische Trefferchance um 4%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1304,2,'de','Erhöht Eure Waffenkunde um 6,Eure gesamte Ausdauer und kritische Trefferchance um 6%.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1305,'de','Schild des Rächers');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1305,0,'de','Schleudert einen heiligen Schild auf den Gegner,der (440 + 0.07 * Spell power + 0.07 * Attack power) bis (536 + 0.07 * Spell power + 0.07 * Attack power) Heiligschaden verursacht,ihn benommen macht,und dann auf weitere nahe Gegner überspringt. Wirkt auf insgesamt 3 Ziele. Hält 10 sec lang an.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1305,0,'de','Schleudert einen heiligen Schild auf den Gegner,der (440 bis 536) + 7% der Zaubermacht + 7% der Angriffskraft Heiligschaden verursacht,ihn benommen macht,und dann auf weitere nahe Gegner überspringt. Wirkt auf insgesamt 3 Ziele. Hält 10 sec lang an.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1306,'de','Göttliche Stärke');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1306,0,'de','Erhöht Eure gesamte Stärke um 3%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1306,1,'de','Erhöht Eure gesamte Stärke um 6%.');
@@ -26282,7 +26282,7 @@ INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (17
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1735,0,'de','Verringert die Abklingzeit Eurer Fähigkeit ''Entwaffnen'' um 10 Sek. und lässt das Ziel,während es entwaffnet ist,5% zusätzlichen Schaden erleiden.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1735,1,'de','Verringert die Abklingzeit Eurer Fähigkeit ''Entwaffnen'' um 20 Sek. und lässt das Ziel,während es entwaffnet ist,10% zusätzlichen Schaden erleiden.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1736,'de','Erschütternder Schlag');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1736,0,'de','Betäubt 5 sec lang den Gegner und verursacht (38 / 100 * Attack power) Schaden (basierend auf Angriffskraft).');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1736,0,'de','Betäubt 5 sec lang den Gegner und verursacht 38% der Angriffskraft Schaden (basierend auf Angriffskraft).');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1737,'de','Letztes Gefecht');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1737,0,'de','Wenn diese Fähigkeit aktiviert wird,gewährt sie Euch 20 sec lang vorübergehend 30% Eurer maximalen Gesundheit. Wenn der Effekt abklingt,geht die zusätzliche Gesundheit wieder verloren.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1738,'de','Einhandwaffen-Spezialisierung');
@@ -26321,7 +26321,7 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1746,1,'de','Erhöht die kritische Trefferchance von ''Verwüsten'' um 10%,und wenn Eure Fähigkeit ''Verwüsten'' oder ''Rache'' Schaden verursacht,besteht eine Chance von 20%,dass die Abklingzeit von ''Schildschlag'' abgeschlossen und die Kosten der Fähigkeit 5 sec lang um 100% verringert werden.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1746,2,'de','Erhöht die kritische Trefferchance von ''Verwüsten'' um 15%,und wenn Eure Fähigkeit ''Verwüsten'' oder ''Rache'' Schaden verursacht,besteht eine Chance von 30%,dass die Abklingzeit von ''Schildschlag'' abgeschlossen und die Kosten der Fähigkeit 5 sec lang um 100% verringert werden.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1747,'de','Schockwelle');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1747,0,'de','Schickt dem Krieger eine Druckwelle voraus,die (75 / 100 * Attack power) Schaden verursacht (basierend auf Angriffskraft) und in einem kegelförmigen Bereich von 10 Metern alle gegnerischen Ziele 4 sec lang betäubt.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1747,0,'de','Schickt dem Krieger eine Druckwelle voraus,die 75% der Angriffskraft Schaden verursacht (basierend auf Angriffskraft) und in einem kegelförmigen Bereich von 10 Metern alle gegnerischen Ziele 4 sec lang betäubt.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1748,'de','Kritisches Blocken');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1748,0,'de','Jedes erfolgreiche Blocken hat eine Chance von 20%,das Doppelte der normalen Menge zu blocken und erhöht Eure Chance,mit Eurer Fähigkeit ''Schildschlag'' einen kritischen Treffer zu erzielen,um zusätzliche 5%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1748,1,'de','Jedes erfolgreiche Blocken hat eine Chance von 40%,das Doppelte der normalen Menge zu blocken und erhöht Eure Chance,mit Eurer Fähigkeit ''Schildschlag'' einen kritischen Treffer zu erzielen,um zusätzliche 10%.');
@@ -26640,7 +26640,7 @@ INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","descr
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1835,3,'de','Erhöht Eure Ausweichchance um 4%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1835,4,'de','Erhöht Eure Ausweichchance um 5%.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1836,'de','Antimagisches Feld');
-INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1836,0,'de','Platziert ein großes,ortsgebundenes,antimagisches Feld,das den erlittenen Zauberschaden aller darin befindlichen Gruppen- oder Schlachtzugsmitglieder um 75% verringert. Das antimagische Feld hält 10 sec lang an,oder bis (10000 + 2 * Attack power) Zauberschaden absorbiert wurden.');
+INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1836,0,'de','Platziert ein großes,ortsgebundenes,antimagisches Feld,das den erlittenen Zauberschaden aller darin befindlichen Gruppen- oder Schlachtzugsmitglieder um 75% verringert. Das antimagische Feld hält 10 sec lang an,oder bis (10000 + 2*Angriffskraft) Zauberschaden absorbiert wurden.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1837,'de','Nacht der Toten');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1837,0,'de','Verringert die Abklingzeit Eures Zaubers ''Totenerweckung'' um 45 Sek. und die Abklingzeit von ''Armee der Toten'' um 2 Min. Verringert zudem den von Eurem Begleiter durch Kreaturen erlittenen Flächenschaden um 45%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1837,1,'de','Verringert die Abklingzeit Eures Zaubers ''Totenerweckung'' um 90 Sek. und die Abklingzeit von ''Armee der Toten'' um 4 Min. Verringert zudem den von Eurem Begleiter durch Kreaturen erlittenen Flächenschaden um 90%.');

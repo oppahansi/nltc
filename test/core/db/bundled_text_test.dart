@@ -51,7 +51,12 @@ void main() {
       isEmpty,
     );
     expect(await offenders("description LIKE '%[%'"), isEmpty);
-    expect(await offenders("description LIKE '%Attack power \\*%'"), isEmpty);
+    expect(
+      await offenders(
+        "languageCode = 'de' AND description LIKE '%attack power%'",
+      ),
+      isEmpty,
+    );
     expect(await offenders("description LIKE '%ignore 0 of%'"), isEmpty);
   });
 
