@@ -69,7 +69,9 @@ class LanguageSetting extends ConsumerWidget {
                   .setSetting("locale", selected.languageCode);
             }
           },
-        ).container(decoration: getDefaultBoxDecoration(expColor));
+        ).onOwnMaterial.container(
+          decoration: getDefaultBoxDecoration(expColor),
+        );
       },
       loading: () => ListTile(
         leading: const Icon(Symbols.language),

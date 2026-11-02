@@ -7,8 +7,8 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
-import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/game/game_colors.dart";
+import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/text_styles.dart";
@@ -59,7 +59,9 @@ class ShowOrderNumbersSetting extends ConsumerWidget {
                 .read(settingsProvider.notifier)
                 .setSetting(settingsKeyShowOrderNumbers, v.toString());
           },
-        ).container(decoration: getDefaultBoxDecoration(expColor));
+        ).onOwnMaterial.container(
+          decoration: getDefaultBoxDecoration(expColor),
+        );
       },
     );
   }
@@ -79,6 +81,6 @@ class ShowOrderNumbersSetting extends ConsumerWidget {
         style: bodySmall(context).withColor(color.withAlpha(175)),
       ),
       trailing: Switch(value: false, onChanged: null),
-    ).container(decoration: getDefaultBoxDecoration(color));
+    ).onOwnMaterial.container(decoration: getDefaultBoxDecoration(color));
   }
 }
