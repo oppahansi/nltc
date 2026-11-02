@@ -7,8 +7,6 @@ import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/talent_build/class_build.dart";
 
 String buildShareUrl(ClassBuild build) {
-  final expansion = build.expansionCode.toLowerCase(); // already canonical
-
   // Use stable internal class code (not localized name)
   final rawClassCode =
       idsToClasses[build.classId]?.toLowerCase() ??
@@ -20,14 +18,9 @@ String buildShareUrl(ClassBuild build) {
     treeStrings.add(_encodeTree(build.talentTreeTalents[i]));
   }
 
-  if (expansion == "tbc") {
-    return "https://www.wowhead.com/tbc/talent-calc/$classSlug/${treeStrings.join("-")}";
-  }
-  if (expansion == "wotlk") {
-    return "https://www.wowhead.com/wotlk/talent-calc/$classSlug/${treeStrings.join("-")}";
-  }
-
-  return "Unsupported expansion for url sharing";
+  final slug = wowheadEraSlugs[eraOf(build.expansionCode)];
+  if (slug == null) return "Unsupported expansion for url sharing";
+  return "https://www.wowhead.com/$slug/talent-calc/$classSlug/${treeStrings.join("-")}";
 }
 
 // New: compact import/export code: exp-class-tree1-tree2-tree3
@@ -54,14 +47,13 @@ class ParsedShareCode {
   ParsedShareCode(this.expansion, this.classCode, this.trees);
 }
 
-final _codeRegex = RegExp(
-  r"^(vanilla|tbc|wotlk)-([a-z]+)-([0-9]+)-([0-9]+)-([0-9]+)$",
-);
+final _codeRegex = RegExp(r"^([a-z_]+)-([a-z]+)-([0-9]+)-([0-9]+)-([0-9]+)$");
 
 ParsedShareCode? parseShareCode(String code) {
   final m = _codeRegex.firstMatch(code.trim().toLowerCase());
   if (m == null) return null;
   final expansion = m.group(1)!;
+  if (!expansionsToIds.containsKey(expansion)) return null;
   final cls = m.group(2)!;
   final t1 = m.group(3)!;
   final t2 = m.group(4)!;
@@ -71,7 +63,7 @@ ParsedShareCode? parseShareCode(String code) {
 
 // Optional helper to check share availability.
 bool canShareBuild(ClassBuild build) =>
-    build.expansionCode.toLowerCase() != "vanilla";
+    wowheadEraSlugs.containsKey(eraOf(build.expansionCode));
 
 String? shareCodeFromWowheadUrl(String input) {
   final trimmed = input.trim();
@@ -88,14 +80,11 @@ String? shareCodeFromWowheadUrl(String input) {
   if (segs.isEmpty) return null;
 
   // Detect expansion
-  String? expansion;
-  if (segs.contains("tbc")) {
-    expansion = "tbc";
-  } else if (segs.contains("wotlk")) {
-    expansion = "wotlk";
-  } else {
-    return null;
-  }
+  final slug = wowheadEraSlugs.values.where(segs.contains).firstOrNull;
+  if (slug == null) return null;
+  final expansion = wowheadEraSlugs.entries
+      .firstWhere((e) => e.value == slug)
+      .key;
 
   final idxCalc = segs.indexOf("talent-calc");
   if (idxCalc == -1 || idxCalc + 2 >= segs.length) return null;

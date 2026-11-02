@@ -82,3 +82,6 @@ String getRngBgImagePath() {
 
   return getTreeImagePath(className, treeName);
 }
+
+/// Eras with a Wowhead talent calculator, and their part of its URLs.
+const wowheadEraSlugs = {"tbc": "tbc", "wotlk": "wotlk"};

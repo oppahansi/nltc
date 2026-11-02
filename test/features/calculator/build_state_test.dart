@@ -297,6 +297,21 @@ void main() {
       }
     });
 
+    test(
+      "classic codes parse, but don't import until their data exists",
+      () async {
+        expect(
+          parseShareCode("classic_tbc-mage-1-2-3")?.expansion,
+          "classic_tbc",
+        );
+        expect(parseShareCode("retail-mage-1-2-3"), isNull);
+        expect(
+          await notifier().importFromShareCode("classic_tbc-mage-1-2-3"),
+          isFalse,
+        );
+      },
+    );
+
     test("old codes shorter than the tree still import", () async {
       expect(
         await notifier().importFromShareCode("vanilla-mage-5-0-0"),

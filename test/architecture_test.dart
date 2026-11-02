@@ -108,6 +108,22 @@ void main() {
     expect(violation("core/settings/a.dart", "core/game/b.dart"), isNull);
   });
 
+  test("expansion names stay in core/game, so new editions plug in there", () {
+    final name = RegExp("""["'](vanilla|tbc|wotlk)["']""");
+    final offenders = [
+      for (final file in Directory(
+        "lib",
+      ).listSync(recursive: true).whereType<File>())
+        if (file.path.endsWith(".dart") &&
+            !file.path.endsWith(".g.dart") &&
+            !file.path.startsWith("lib/core/game/") &&
+            !file.path.startsWith("lib/l10n/") &&
+            name.hasMatch(file.readAsStringSync()))
+          file.path,
+    ];
+    expect(offenders, isEmpty);
+  });
+
   test("every feature is covered by the rules", () {
     final features = Directory("lib/features")
         .listSync()
