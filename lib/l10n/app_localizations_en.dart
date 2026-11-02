@@ -296,4 +296,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get buildOrderLegacy => 'Legacy';
+
+  @override
+  String get glyphs => 'Glyphs';
+
+  @override
+  String get glyphsMajor => 'Major Glyphs';
+
+  @override
+  String get glyphsMinor => 'Minor Glyphs';
+
+  @override
+  String get glyphSlotEmpty => 'Empty slot';
+
+  @override
+  String get glyphSlotHint => 'Tap to choose a glyph';
+
+  @override
+  String get glyphRemove => 'Remove glyph';
+
+  @override
+  String get glyphInUse => 'Already in this build';
+
+  @override
+  String get glyphChooseMajor => 'Choose a major glyph';
+
+  @override
+  String get glyphChooseMinor => 'Choose a minor glyph';
 }

@@ -231,4 +231,57 @@ void main() {
       );
     });
   });
+
+  group("glyphs", () {
+    test("only WotLK has them, with the counts of its clients", () async {
+      final rows = await db.rawQuery(
+        "SELECT expansion, COUNT(*) AS n FROM glyphs GROUP BY expansion ORDER BY expansion",
+      );
+      expect(rows, [
+        {"expansion": 3, "n": 345},
+        {"expansion": 6, "n": 348},
+      ]);
+    });
+
+    test("every class can fill every slot", () async {
+      final rows = await db.rawQuery(
+        "SELECT expansion, classId, type, COUNT(*) AS n FROM glyphs "
+        "GROUP BY expansion, classId, type",
+      );
+      expect(rows, hasLength(2 * classNamesToIds.length * 2));
+      for (final row in rows) {
+        expect(
+          row["n"] as int,
+          greaterThanOrEqualTo(glyphSlotsPerType),
+          reason: "$row",
+        );
+      }
+    });
+
+    test("every glyph has a name and text in both languages", () async {
+      final incomplete = await strings(
+        "SELECT g.expansion || '/' || g.id FROM glyphs g WHERE ("
+        "SELECT COUNT(*) FROM glyph_texts t WHERE t.expansion = g.expansion "
+        "AND t.glyphId = g.id AND t.languageCode IN ('en', 'de') "
+        "AND t.name <> '' AND t.description <> '') <> 2",
+      );
+      expect(incomplete, isEmpty);
+    });
+
+    test("no text holds an unrendered client token", () async {
+      final raw = await strings(
+        "SELECT name || ' ' || description FROM glyph_texts "
+        "WHERE name || description LIKE '%\$%' OR name || description LIKE '%[[%'",
+      );
+      expect(raw, isEmpty);
+    });
+
+    test("every icon exists", () async {
+      final icons = await strings("SELECT DISTINCT icon FROM glyphs");
+      expect(icons, hasLength(20));
+      for (final icon in icons) {
+        expect(File("assets/images/icons/$icon.webp").existsSync(), isTrue);
+      }
+    });
+  });
 }

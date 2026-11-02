@@ -102,6 +102,37 @@ class DataRepo {
         .toList();
   }
 
+  /// A class's glyphs by name. Empty for an expansion without glyphs.
+  Future<List<Glyph>> getGlyphs({
+    required int expansionId,
+    required int classId,
+    String? languageCode,
+  }) async {
+    final db = await Db.getDataDbInstance();
+    final rows = await db.rawQuery(
+      '''
+      SELECT g.id, g.classId, g.type, g.icon, gt.name, gt.description
+      FROM glyphs g
+      JOIN glyph_texts gt ON gt.expansion = g.expansion AND gt.glyphId = g.id
+      WHERE g.expansion = ? AND g.classId = ? AND gt.languageCode = ?
+      ORDER BY gt.name
+    ''',
+      [expansionId, classId, languageCode ?? defaultLanguageCode],
+    );
+    return rows
+        .map(
+          (row) => Glyph(
+            id: row['id'] as int,
+            classId: row['classId'] as int,
+            type: GlyphType.values.byName(row['type'] as String),
+            icon: row['icon'] as String,
+            name: row['name'] as String,
+            description: row['description'] as String,
+          ),
+        )
+        .toList();
+  }
+
   /// Every name a class's talents have, in any language, mapped to talent id.
   /// If two talents share a name, the lower id wins.
   Future<Map<String, int>> getTalentIdsByName({

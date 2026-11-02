@@ -19,8 +19,8 @@ from mpq import Client, Dbc  # noqa: E402
 
 EFFECTS = {
     "vanilla": dict(die=64, base=76, chance=25, charges=26, chain=100, duration=30, amplitude=94),
-    "tbc": dict(die=68, base=80, chance=29, charges=30, chain=104, duration=34, amplitude=101),
-    "wotlk": dict(die=74, base=80, chance=35, charges=36, chain=104, duration=40, amplitude=101),
+    "tbc": dict(die=68, base=80, chance=29, charges=30, chain=104, duration=34, amplitude=98),
+    "wotlk": dict(die=74, base=80, chance=35, charges=36, chain=104, duration=40, amplitude=98),
 }
 
 TOKEN = re.compile(

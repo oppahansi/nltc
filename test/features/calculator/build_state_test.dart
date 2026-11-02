@@ -9,6 +9,7 @@ import "package:flutter_test/flutter_test.dart";
 // Project Imports
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
@@ -691,6 +692,181 @@ void main() {
         (t) => t.row == 0 && t.currentRank == 0,
       );
       expect(notifier().isTalentEnabled(open), isTrue);
+    });
+  });
+
+  group("glyphs", () {
+    const classicWotlk = 6;
+
+    Future<List<Glyph>> catalog([int expansion = wotlk, int cls = mage]) =>
+        DataRepo().getGlyphs(expansionId: expansion, classId: cls);
+
+    Iterable<Glyph> ofType(List<Glyph> glyphs, GlyphType type) =>
+        glyphs.where((g) => g.type == type);
+
+    test("fill up to three slots of each type, once each", () async {
+      await select(wotlk, mage);
+      final glyphs = await catalog();
+      final majors = ofType(glyphs, GlyphType.major).toList();
+      final minors = ofType(glyphs, GlyphType.minor).toList();
+
+      for (final glyph in majors.take(4)) {
+        notifier().chooseGlyph(glyph, glyphs);
+      }
+      notifier().chooseGlyph(majors.first, glyphs);
+      notifier().chooseGlyph(minors.first, glyphs);
+
+      expect(build().glyphIds, [
+        ...majors.take(3).map((g) => g.id),
+        minors.first.id,
+      ]);
+    });
+
+    test("can be replaced in place and removed", () async {
+      await select(wotlk, mage);
+      final glyphs = await catalog();
+      final majors = ofType(glyphs, GlyphType.major).toList();
+
+      notifier().chooseGlyph(majors[0], glyphs);
+      notifier().chooseGlyph(majors[1], glyphs);
+      notifier().chooseGlyph(majors[2], glyphs, replacing: majors[0].id);
+      expect(build().glyphIds, [majors[2].id, majors[1].id]);
+
+      notifier().chooseGlyph(majors[1], glyphs, replacing: majors[2].id);
+      expect(build().glyphIds, [majors[2].id, majors[1].id]);
+
+      notifier().removeGlyph(majors[2].id);
+      expect(build().glyphIds, [majors[1].id]);
+    });
+
+    test("leave the spent talents alone and are cleared by a reset", () async {
+      await select(wotlk, mage);
+      final glyphs = await catalog();
+      final first = firstInTree(0);
+      notifier().addPoint(first);
+      notifier().chooseGlyph(glyphs.first, glyphs);
+
+      expect(total(), 1);
+      expect(talent(first.id).supports, first.supports);
+
+      await notifier().resetBuild();
+      expect(build().glyphIds, isEmpty);
+    });
+
+    test("survive saving and loading", () async {
+      await select(classicWotlk, mage);
+      final glyphs = await catalog(classicWotlk);
+      notifier().chooseGlyph(glyphs.first, glyphs);
+      notifier().chooseGlyph(glyphs.last, glyphs);
+
+      final id = await notifier().saveBuild("Glyphs");
+      await notifier().startNewBuild();
+      expect(build().glyphIds, isEmpty);
+
+      await notifier().loadSavedBuild(id);
+      expect(build().glyphIds, [glyphs.first.id, glyphs.last.id]);
+    });
+
+    test("travel in ordered and ranks-only share codes", () async {
+      await select(wotlk, mage);
+      final glyphs = await catalog();
+      notifier().chooseGlyph(glyphs.first, glyphs);
+      final glyphsOnly = buildShareCode(build());
+      notifier().addPoint(firstInTree(0));
+      final ordered = buildShareCode(build());
+      expect(ordered, contains("-o"));
+
+      for (final code in [glyphsOnly, ordered]) {
+        await notifier().startNewBuild();
+        expect(
+          await notifier().importFromShareCode(code),
+          isTrue,
+          reason: code,
+        );
+        expect(build().glyphIds, [glyphs.first.id], reason: code);
+        expect(buildShareCode(build()), code);
+      }
+      expect(total(), 1);
+    });
+
+    test("a code without glyphs reads as before", () async {
+      await select(wotlk, mage);
+      notifier().addPoint(firstInTree(0));
+      final code = buildShareCode(build());
+      expect(code, isNot(contains("-g")));
+      expect(parseShareCode(code)!.glyphIds, isEmpty);
+    });
+
+    test("a changed code is refused", () async {
+      await select(wotlk, mage);
+      final glyphs = await catalog();
+      notifier().chooseGlyph(glyphs.first, glyphs);
+      final code = buildShareCode(build());
+      final last = code[code.length - 1];
+      expect(
+        parseShareCode(
+          "${code.substring(0, code.length - 1)}${last == "0" ? "1" : "0"}",
+        ),
+        isNull,
+      );
+    });
+
+    test("that don't belong in the build are refused", () async {
+      await select(wotlk, mage);
+      final mageGlyphs = await catalog();
+      final druidGlyphs = await catalog(wotlk, druid);
+      final classicOnly = await catalog(classicWotlk, druid);
+      final originalIds = druidGlyphs.map((g) => g.id).toSet();
+      final newInClassic = classicOnly.firstWhere(
+        (g) => !originalIds.contains(g.id),
+      );
+
+      Future<bool> importing(List<int> ids, {int cls = mage}) async {
+        await select(wotlk, cls);
+        final shared = build().copyWith(
+          talentTrees: build().talentTrees,
+          talentTreeTalents: build().talentTreeTalents,
+          buildSequence: build().buildSequence,
+          glyphIds: ids,
+        );
+        return notifier().importFromShareCode(buildShareCode(shared));
+      }
+
+      final majors = ofType(mageGlyphs, GlyphType.major).map((g) => g.id);
+      final one = majors.first;
+      expect(await importing([one]), isTrue);
+      expect(await importing([one, one]), isFalse, reason: "twice");
+      expect(await importing(majors.take(4).toList()), isFalse, reason: "4");
+      expect(await importing([druidGlyphs.first.id]), isFalse, reason: "class");
+      expect(
+        await importing([newInClassic.id], cls: druid),
+        isFalse,
+        reason: "edition",
+      );
+
+      await select(tbc, mage);
+      final tbcBuild = build().copyWith(
+        talentTrees: build().talentTrees,
+        talentTreeTalents: build().talentTreeTalents,
+        buildSequence: build().buildSequence,
+        glyphIds: [one],
+      );
+      expect(
+        await notifier().importFromShareCode(buildShareCode(tbcBuild)),
+        isFalse,
+        reason: "no glyphs in TBC",
+      );
+    });
+
+    test("follow the language", () async {
+      final en = await catalog();
+      final de = await DataRepo().getGlyphs(
+        expansionId: wotlk,
+        classId: mage,
+        languageCode: "de",
+      );
+      expect(de.map((g) => g.id).toSet(), en.map((g) => g.id).toSet());
+      expect(de.first.name, isNot(en.first.name));
     });
   });
 }

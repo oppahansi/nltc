@@ -9,6 +9,7 @@ import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
+import "package:ltc/l10n/app_localizations.dart";
 
 List<Widget> buildCalculatorTabs(
   BuildContext context,
@@ -21,26 +22,39 @@ List<Widget> buildCalculatorTabs(
 
   return talentTrees
       .map(
-        (entry) => Tab(
-          child: Container(
-            width: screenWidth(context, 0.08),
-            height: screenWidth(context, 0.08),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(_getTreeIcon(entry)),
-                fit: BoxFit.fill,
-              ),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isLegacyTree(entry.id) ? legacyColor : classColor,
-                width: 2.0,
-              ),
-            ),
-          ),
+        (entry) => _iconTab(
+          context,
+          _getTreeIcon(entry),
+          isLegacyTree(entry.id) ? legacyColor : classColor,
         ),
       )
       .toList();
+}
+
+Widget buildGlyphsTab(BuildContext context, WidgetRef ref, int classId) {
+  return Semantics(
+    label: AppLocalizations.of(context)!.glyphs,
+    child: _iconTab(
+      context,
+      "assets/images/icons/inv_glyph_major${idsToClasses[classId]}.webp",
+      ref.watch(settingsProvider).value!.classColor,
+    ),
+  );
+}
+
+Widget _iconTab(BuildContext context, String icon, Color borderColor) {
+  return Tab(
+    child: Container(
+      width: screenWidth(context, 0.08),
+      height: screenWidth(context, 0.08),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage(icon), fit: BoxFit.fill),
+        shape: BoxShape.circle,
+        border: Border.all(color: borderColor, width: 2.0),
+      ),
+    ),
+  );
 }
 
 String _getTreeIcon(TalentTree tree) {

@@ -10,6 +10,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -20,6 +21,7 @@ import "package:ltc/features/calculator/utils/utility_methods.dart";
 import "package:ltc/features/calculator/widgets/calculator_drawer.dart";
 import "package:ltc/features/calculator/widgets/calculator_tabs.dart";
 import "package:ltc/features/calculator/widgets/calculator_tutorial.dart";
+import "package:ltc/features/calculator/widgets/glyphs_view.dart";
 import "package:ltc/features/calculator/widgets/talent_tree_view.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
@@ -88,7 +90,10 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
       error: (e, _) =>
           Scaffold(body: Center(child: Text("Error loading data $e"))),
       data: (classBuild) {
-        _ensureController(classBuild.talentTreeTalents.length);
+        final showGlyphs = hasGlyphs(classBuild.expansionCode);
+        _ensureController(
+          classBuild.talentTreeTalents.length + (showGlyphs ? 1 : 0),
+        );
         precacheBgs(context, classBuild.talentTrees);
 
         // Auto show tutorial once after data loaded
@@ -112,7 +117,11 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
                   ref.read(treeIndexProvider.notifier).setTreeIndex(i),
               indicatorColor: classColor,
               dividerColor: Colors.black.withAlpha(150),
-              tabs: buildCalculatorTabs(context, ref, classBuild.talentTrees),
+              tabs: [
+                ...buildCalculatorTabs(context, ref, classBuild.talentTrees),
+                if (showGlyphs)
+                  buildGlyphsTab(context, ref, classBuild.classId),
+              ],
             ),
             actions: [
               IconButton(
@@ -127,9 +136,10 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
             children: [
               TabBarView(
                 controller: _tabController,
-                children: classBuild.talentTrees
-                    .map((t) => TalentTreeView(tree: t))
-                    .toList(),
+                children: [
+                  ...classBuild.talentTrees.map((t) => TalentTreeView(tree: t)),
+                  if (showGlyphs) const GlyphsView(),
+                ],
               ),
               FloatingActionButton(
                 backgroundColor: classBuild.buildSequence.isNotEmpty

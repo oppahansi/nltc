@@ -64,7 +64,7 @@ final class SavedBuildsProvider
   }
 }
 
-String _$savedBuildsHash() => r'86f1ab4a6a8a9ce94c6c43b84ce3302e9238219c';
+String _$savedBuildsHash() => r'e5fdef3a68048df02bcceff2426174324d3b036c';
 
 final class SavedBuildsFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<ClassBuild>>, int> {

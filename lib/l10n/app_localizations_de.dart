@@ -297,4 +297,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get buildOrderLegacy => 'Vermächtnis';
+
+  @override
+  String get glyphs => 'Glyphen';
+
+  @override
+  String get glyphsMajor => 'Erhebliche Glyphen';
+
+  @override
+  String get glyphsMinor => 'Geringe Glyphen';
+
+  @override
+  String get glyphSlotEmpty => 'Leerer Platz';
+
+  @override
+  String get glyphSlotHint => 'Tippen, um eine Glyphe auszuwählen';
+
+  @override
+  String get glyphRemove => 'Glyphe entfernen';
+
+  @override
+  String get glyphInUse => 'Bereits in diesem Build';
+
+  @override
+  String get glyphChooseMajor => 'Erhebliche Glyphe auswählen';
+
+  @override
+  String get glyphChooseMinor => 'Geringe Glyphe auswählen';
 }

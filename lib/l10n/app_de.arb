@@ -89,5 +89,14 @@
   "edition_forever": "Forever",
   "legacyPointsSpent": "Vermächtnis: {spent}/{cap}",
   "buildOrderTalents": "Talente",
-  "buildOrderLegacy": "Vermächtnis"
+  "buildOrderLegacy": "Vermächtnis",
+  "glyphs": "Glyphen",
+  "glyphsMajor": "Erhebliche Glyphen",
+  "glyphsMinor": "Geringe Glyphen",
+  "glyphSlotEmpty": "Leerer Platz",
+  "glyphSlotHint": "Tippen, um eine Glyphe auszuwählen",
+  "glyphRemove": "Glyphe entfernen",
+  "glyphInUse": "Bereits in diesem Build",
+  "glyphChooseMajor": "Erhebliche Glyphe auswählen",
+  "glyphChooseMinor": "Geringe Glyphe auswählen"
 }

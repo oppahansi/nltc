@@ -156,3 +156,23 @@ class Rank {
     required this.descriptions,
   });
 }
+
+enum GlyphType { major, minor }
+
+class Glyph {
+  final int id;
+  final int classId;
+  final GlyphType type;
+  final String icon;
+  final String name;
+  final String description;
+
+  const Glyph({
+    required this.id,
+    required this.classId,
+    required this.type,
+    required this.icon,
+    required this.name,
+    required this.description,
+  });
+}

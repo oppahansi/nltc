@@ -64,3 +64,19 @@ python3 -I tool/forever/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data
 ```
 
 `generate_sql.py` stops on anything it doesn't expect: a new unresolved token, a changed point cap, or a talent breaking the layout rules.
+
+## `glyphs/`: WotLK glyphs (3.3.5a client, 3.4.5 tables)
+
+- `extract_glyphs.py`: writes one JSON per source and language, listing each glyph's class, type, rendered text, spell, item and icon, plus slots, dropped rows, class disagreements, `[[?token]]` markers and text defects.
+- `convert_icons.py`: converts icons the app lacks from a 3.3.5a client to 128x128 WebP (needs Pillow), into a folder you name.
+
+A glyph counts only if a class 16 item for it has an Inscription recipe in `SkillLineAbility`. `GlyphProperties` alone also holds test rows and retired glyphs. 3.3.5a's client has no item names or item spells, so its items join to glyphs on the recipe's name, and `ORIGINAL_NAME_LINKS` covers the names that differ.
+
+```sh
+python3 -I tool/glyphs/extract_glyphs.py original "<client>/Data" <out_dir>
+python3 -I tool/glyphs/extract_glyphs.py classic <build> <dbd_dir> <out_dir> <csv_dir> [<csv_dir> ...]
+python3 -I tool/glyphs/extract_glyphs.py compare <original_enUS.json> <classic_enUS.json> assets/images/icons
+<venv>/bin/python -I tool/glyphs/convert_icons.py "<client>/Data" <original_enUS.json> assets/images/icons <out_dir>
+```
+
+The Classic mode needs `extract_classic.py`'s CSVs plus `GlyphProperties`, `GlyphSlot`, `Item`, `ItemSparse`, `ItemEffect`, `SkillLineAbility`, `SpellClassOptions` and `GlobalStrings`, for enUS and deDE, downloaded the same way.

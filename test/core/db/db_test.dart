@@ -18,7 +18,7 @@ import "../../helpers/test_db.dart";
 /// The SQL that [dataDbVersion] stands for. See "data changes come with a
 /// version bump".
 const dataSqlHash =
-    "e56f8a3768e34e3506be7d655cbe8c35bb8c8debf76c239c763ecb8c0e91d345";
+    "d1eebf88cdb03d80ace37e1a8367a95dba28ce5e6e7d7dd957ef3dfe11f998af";
 
 void main() {
   late Directory dir;
@@ -154,6 +154,59 @@ void main() {
       await install(0);
       expect(await builds(), 1);
       expect(await (await Db.getUserDbInstance()).getVersion(), userDbVersion);
+    });
+  });
+
+  group("user DB glyph upgrade", () {
+    String path() => join(dir.path, userDbName);
+
+    /// A file as every version before glyphs left it, holding one build.
+    Future<void> installBeforeGlyphs() async {
+      File(join("assets/db", userDbName)).copySync(path());
+      final db = await openDatabase(path());
+      await db.execute("ALTER TABLE class_builds DROP COLUMN glyphs");
+      await db.insert("class_builds", {
+        "title": "Kept",
+        "expansion_id": 3,
+        "expansion_code": "wotlk",
+        "class_id": 2,
+        "class_name": "Mage",
+        "talent_ranks": "{}",
+        "talents_build_sequence": "[]",
+      });
+      await db.setVersion(1);
+      await db.close();
+    }
+
+    test("keeps builds and gives them no glyphs", () async {
+      await installBeforeGlyphs();
+      final db = await Db.getUserDbInstance();
+      expect(await db.getVersion(), userDbVersion);
+      final rows = await db.query("class_builds");
+      expect(rows.single["title"], "Kept");
+      expect(rows.single["glyphs"], "[]");
+    });
+
+    test("matches the schema of a new install", () async {
+      List<String> columns(List<Map<String, Object?>> info) => info
+          .map((c) => "${c["name"]} ${c["type"]} ${c["dflt_value"]}")
+          .toList();
+
+      await installBeforeGlyphs();
+      final upgraded = columns(
+        await (await Db.getUserDbInstance()).rawQuery(
+          "PRAGMA table_info(class_builds)",
+        ),
+      );
+      final bundled = await openDatabase(
+        File(join("assets/db", userDbName)).absolute.path,
+        readOnly: true,
+      );
+      addTearDown(bundled.close);
+      expect(
+        upgraded,
+        columns(await bundled.rawQuery("PRAGMA table_info(class_builds)")),
+      );
     });
   });
 

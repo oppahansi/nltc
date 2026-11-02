@@ -12,6 +12,7 @@ import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import 'package:ltc/core/settings/settings_service_provider.dart';
+import "package:ltc/features/calculator/logic/glyph_rules.dart";
 import "package:ltc/features/calculator/logic/talent_rules.dart"
     as talent_rules;
 
@@ -58,7 +59,8 @@ class BuildState extends _$BuildState {
     } else if (current != null &&
         (current.buildSequence.isNotEmpty ||
             current.pointsSpentPerTree.any((p) => p > 0) ||
-            current.talentRanks.isNotEmpty)) {
+            current.talentRanks.isNotEmpty ||
+            current.glyphIds.isNotEmpty)) {
       return current;
     }
 
@@ -179,6 +181,37 @@ class BuildState extends _$BuildState {
         talentTreeTalents: classBuild.talentTreeTalents,
         buildSequence: classBuild.buildSequence,
         pointsSpentPerTree: classBuild.pointsSpentPerTree,
+        glyphIds: const [],
+      ),
+    );
+  }
+
+  /// Puts [glyph] in a free slot, or in the slot of the glyph [replacing]. Does
+  /// nothing if the result wouldn't be legal, judged by the class's [catalog].
+  void chooseGlyph(Glyph glyph, List<Glyph> catalog, {int? replacing}) {
+    final ids = [...state.value!.glyphIds];
+    final slot = replacing == null ? -1 : ids.indexOf(replacing);
+    if (slot == -1) {
+      ids.add(glyph.id);
+    } else {
+      ids[slot] = glyph.id;
+    }
+    if (glyphsAreLegal(ids, catalog)) _setGlyphs(ids);
+  }
+
+  void removeGlyph(int glyphId) {
+    _setGlyphs([...state.value!.glyphIds]..remove(glyphId));
+  }
+
+  void _setGlyphs(List<int> glyphIds) {
+    final classBuild = state.value!;
+    state = AsyncData(
+      classBuild.copyWith(
+        talentTrees: classBuild.talentTrees,
+        talentTreeTalents: classBuild.talentTreeTalents,
+        buildSequence: classBuild.buildSequence,
+        pointsSpentPerTree: classBuild.pointsSpentPerTree,
+        glyphIds: glyphIds,
       ),
     );
   }
@@ -400,6 +433,12 @@ class BuildState extends _$BuildState {
     // class exists in this expansion.
     final clazz = classes.where((c) => c.id == classId).firstOrNull;
     if (clazz == null) return false;
+
+    final glyphs = parsed.glyphIds.isEmpty
+        ? const <Glyph>[]
+        : await dataRepo.getGlyphs(expansionId: expansionId, classId: classId);
+    if (!glyphsAreLegal(parsed.glyphIds, glyphs)) return false;
+
     final className =
         clazz.names[settings.locale.languageCode] ?? parsed.classCode;
     final build = ClassBuild(
@@ -414,6 +453,7 @@ class BuildState extends _$BuildState {
       talentRanks: {},
       buildSequence: [],
       pointsSpentPerTree: pointsPerTree,
+      glyphIds: parsed.glyphIds,
     );
 
     if (parsed.order != null && !_replayOrder(build, parsed.order!)) {

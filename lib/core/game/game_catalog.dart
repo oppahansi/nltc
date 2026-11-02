@@ -53,6 +53,11 @@ const maxLegacyPoints = 16;
 
 bool isLegacyTree(int treeId) => treeId >= firstLegacyTreeId;
 
+/// WotLK builds have this many major glyphs, and as many minor ones.
+const glyphSlotsPerType = 3;
+
+bool hasGlyphs(String expansionCode) => eraOf(expansionCode) == "wotlk";
+
 const maxColumns = 4;
 const classNamesToIds = {
   "druid": 0,

@@ -277,6 +277,8 @@ def main():
     updated = []
     for talent_id, rank, lang, text in rows:
         class_id, tree, row, column, expansion = talents[talent_id]
+        if expansion not in kinds:  # Only the Original edition has these clients.
+            continue
         kind = kinds[expansion]
         fixed = cleanup(text, lang)
         new = None

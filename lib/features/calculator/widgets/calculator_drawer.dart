@@ -102,7 +102,8 @@ class CalculatorDrawer extends ConsumerWidget {
               final hasBuild =
                   buildValue != null &&
                   (!buildState.isBuildSequenceEmpty() ||
-                      !buildState.isSkillTreeEmpty());
+                      !buildState.isSkillTreeEmpty() ||
+                      buildValue.glyphIds.isNotEmpty);
               final shareCode = (buildValue != null && hasBuild)
                   ? buildShareCode(buildValue)
                   : "";
@@ -147,7 +148,8 @@ class CalculatorDrawer extends ConsumerWidget {
             ),
             onTap: () async {
               if (buildState.isBuildSequenceEmpty() &&
-                  buildState.isSkillTreeEmpty()) {
+                  buildState.isSkillTreeEmpty() &&
+                  (classBuildAsync.value?.glyphIds.isEmpty ?? true)) {
                 context.showSnackBar(
                   SnackBar(content: loc.nothing_to_save.text()),
                 );

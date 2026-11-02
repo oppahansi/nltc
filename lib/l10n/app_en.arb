@@ -96,5 +96,14 @@
     }
   },
   "buildOrderTalents": "Talents",
-  "buildOrderLegacy": "Legacy"
+  "buildOrderLegacy": "Legacy",
+  "glyphs": "Glyphs",
+  "glyphsMajor": "Major Glyphs",
+  "glyphsMinor": "Minor Glyphs",
+  "glyphSlotEmpty": "Empty slot",
+  "glyphSlotHint": "Tap to choose a glyph",
+  "glyphRemove": "Remove glyph",
+  "glyphInUse": "Already in this build",
+  "glyphChooseMajor": "Choose a major glyph",
+  "glyphChooseMinor": "Choose a minor glyph"
 }

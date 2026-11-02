@@ -23,6 +23,9 @@ class ClassBuild {
   final Map<String, int> talentRanks;
   final List<BuildPoint> buildSequence;
 
+  /// In the order they were chosen. Only WotLK builds have any.
+  final List<int> glyphIds;
+
   List<int> pointsSpentPerTree = [0, 0, 0];
 
   ClassBuild({
@@ -37,6 +40,7 @@ class ClassBuild {
     required this.talentRanks,
     required this.buildSequence,
     required this.pointsSpentPerTree,
+    this.glyphIds = const [],
   });
 
   Map<String, dynamic> toDbMap() {
@@ -52,6 +56,7 @@ class ClassBuild {
       "talents_build_sequence": jsonEncode(
         buildSequence.map((bp) => bp.talentId).toList(),
       ),
+      "glyphs": jsonEncode(glyphIds),
     };
   }
 
@@ -102,6 +107,8 @@ class ClassBuild {
       talentTreeTalents: talentTreeTalents,
       buildSequence: buildSequence,
       pointsSpentPerTree: pointsPerTree,
+      glyphIds: (jsonDecode(row["glyphs"] as String? ?? "[]") as List)
+          .cast<int>(),
     );
   }
 
@@ -128,6 +135,7 @@ class ClassBuild {
     Map<String, int>? talentRanks,
     List<BuildPoint>? buildSequence,
     List<int>? pointsSpentPerTree,
+    List<int>? glyphIds,
   }) {
     return ClassBuild(
       id: id ?? this.id,
@@ -149,6 +157,7 @@ class ClassBuild {
           this.buildSequence.map((bp) => bp.copyWith()).toList(),
       pointsSpentPerTree:
           pointsSpentPerTree ?? List<int>.from(this.pointsSpentPerTree),
+      glyphIds: glyphIds ?? this.glyphIds,
     );
   }
 

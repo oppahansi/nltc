@@ -1,4 +1,4 @@
-PRAGMA user_version = 1;
+PRAGMA user_version = 2;
 BEGIN TRANSACTION;
 DROP TABLE IF EXISTS "build_points";
 CREATE TABLE build_points (
@@ -18,7 +18,8 @@ CREATE TABLE class_builds (
   class_id INTEGER NOT NULL,
   class_name TEXT NOT NULL,
   talent_ranks TEXT NOT NULL,   -- JSON: {"buildPointId": rank, ...}
-  talents_build_sequence TEXT NOT NULL   -- JSON: [buildPointId, ...]
+  talents_build_sequence TEXT NOT NULL,   -- JSON: [buildPointId, ...]
+  glyphs TEXT NOT NULL DEFAULT '[]'   -- JSON: [glyphId, ...]
 );
 DROP TABLE IF EXISTS "settings";
 CREATE TABLE settings (

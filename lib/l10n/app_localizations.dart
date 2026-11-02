@@ -637,6 +637,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Legacy'**
   String get buildOrderLegacy;
+
+  /// No description provided for @glyphs.
+  ///
+  /// In en, this message translates to:
+  /// **'Glyphs'**
+  String get glyphs;
+
+  /// No description provided for @glyphsMajor.
+  ///
+  /// In en, this message translates to:
+  /// **'Major Glyphs'**
+  String get glyphsMajor;
+
+  /// No description provided for @glyphsMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor Glyphs'**
+  String get glyphsMinor;
+
+  /// No description provided for @glyphSlotEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty slot'**
+  String get glyphSlotEmpty;
+
+  /// No description provided for @glyphSlotHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to choose a glyph'**
+  String get glyphSlotHint;
+
+  /// No description provided for @glyphRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove glyph'**
+  String get glyphRemove;
+
+  /// No description provided for @glyphInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Already in this build'**
+  String get glyphInUse;
+
+  /// No description provided for @glyphChooseMajor.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a major glyph'**
+  String get glyphChooseMajor;
+
+  /// No description provided for @glyphChooseMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a minor glyph'**
+  String get glyphChooseMinor;
 }
 
 class _AppLocalizationsDelegate

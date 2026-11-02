@@ -12,7 +12,17 @@ import "package:ltc/core/talent_build/class_build.dart";
 ///   The ranks follow from that, so nothing else is needed.
 /// - Ranks only, like `tbc-mage-05-0-0`: a digit per talent for each tree. Used
 ///   when a build has no complete order, such as one imported from this form.
+///
+/// Either can end in `-g` and a build's glyphs, like `wotlk-mage-o0a1c2k-g00v1b4`.
 String buildShareCode(ClassBuild build) {
+  final code = _talentCode(build);
+  if (build.glyphIds.isEmpty) return code;
+  final glyphs = build.glyphIds.map(_encodeGlyph).join();
+  final body = "$code$_glyphMarker$glyphs";
+  return "$body${_checksum(body)}";
+}
+
+String _talentCode(ClassBuild build) {
   final exp = build.expansionCode.toLowerCase();
 
   // Stable internal class code
@@ -46,16 +56,49 @@ class ParsedShareCode {
   /// [talentsInShareOrder]. Null if the code only has ranks.
   final List<int>? order;
 
-  ParsedShareCode(this.expansion, this.classCode, this.trees, {this.order});
+  /// Empty if the code has no glyphs.
+  final List<int> glyphIds;
+
+  ParsedShareCode(
+    this.expansion,
+    this.classCode,
+    this.trees, {
+    this.order,
+    this.glyphIds = const [],
+  });
 }
 
 final _codeRegex = RegExp(
   r"^([a-z_]+)-([a-z]+)-([0-9]+)-([0-9]+)-([0-9]+)(?:-([0-9]+)-([0-9]+)-([0-9]+))?$",
 );
 final _orderedCodeRegex = RegExp(r"^([a-z_]+)-([a-z]+)-o([0-9a-v]+)$");
+final _glyphsRegex = RegExp(r"-g([0-9a-v]+)$");
 
 ParsedShareCode? parseShareCode(String code) {
   final normalized = code.trim().toLowerCase();
+  final glyphs = _glyphsRegex.firstMatch(normalized);
+  if (glyphs == null) return _parseTalentCode(normalized);
+
+  final payload = glyphs.group(1)!;
+  final split = payload.length - _pairLength;
+  if (split <= 0 || split % _glyphLength != 0) return null;
+  final body = normalized.substring(0, normalized.length - _pairLength);
+  if (payload.substring(split) != _checksum(body)) return null;
+
+  final talents = _parseTalentCode(normalized.substring(0, glyphs.start));
+  if (talents == null) return null;
+  return ParsedShareCode(
+    talents.expansion,
+    talents.classCode,
+    talents.trees,
+    order: talents.order,
+    glyphIds: [
+      for (var i = 0; i < split; i += _glyphLength) _decodeGlyph(payload, i),
+    ],
+  );
+}
+
+ParsedShareCode? _parseTalentCode(String normalized) {
   final ordered = _orderedCodeRegex.firstMatch(normalized);
   if (ordered != null) return _parseOrderedCode(ordered);
 
@@ -98,11 +141,19 @@ const _base32 = "0123456789abcdefghijklmnopqrstuv";
 const _pairLength = 2;
 const _maxRun = 8;
 const _runBits = 3;
+// A glyph takes one character more than a pair: its id, up to 15 bits.
+const _glyphMarker = "-g";
+const _glyphLength = 3;
 
 String _encodePair(int value) => "${_base32[value >> 5]}${_base32[value & 31]}";
 
 int _decodePair(String text, int at) =>
     _base32.indexOf(text[at]) << 5 | _base32.indexOf(text[at + 1]);
+
+String _encodeGlyph(int id) => "${_base32[id >> 10]}${_encodePair(id & 1023)}";
+
+int _decodeGlyph(String text, int at) =>
+    _base32.indexOf(text[at]) << 10 | _decodePair(text, at + 1);
 
 /// Null if the sequence doesn't account for every rank, as with a build imported
 /// from a ranks-only code.

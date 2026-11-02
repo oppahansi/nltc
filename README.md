@@ -29,8 +29,9 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 - **Three editions:** Original, Classic and Forever, each with its own talent data.
 - **Talent calculator:** interactive trees that enforce row requirements, prerequisites and point limits, with undo and a build order view.
 - **Forever's Legacy system:** spend Legacy points across its three trees, with their own cap and build order.
+- **Glyphs:** choose major and minor glyphs for WotLK builds.
 - **Saved builds:** save builds on your device with your own titles.
-- **Sharing:** export and import compact share codes that carry the build order, and load the right edition and class by themselves.
+- **Sharing:** export and import compact share codes that carry the build order and glyphs, and load the right edition and class by themselves.
 - **Backups:** export and restore your saved builds through the system file picker.
 - **English and German:** switch language at any time.
 
