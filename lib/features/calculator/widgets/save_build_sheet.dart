@@ -6,6 +6,7 @@ import "package:exui/exui.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -60,9 +61,9 @@ class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
 
     return [
           loc.save_build.text(
-            style: headlineMedium(
-              context,
-            ).withColor(classColor).withWeight(FontWeight.bold),
+            style: headlineMedium(context)
+                .withColor(classColor)
+                .withWeight(FontWeight.bold),
           ),
           gapSize(context).gapColumn,
           TextField(
@@ -101,9 +102,9 @@ class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
               style: FilledButton.styleFrom(
                 backgroundColor: expColor,
                 disabledBackgroundColor: Colors.grey[700],
-                textStyle: bodyLarge(
-                  context,
-                ).withColor(Colors.black).withWeight(FontWeight.bold),
+                textStyle: bodyLarge(context)
+                    .withColor(Colors.black)
+                    .withWeight(FontWeight.bold),
               ),
               onPressed: _submit,
               child: loc.save.capitalize().text(
@@ -136,7 +137,10 @@ class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
       return buildState.getBuildTitle();
     }
 
-    final spentPerTree = buildState.getPointsSpentPerTree();
+    // Only the class's trees: Legacy points aren't part of a spec's summary.
+    final spentPerTree = buildState.getPointsSpentPerTree().take(
+      firstLegacyTreeId,
+    );
 
     return "$localizedClassName (${spentPerTree.join("/")})";
   }

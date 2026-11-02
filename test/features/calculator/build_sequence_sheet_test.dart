@@ -15,6 +15,7 @@ import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 import "package:ltc/features/calculator/widgets/build_sequence_sheet.dart";
+import "package:ltc/features/calculator/widgets/save_build_sheet.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 // Relative Project Imports
@@ -112,6 +113,27 @@ void main() {
     await settle(tester);
 
     expect(find.text("No points spent."), findsOneWidget);
+  });
+
+  testWidgets("a build's default title leaves out Legacy points", (
+    tester,
+  ) async {
+    await select(tester, _forever);
+    spendPoints();
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(body: SaveBuildSheet()),
+        ),
+      ),
+    );
+    await settle(tester);
+
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.controller!.text, endsWith("(1/0/0)"));
   });
 
   testWidgets("other editions have no tabs", (tester) async {
