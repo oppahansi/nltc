@@ -7,7 +7,6 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
 import "package:ltc/core/utils/constants.dart";
-import "package:ltc/features/builds/widgets/build_fetch_form.dart";
 import "package:ltc/core/widgets/saved_builds.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/features/builds/widgets/share_code_import.dart";
@@ -48,8 +47,6 @@ class _HomeScreenState extends ConsumerState<BuildsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const BuildFetchForm(),
-                  gapSize(context).gapColumn,
                   const ShareCodeImport(),
                   gapSize(context).gapColumn,
                   const SavedBuilds(),

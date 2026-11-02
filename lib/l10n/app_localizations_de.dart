@@ -52,13 +52,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get rank => 'rang';
 
   @override
-  String get region => 'region';
-
-  @override
   String get remove => 'entfernen';
-
-  @override
-  String get required => 'erforderlich';
 
   @override
   String get reset => 'zurücksetzen';
@@ -67,13 +61,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get restore => 'wiederherstellen';
 
   @override
-  String get retry => 'wiederholen';
-
-  @override
   String get save => 'speichern';
-
-  @override
-  String get server => 'server';
 
   @override
   String get settings => 'einstellungen';
@@ -105,12 +93,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get build_title => 'Build-Titel';
 
   @override
-  String get character_builds => 'Charakter-Builds';
-
-  @override
-  String get character_name => 'Charaktername';
-
-  @override
   String get delete_build => 'Build löschen';
 
   @override
@@ -124,9 +106,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get load_build => 'Build laden';
-
-  @override
-  String get load_builds => 'Builds laden';
 
   @override
   String get load_more => 'Mehr laden';
@@ -171,10 +150,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Build-Liste konnte nicht geladen werden. Bitte überprüfe deine Internetverbindung.';
 
   @override
-  String get failed_to_load_realms =>
-      'Realm-Liste konnte nicht geladen werden. Bitte überprüfe deine Internetverbindung.';
-
-  @override
   String get import_build_code => 'Import Build-Url/-Code';
 
   @override
@@ -210,9 +185,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get nothing_to_save => 'Nichts zu speichern.';
-
-  @override
-  String get please_select_a_realm => 'Bitte wähle einen Realm.';
 
   @override
   String get pick_a_backup_file => 'Backup-Datei auswählen';
@@ -254,9 +226,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get unavailable_for_this_expansion =>
       'Für diese Erweiterung nicht verfügbar.';
-
-  @override
-  String get vanilla_only => 'Nur für Anniversary Realms';
 
   @override
   String get tutorialTitle => 'Talentrechner Tutorial';

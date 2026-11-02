@@ -29,7 +29,7 @@ There are no tests (`test/` does not exist), so verify changes with `flutter ana
 
 ## Battle.net import
 
-The Battle.net integration and its backend are due to be revisited. Don't rely on the README's setup steps: it shows shell env vars, but `battlenet_service.dart` reads `String.fromEnvironment`, which only sees `--dart-define` values.
+Removed along with its `ltcbackend` dependency. It will be revisited later; restore it from git history when that happens.
 
 ## Git
 

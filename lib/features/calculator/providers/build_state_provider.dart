@@ -131,23 +131,6 @@ class BuildState extends _$BuildState {
     state = AsyncData(saved);
   }
 
-  Future<void> loadExternalBuild(ClassBuild external) async {
-    for (final talentName in external.talentRanks.keys) {
-      final talent = external.talentTreeTalents
-          .expand((v) => v)
-          .firstWhere(
-            (t) =>
-                t.names[SettingsService.getSettings().locale.languageCode] ==
-                talentName,
-            orElse: () => external.talentTreeTalents.expand((v) => v).first,
-          );
-      final rank = external.talentRanks[talentName]!;
-      talent.currentRank = rank.clamp(0, talent.ranks.length);
-    }
-
-    state = AsyncData(external);
-  }
-
   Future<void> startNewBuild() async {
     final settings = ref.watch(settingsProvider).value!;
     final selectedExp = settings.selectedExp;

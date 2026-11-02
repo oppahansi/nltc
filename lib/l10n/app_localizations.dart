@@ -182,23 +182,11 @@ abstract class AppLocalizations {
   /// **'rank'**
   String get rank;
 
-  /// No description provided for @region.
-  ///
-  /// In en, this message translates to:
-  /// **'region'**
-  String get region;
-
   /// No description provided for @remove.
   ///
   /// In en, this message translates to:
   /// **'remove'**
   String get remove;
-
-  /// No description provided for @required.
-  ///
-  /// In en, this message translates to:
-  /// **'required'**
-  String get required;
 
   /// No description provided for @reset.
   ///
@@ -212,23 +200,11 @@ abstract class AppLocalizations {
   /// **'restore'**
   String get restore;
 
-  /// No description provided for @retry.
-  ///
-  /// In en, this message translates to:
-  /// **'retry'**
-  String get retry;
-
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
   /// **'save'**
   String get save;
-
-  /// No description provided for @server.
-  ///
-  /// In en, this message translates to:
-  /// **'server'**
-  String get server;
 
   /// No description provided for @settings.
   ///
@@ -284,18 +260,6 @@ abstract class AppLocalizations {
   /// **'Build Title'**
   String get build_title;
 
-  /// No description provided for @character_builds.
-  ///
-  /// In en, this message translates to:
-  /// **'Character Builds'**
-  String get character_builds;
-
-  /// No description provided for @character_name.
-  ///
-  /// In en, this message translates to:
-  /// **'Character Name'**
-  String get character_name;
-
   /// No description provided for @delete_build.
   ///
   /// In en, this message translates to:
@@ -325,12 +289,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Load Build'**
   String get load_build;
-
-  /// No description provided for @load_builds.
-  ///
-  /// In en, this message translates to:
-  /// **'Load Builds'**
-  String get load_builds;
 
   /// No description provided for @load_more.
   ///
@@ -410,12 +368,6 @@ abstract class AppLocalizations {
   /// **'Failed to load builds. Make sure you have internet access.'**
   String get failed_to_load_builds;
 
-  /// No description provided for @failed_to_load_realms.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to load realms. Make sure you have internet access.'**
-  String get failed_to_load_realms;
-
   /// No description provided for @import_build_code.
   ///
   /// In en, this message translates to:
@@ -488,12 +440,6 @@ abstract class AppLocalizations {
   /// **'Nothing to save.'**
   String get nothing_to_save;
 
-  /// No description provided for @please_select_a_realm.
-  ///
-  /// In en, this message translates to:
-  /// **'Please select a realm.'**
-  String get please_select_a_realm;
-
   /// No description provided for @pick_a_backup_file.
   ///
   /// In en, this message translates to:
@@ -565,12 +511,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unavailable for this expansion.'**
   String get unavailable_for_this_expansion;
-
-  /// No description provided for @vanilla_only.
-  ///
-  /// In en, this message translates to:
-  /// **'Anniversary Realms Only'**
-  String get vanilla_only;
 
   /// No description provided for @tutorialTitle.
   ///

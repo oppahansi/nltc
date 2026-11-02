@@ -52,13 +52,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rank => 'rank';
 
   @override
-  String get region => 'region';
-
-  @override
   String get remove => 'remove';
-
-  @override
-  String get required => 'required';
 
   @override
   String get reset => 'reset';
@@ -67,13 +61,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get restore => 'restore';
 
   @override
-  String get retry => 'retry';
-
-  @override
   String get save => 'save';
-
-  @override
-  String get server => 'server';
 
   @override
   String get settings => 'settings';
@@ -105,12 +93,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get build_title => 'Build Title';
 
   @override
-  String get character_builds => 'Character Builds';
-
-  @override
-  String get character_name => 'Character Name';
-
-  @override
   String get delete_build => 'Delete Build';
 
   @override
@@ -124,9 +106,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get load_build => 'Load Build';
-
-  @override
-  String get load_builds => 'Load Builds';
 
   @override
   String get load_more => 'Load more';
@@ -171,10 +150,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to load builds. Make sure you have internet access.';
 
   @override
-  String get failed_to_load_realms =>
-      'Failed to load realms. Make sure you have internet access.';
-
-  @override
   String get import_build_code => 'Import Build Url / Code';
 
   @override
@@ -210,9 +185,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nothing_to_save => 'Nothing to save.';
-
-  @override
-  String get please_select_a_realm => 'Please select a realm.';
 
   @override
   String get pick_a_backup_file => 'Pick a backup file';
@@ -253,9 +225,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get unavailable_for_this_expansion =>
       'Unavailable for this expansion.';
-
-  @override
-  String get vanilla_only => 'Anniversary Realms Only';
 
   @override
   String get tutorialTitle => 'Talent Calculator Tutorial';
