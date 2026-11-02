@@ -112,6 +112,27 @@ void main() {
     });
   });
 
+  group("talent names", () {
+    test("commas are followed by a space", () async {
+      expect(
+        await strings(
+          "SELECT name FROM talent_names WHERE name GLOB '*,[A-Za-z]*'",
+        ),
+        isEmpty,
+      );
+    });
+
+    test("names from later game versions are gone", () async {
+      expect(
+        await strings(
+          "SELECT name FROM talent_names WHERE name IN ('Improved Sayaad', "
+          "'Unholy Frenzy', 'Verbesserte Sayaad', 'Unheilige Raserei')",
+        ),
+        isEmpty,
+      );
+    });
+  });
+
   group("assets", () {
     List<String> missing(Iterable<String> paths) => [
       for (final path in paths)

@@ -18485,7 +18485,7 @@ INSERT INTO "talent_names" ("talentId","languageCode","name") VALUES
  (1524,'en','Elemental Oath'),
  (1525,'en','Astral Shift'),
  (1526,'en','Lava Flows'),
- (1527,'en','Storm,Earth and Fire'),
+ (1527,'en','Storm, Earth and Fire'),
  (1528,'en','Thunderstorm'),
  (1529,'en','Shamanism'),
  (1530,'en','Booming Echoes'),
@@ -18580,7 +18580,7 @@ INSERT INTO "talent_names" ("talentId","languageCode","name") VALUES
  (1619,'en','Fel Domination'),
  (1620,'en','Master Summoner'),
  (1621,'en','Fel Vitality'),
- (1622,'en','Improved Sayaad'),
+ (1622,'en','Improved Succubus'),
  (1623,'en','Master Demonologist'),
  (1624,'en','Master Conjuror'),
  (1625,'en','Unholy Power'),
@@ -18722,7 +18722,7 @@ INSERT INTO "talent_names" ("talentId","languageCode","name") VALUES
  (1761,'en','Mark of Blood'),
  (1762,'en','Veteran of the Third War'),
  (1763,'en','Vendetta'),
- (1764,'en','Unholy Frenzy'),
+ (1764,'en','Hysteria'),
  (1765,'en','Sudden Doom'),
  (1766,'en','Heart Strike'),
  (1767,'en','Might of Mograine'),
@@ -23177,7 +23177,7 @@ INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (91
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (910,0,'de','Erhöht die Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Inkubus,Teufelsjägers und Eurer Teufelswache um 5% und erhöht Euer maximales Mana um 1%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (910,1,'de','Erhöht die Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Inkubus,Teufelsjägers und Eurer Teufelswache um 10% und erhöht Euer maximales Mana um 2%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (910,2,'de','Erhöht die Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Inkubus,Teufelsjägers und Eurer Teufelswache um 15% und erhöht Euer maximales Mana um 3%.');
-INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (911,'de','Verbesserte Sayaad');
+INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (911,'de','Verbesserter Sukkubus');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (911,0,'de','Erhöht den Effekt der Zauber ''Schmerzenspeitsche'' und ''Besänftigender Kuss'' Eures Sukkubus und Inkubus um 10% und die Dauer der Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 10%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (911,1,'de','Erhöht den Effekt der Zauber ''Schmerzenspeitsche'' und ''Besänftigender Kuss'' Eures Sukkubus und Inkubus um 20% und die Dauer der Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 20%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (911,2,'de','Erhöht den Effekt der Zauber ''Schmerzenspeitsche'' und ''Besänftigender Kuss'' Eures Sukkubus und Inkubus um 30% und die Dauer der Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 30%.');
@@ -25500,7 +25500,7 @@ INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (15
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1526,0,'de','Erhöht den kritischen Schadensbonus von ''Lavaeruption'' um zusätzlich 6%,und wenn Euer Zauber ''Flammenschock'' gebannt wird,wird Euer Zaubertempo 6 sec lang um 10% erhöht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1526,1,'de','Erhöht den kritischen Schadensbonus von ''Lavaeruption'' um zusätzlich 12%,und wenn Euer Zauber ''Flammenschock'' gebannt wird,wird Euer Zaubertempo 6 sec lang um 20% erhöht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1526,2,'de','Erhöht den kritischen Schadensbonus von ''Lavaeruption'' um zusätzlich 24%,und wenn Euer Zauber ''Flammenschock'' gebannt wird,wird Euer Zaubertempo 6 sec lang um 30% erhöht.');
-INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1527,'de','Sturm,Erde und Feuer');
+INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1527,'de','Sturm, Erde und Feuer');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1527,0,'de','Verringert die Abklingzeit Eures Zaubers ''Kettenblitzschlag'' um 0,75 Sek. Zudem hat Euer Totem der Erdbindung hat eine Chance von 33%,Ziele 5 sec lang festzuwurzeln,wenn es aufgestellt wird,und der regelmäßige Schaden Eures Zaubers ''Flammenschock'' wird um 20% erhöht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1527,1,'de','Verringert die Abklingzeit Eures Zaubers ''Kettenblitzschlag'' um 1,5 Sek. Zudem hat Euer Totem der Erdbindung hat eine Chance von 66%,Ziele 5 sec lang festzuwurzeln,wenn es aufgestellt wird,und der regelmäßige Schaden Eures Zaubers ''Flammenschock'' wird um 40% erhöht.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1527,2,'de','Verringert die Abklingzeit Eures Zaubers ''Kettenblitzschlag'' um 2,5 Sek. Zudem hat Euer Totem der Erdbindung hat eine Chance von 100%,Ziele 5 sec lang festzuwurzeln,wenn es aufgestellt wird,und der regelmäßige Schaden Eures Zaubers ''Flammenschock'' wird um 60% erhöht.');
@@ -25847,7 +25847,7 @@ INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (16
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1621,0,'de','Erhöht die Ausdauer und Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Teufelsjägers und Eurer Teufelswache um 5% und erhöht sowohl Eure maximale Gesundheit als auch Euer maximales Mana um 1%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1621,1,'de','Erhöht die Ausdauer und Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Teufelsjägers und Eurer Teufelswache um 10% und erhöht sowohl Eure maximale Gesundheit als auch Euer maximales Mana um 2%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1621,2,'de','Erhöht die Ausdauer und Intelligenz Eures Wichtels,Leerwandlers,Sukkubus,Teufelsjägers und Eurer Teufelswache um 15% und erhöht sowohl Eure maximale Gesundheit als auch Euer maximales Mana um 3%.');
-INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1622,'de','Verbesserte Sayaad');
+INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1622,'de','Verbesserter Sukkubus');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1622,0,'de','Verringert die Zauberzeit des Zaubers ''Verführung'' Eures Sukkubus um 22% und erhöht die Dauer seiner Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 10%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1622,1,'de','Verringert die Zauberzeit des Zaubers ''Verführung'' Eures Sukkubus um 44% und erhöht die Dauer seiner Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 20%.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1622,2,'de','Verringert die Zauberzeit des Zaubers ''Verführung'' Eures Sukkubus um 66% und erhöht die Dauer seiner Zauber ''Verführung'' und ''Geringe Unsichtbarkeit'' um 30%.');
@@ -26378,7 +26378,7 @@ INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (17
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1763,0,'de','Heilt Euch um bis zu 2% Eurer maximalen Gesundheit,wenn Ihr ein Ziel tötet,das Erfahrung oder Ehre gewährt.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1763,1,'de','Heilt Euch um bis zu 4% Eurer maximalen Gesundheit,wenn Ihr ein Ziel tötet,das Erfahrung oder Ehre gewährt.');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1763,2,'de','Heilt Euch um bis zu 6% Eurer maximalen Gesundheit,wenn Ihr ein Ziel tötet,das Erfahrung oder Ehre gewährt.');
-INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1764,'de','Unheilige Raserei');
+INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1764,'de','Bösartigkeit');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1764,0,'de','Versetzt eine freundliche Einheit 30 sec lang in einen Blutrausch. Das Ziel wird wütend und sein verursachter körperlicher Schaden um 20% erhöht. Es verliert jedoch pro Sekunde Gesundheit in Höhe von 1% seiner maximalen Gesundheit.');
 INSERT OR IGNORE INTO talent_names ("talentId","languageCode","name") VALUES (1765,'de','Hereinbrechende Verdammnis');
 INSERT OR IGNORE INTO rank_descriptions ("talentId","rank","languageCode","description") VALUES (1765,0,'de','Eure Fähigkeiten ''Blutstoß'' und ''Herzstoß'' haben eine Chance von 5%,dass zusätzlich auf das Ziel der Zauber ''Todesmantel'' kostenlos gewirkt wird.');

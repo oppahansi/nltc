@@ -218,6 +218,29 @@ void main() {
         expect(total(), 2);
       },
     );
+
+    test("old saves using a since corrected talent name still load", () async {
+      for (final (name, expansion, code, classId) in [
+        ("Unholy Frenzy", wotlk, "wotlk", 9),
+        ("Unheilige Raserei", wotlk, "wotlk", 9),
+        ("Verbesserte Sayaad", tbc, "tbc", 7),
+      ]) {
+        final id = await (await Db.getUserDbInstance()).insert(
+          ClassBuild.tableName,
+          {
+            "title": "old",
+            "expansion_id": expansion,
+            "expansion_code": code,
+            "class_id": classId,
+            "class_name": "x",
+            "talent_ranks": jsonEncode({name: 1}),
+            "talents_build_sequence": "[]",
+          },
+        );
+        await notifier().loadSavedBuild(id);
+        expect(total(), 1, reason: name);
+      }
+    });
   });
 
   group("share codes", () {

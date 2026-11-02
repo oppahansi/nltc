@@ -10,6 +10,17 @@ import "package:ltc/features/calculator/models/build_point.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 import "package:ltc/features/calculator/repos/build_points_repo.dart";
 
+/// Talent names that were corrected after release. Saves from older versions
+/// are keyed by name, so they need to keep finding these talents.
+const _renamedTalents = {
+  "Improved Sayaad": "Improved Succubus",
+  "Verbesserte Sayaad": "Verbesserter Sukkubus",
+  "Unholy Frenzy": "Hysteria",
+  "Unheilige Raserei": "Bösartigkeit",
+  "Storm,Earth and Fire": "Storm, Earth and Fire",
+  "Sturm,Erde und Feuer": "Sturm, Erde und Feuer",
+};
+
 class ClassBuildsRepo {
   static final ClassBuildsRepo _instance = ClassBuildsRepo._internal();
   factory ClassBuildsRepo() => _instance;
@@ -124,6 +135,10 @@ class ClassBuildsRepo {
       expansionId: expansionId,
       classId: classId,
     );
+    _renamedTalents.forEach((oldName, newName) {
+      final id = talentIdsByName[newName];
+      if (id != null) talentIdsByName[oldName] = id;
+    });
 
     // The stored class name is in the language it was saved in, and imports
     // from older versions stored a tree name. Always show the real one.
