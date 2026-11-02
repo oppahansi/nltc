@@ -3,15 +3,21 @@ import UIKit
 
 class BackupChannel: NSObject, UIDocumentPickerDelegate {
     private let channelName = "app.backup"
-    private weak var controller: FlutterViewController?
     private var result: FlutterResult?
     private var dbPath: String?
     private var mode: String? // "export" or "import"
 
-    init(controller: FlutterViewController) {
+    // Resolved when needed: with the UIScene lifecycle, no window exists yet
+    // when the channel is created.
+    private var presenter: UIViewController? {
+        let scene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+        return scene?.windows.first { $0.isKeyWindow }?.rootViewController
+    }
+
+    init(messenger: FlutterBinaryMessenger) {
         super.init()
-        self.controller = controller
-        let messenger = controller.binaryMessenger
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: messenger)
         channel.setMethodCallHandler(handle)
     }
@@ -42,7 +48,7 @@ class BackupChannel: NSObject, UIDocumentPickerDelegate {
             picker.allowsMultipleSelection = false
             picker.delegate = self
             picker.modalPresentationStyle = .formSheet
-            controller?.present(picker, animated: true, completion: nil)
+            presenter?.present(picker, animated: true, completion: nil)
         case "importDb":
             guard let args = call.arguments as? [String: Any], let path = args["dbPath"] as? String else {
                 result(FlutterError(code: "ARGS", message: "Missing dbPath", details: nil))
@@ -60,7 +66,7 @@ class BackupChannel: NSObject, UIDocumentPickerDelegate {
             picker.allowsMultipleSelection = false
             picker.delegate = self
             picker.modalPresentationStyle = .formSheet
-            controller?.present(picker, animated: true, completion: nil)
+            presenter?.present(picker, animated: true, completion: nil)
         default:
             result(FlutterMethodNotImplemented)
         }
