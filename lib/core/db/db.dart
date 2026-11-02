@@ -246,28 +246,4 @@ class Db {
     return join(dir.path, userDbNane);
   }
 
-  /// Create a timestamped backup of the DB inside the app's documents/backups.
-  /// Returns the created File.
-  static Future<File> backupToAppFolder() async {
-    await close();
-    final srcPath = await getDbPath();
-    final docs = await getApplicationDocumentsDirectory();
-    final backupsDir = Directory(join(docs.path, "backups"));
-    await backupsDir.create(recursive: true);
-
-    String two(int n) => n.toString().padLeft(2, '0');
-    final now = DateTime.now();
-    final name =
-        "${appName}_${now.year}${two(now.month)}${two(now.day)}_${two(now.hour)}${two(now.minute)}${two(now.second)}.db";
-    final dest = File(join(backupsDir.path, name));
-    return await File(srcPath).copy(dest.path);
-  }
-
-  /// Restore the DB from a file (overwrites current DB). Closes DB beforehand.
-  static Future<void> restoreFromFile(File source) async {
-    await close();
-    final destPath = await getDbPath();
-    final bytes = await source.readAsBytes();
-    await File(destPath).writeAsBytes(bytes, flush: true);
-  }
 }

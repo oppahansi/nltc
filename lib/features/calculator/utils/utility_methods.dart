@@ -6,10 +6,6 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "package:ltc/core/models/data_entities.dart";
-import "package:ltc/core/services/settings_service.dart";
-import "package:ltc/l10n/app_localizations.dart";
-import "package:ltc/l10n/app_localizations_de.dart";
-import "package:ltc/l10n/app_localizations_en.dart";
 
 String getBgImage(String name) {
   return "assets/images/bgs/$name.webp";
@@ -42,12 +38,3 @@ Map<Talent, List<Talent>> getTalentSupports(List<Talent> talents) {
   return {for (final t in talents) t: t.supports ?? const []};
 }
 
-AppLocalizations getAppLocalizations() {
-  switch (SettingsService.getSettings().locale.languageCode) {
-    case "de":
-      return AppLocalizationsDe();
-    case "en":
-    default:
-      return AppLocalizationsEn();
-  }
-}

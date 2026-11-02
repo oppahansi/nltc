@@ -6,7 +6,6 @@ import "package:flutter/services.dart";
 import "package:exui/exui.dart";
 import "package:exui/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:flutter_riverpod/legacy.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
@@ -23,8 +22,6 @@ import "package:ltc/features/home/expansion_selection.dart";
 import "package:ltc/features/home/home_button.dart";
 import "package:ltc/features/settings/settings_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
-
-final lastBackPressedProvider = StateProvider<DateTime?>((ref) => null);
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const String path = "/home";

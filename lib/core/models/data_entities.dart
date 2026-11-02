@@ -6,13 +6,6 @@ class Expansion {
   Expansion({required this.id, required this.code, required this.names});
 }
 
-class Language {
-  final String code;
-  final String name;
-
-  Language({required this.code, required this.name});
-}
-
 class Class {
   final int id;
   final String color;
@@ -149,11 +142,4 @@ class Rank {
     required this.rank,
     required this.descriptions,
   });
-}
-
-class Dependency {
-  final int talentId;
-  final int dependencyId;
-
-  Dependency({required this.talentId, required this.dependencyId});
 }

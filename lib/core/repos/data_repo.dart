@@ -193,25 +193,4 @@ class DataRepo {
     return talentsMap;
   }
 
-  /// Fetches dependencies for a specific talent.
-  Future<List<Dependency>> getDependenciesForTalent(int talentId) async {
-    final db = await Db.getDataDbInstance();
-    final result = await db.rawQuery(
-      '''
-      SELECT talentId, dependencyId
-      FROM dependencies
-      WHERE talentId = ?
-    ''',
-      [talentId],
-    );
-
-    return result
-        .map(
-          (row) => Dependency(
-            talentId: row['talentId'] as int,
-            dependencyId: row['dependencyId'] as int,
-          ),
-        )
-        .toList();
-  }
 }

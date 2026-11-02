@@ -252,7 +252,7 @@ void main() {
       );
       expect(pairs.length, 9 + 9 + 10);
       for (final pair in pairs) {
-        final expansion = idsToExpansions[pair["e"]]!;
+        final expansion = const {1: "vanilla", 2: "tbc", 3: "wotlk"}[pair["e"]]!;
         final classCode = (pair["code"] as String).toLowerCase();
         final counts = await db.rawQuery(
           "SELECT COUNT(*) n FROM talents WHERE expansion = ? AND classId = ? "

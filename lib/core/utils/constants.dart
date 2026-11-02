@@ -7,7 +7,6 @@ const String dataDbPath = "assets/db/$dataDbName";
 const String userDbNane = "ltc_user.db";
 const String userDbPath = "assets/db/$userDbNane";
 
-const String settingsTable = "settings";
 const String settingsKeyLocale = "locale";
 const String settingsValueLocaleDefault = "en";
 const String settingsKeyShowOrderNumbers = "show_order_numbers";
@@ -15,58 +14,9 @@ const String settingsKeyTutorialSeen = "tutorial_seen";
 const String settingsKeySelectedExpId = "selected_expansion_id";
 const String settingsKeySelectedClassId = "selected_class_id";
 
-const treeIcons = {
-  "druid_balance": "spell_nature_starfall",
-  "druid_feralcombat": "ability_racial_bearform",
-  "druid_restoration": "spell_nature_healingtouch",
-  "hunter_beastmastery": "ability_hunter_beasttaming",
-  "hunter_marksmanship": "ability_marksmanship",
-  "hunter_survival": "ability_hunter_swiftstrike",
-  "mage_arcane": "spell_holy_magicalsentry",
-  "mage_fire": "spell_fire_flamebolt",
-  "mage_frost": "spell_frost_frostbolt02",
-  "paladin_holy": "spell_holy_holybolt",
-  "paladin_protection": "spell_holy_devotionaura",
-  "paladin_retribution": "spell_holy_auraoflight",
-  "priest_discipline": "spell_holy_powerwordshield",
-  "priest_holy": "spell_holy_holybolt",
-  "priest_shadow": "spell_shadow_shadowwordpain",
-  "rogue_assassination": "ability_rogue_eviscerate",
-  "rogue_combat": "ability_backstab",
-  "rogue_subtlety": "ability_stealth",
-  "shaman_elemental": "spell_nature_lightning",
-  "shaman_enhancement": "spell_nature_lightningshield",
-  "shaman_restoration": "spell_nature_magicimmunity",
-  "warlock_affliction": "spell_shadow_deathcoil",
-  "warlock_demonology": "spell_shadow_metamorphosis",
-  "warlock_destruction": "spell_shadow_rainoffire",
-  "warrior_arms": "ability_rogue_eviscerate",
-  "warrior_fury": "ability_warrior_innerrage",
-  "warrior_protection": "ability_warrior_defensivestance",
-  "deathknight_blood": "spell_deathknight_bloodpresence",
-  "deathknight_frost": "spell_deathknight_frostpresence",
-  "deathknight_unholy": "spell_deathknight_unholypresence",
-};
-
-const expansions = {"vanilla", "tbc", "wotlk"};
 const expansionsToIds = {"vanilla": 1, "tbc": 2, "wotlk": 3};
-const idsToExpansions = {1: "vanilla", 2: "tbc", 3: "wotlk"};
-const exapnsionsToMaxRows = {"vanilla": 11, "tbc": 11, "wotlk": 12};
 const expansionToMaxTalentPoints = {"vanilla": 51, "tbc": 61, "wotlk": 71};
-const expansionIdToMaxTalentPoints = {1: 51, 2: 61, 3: 71};
 const maxColumns = 4;
-final classNames = {
-  "druid",
-  "hunter",
-  "mage",
-  "paladin",
-  "priest",
-  "rogue",
-  "shaman",
-  "warlock",
-  "warrior",
-  "deathknight",
-};
 const classNamesToIds = {
   "druid": 0,
   "hunter": 1,
@@ -91,43 +41,6 @@ const idsToClasses = {
   8: "warrior",
   9: "deathknight",
 };
-final classesByExpansion = {
-  "vanilla": [
-    "druid",
-    "hunter",
-    "mage",
-    "paladin",
-    "priest",
-    "rogue",
-    "shaman",
-    "warlock",
-    "warrior",
-  ],
-  "tbc": [
-    "druid",
-    "hunter",
-    "mage",
-    "paladin",
-    "priest",
-    "rogue",
-    "shaman",
-    "warlock",
-    "warrior",
-  ],
-  "wotlk": [
-    "druid",
-    "hunter",
-    "mage",
-    "paladin",
-    "priest",
-    "rogue",
-    "shaman",
-    "warlock",
-    "warrior",
-    "deathknight",
-  ],
-};
-
 final classNamesWithTreeNames = {
   "druid": ["balance", "feral_combat", "restoration"],
   "hunter": ["beast_mastery", "marksmanship", "survival"],

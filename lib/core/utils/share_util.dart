@@ -69,18 +69,6 @@ ParsedShareCode? parseShareCode(String code) {
   return ParsedShareCode(expansion, cls, [t1, t2, t3]);
 }
 
-// Validate code against expected class & expansion and digits length vs talents.
-String? validateShareCode({required String code, required int expectedTrees}) {
-  final parsed = parseShareCode(code);
-  if (parsed == null) {
-    return "Invalid format. Expected exp-class-tree1-tree2-tree3";
-  }
-  if (parsed.trees.length != expectedTrees) {
-    return "Wrong number of trees";
-  }
-  return null;
-}
-
 // Optional helper to check share availability.
 bool canShareBuild(ClassBuild build) =>
     build.expansionCode.toLowerCase() != "vanilla";

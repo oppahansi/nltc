@@ -37,29 +37,6 @@ Color getExpansionColor(String expansion) {
   }
 }
 
-Map<String, List<Color>> getWoWExpansionColors() {
-  return {
-    'vanilla': [
-      Color(0xFFFFD700), // Gold for classic WoW logo
-      Color(0xFF1A2526), // Dark teal-blue for starry background
-      Color(0xFF4A3727), // Earthy brown for Azeroth landscapes
-      Color(0xFF3A5F3A), // Green for natural zones
-    ],
-    'tbc': [
-      Color(0xFF1B9C34), // Fel green for Outland and Dark Portal
-      Color(0xFF2E1B4F), // Deep purple for demonic/void themes
-      Color(0xFFFF4500), // Orange-red for Hellfire Peninsula
-      Color(0xFF0A0A0A), // Near-black for dark backgrounds
-    ],
-    'wotlk': [
-      Color(0xFF00B7EB), // Icy blue for Northrend and Lich King
-      Color(0xFF4682B4), // Steel blue for icy motifs
-      Color(0xFF2F2F2F), // Dark gray for Scourge themes
-      Color(0xFF6A0DAD), // Purple for necromantic/Dalaran elements
-    ],
-  };
-}
-
 Color primaryColor(BuildContext context) =>
     Theme.of(context).colorScheme.primary;
 
