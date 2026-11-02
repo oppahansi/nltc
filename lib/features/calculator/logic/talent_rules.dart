@@ -5,6 +5,17 @@ import "package:ltc/core/talent_build/class_build.dart";
 
 const pointsPerRow = 5;
 
+/// The points [talent]'s tree needs before it unlocks. Talent trees read top to
+/// bottom, gated by row, and Legacy trees left to right, gated by column.
+int _pointsRequired(Talent talent) =>
+    (isLegacyTree(talent.talentTreeId) ? talent.column : talent.row) *
+    pointsPerRow;
+
+/// The rank a prerequisite needs: all of them, except that one is enough in a
+/// Legacy tree, going by Wowhead's calculator.
+int _ranksRequiredOf(Talent prerequisite) =>
+    isLegacyTree(prerequisite.talentTreeId) ? 1 : prerequisite.ranks.length;
+
 /// The points spent on the same side of the build as [treeId]: its class's
 /// talents, or its Legacy perks, which have their own cap.
 int _pointsSpentAlongside(ClassBuild build, int treeId) {
@@ -28,13 +39,13 @@ bool isTalentEnabled(ClassBuild build, Talent talent) {
   }
 
   final pointsInTree = build.pointsSpentPerTree[talent.talentTreeId];
-  if (pointsInTree < talent.row * pointsPerRow) return false;
+  if (pointsInTree < _pointsRequired(talent)) return false;
 
   if (talent.dependencyId != null) {
     final dependency = build.talentTreeTalents[talent.talentTreeId].firstWhere(
       (t) => t.id == talent.dependencyId,
     );
-    if (dependency.currentRank < dependency.ranks.length) return false;
+    if (dependency.currentRank < _ranksRequiredOf(dependency)) return false;
   }
 
   return true;
@@ -53,8 +64,9 @@ bool canRemovePoint(ClassBuild build, Talent talent) {
 
   final tree = build.talentTreeTalents[talent.talentTreeId];
 
-  // A talent that depends on this one needs it to stay full.
-  if (tree.any((t) => t.dependencyId == talent.id && t.currentRank > 0)) {
+  // A talent that depends on this one needs it to keep its required rank.
+  if (talent.currentRank <= _ranksRequiredOf(talent) &&
+      tree.any((t) => t.dependencyId == talent.id && t.currentRank > 0)) {
     return false;
   }
 
@@ -62,7 +74,7 @@ bool canRemovePoint(ClassBuild build, Talent talent) {
   final pointsAfter = build.pointsSpentPerTree[talent.talentTreeId] - 1;
   for (final t in tree) {
     final ranksAfter = t.id == talent.id ? t.currentRank - 1 : t.currentRank;
-    if (ranksAfter > 0 && pointsAfter < t.row * pointsPerRow) return false;
+    if (ranksAfter > 0 && pointsAfter < _pointsRequired(t)) return false;
   }
 
   return true;

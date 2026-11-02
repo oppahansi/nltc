@@ -68,7 +68,7 @@ void main() {
       expect(
         await count(
           "classId = $legacyClassId AND "
-          '(talentTreeId NOT IN (3, 4, 5) OR row > 2 OR "column" > 3)',
+          '(talentTreeId NOT IN (3, 4, 5) OR row > 3 OR "column" > 2)',
         ),
         0,
       );

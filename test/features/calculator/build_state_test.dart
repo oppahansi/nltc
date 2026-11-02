@@ -272,9 +272,9 @@ void main() {
       await select(forever, druid);
     }
 
-    List<Talent> legacyTalents(int row) => [
+    List<Talent> legacyTalents(int column) => [
       for (final tree in build().talentTreeTalents.skip(firstLegacyTreeId))
-        ...tree.where((t) => t.row == row),
+        ...tree.where((t) => t.column == column),
     ];
 
     int legacySpent() => build().pointsSpentPerTree
@@ -308,18 +308,42 @@ void main() {
       expect(notifier().isTalentEnabled(classTalent), isTrue);
     });
 
-    test("Legacy perks unlock at 5 points per row in their tree", () async {
+    test("Legacy perks unlock at 5 points per column in their tree", () async {
       await startForever();
       final tree = build().talentTreeTalents[firstLegacyTreeId];
       final gated = tree.firstWhere(
-        (t) => t.row == 1 && t.dependencyId == null,
+        (t) => t.column == 1 && t.dependencyId == null,
       );
       expect(notifier().isTalentEnabled(gated), isFalse);
-      final first = tree.firstWhere((t) => t.row == 0);
+      final first = tree.firstWhere((t) => t.column == 0);
       for (var i = 0; i < pointsPerRow; i++) {
         notifier().addPoint(first);
       }
       expect(notifier().isTalentEnabled(gated), isTrue);
+    });
+
+    test("a Legacy perk needs one rank of its prerequisite", () async {
+      await startForever();
+      final tree = build().talentTreeTalents[firstLegacyTreeId];
+      final perk = tree.firstWhere(
+        (t) => t.column == 1 && t.dependencyId != null,
+      );
+      final prerequisite = tree.firstWhere((t) => t.id == perk.dependencyId);
+      final other = tree.firstWhere(
+        (t) => t.column == 0 && t.id != prerequisite.id,
+      );
+      for (var i = 0; i < pointsPerRow; i++) {
+        notifier().addPoint(other);
+      }
+      expect(notifier().isTalentEnabled(perk), isFalse);
+      notifier().addPoint(prerequisite);
+      expect(notifier().isTalentEnabled(perk), isTrue);
+      notifier().addPoint(perk);
+      expect(
+        notifier().canRemovePoint(talent: prerequisite),
+        isFalse,
+        reason: "Not the latest point, and its dependant needs its only rank",
+      );
     });
 
     test("Legacy perks don't hold back undoing talents", () async {

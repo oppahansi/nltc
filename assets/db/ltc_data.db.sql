@@ -1,4 +1,4 @@
-PRAGMA user_version = 2;
+PRAGMA user_version = 3;
 BEGIN TRANSACTION;
 
 DROP TABLE IF EXISTS "class_names";
@@ -54712,7 +54712,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO talent_trees ("classId","id","icon","background") VALUES (10, 3, 'legacy_professions', 'forever_legacy');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 3, 'en', 'Professions');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 3, 'de', 'Berufe');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110290, 0, 1, 'inv_misc_pocketwatch_03', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110290, 1, 0, 'inv_misc_pocketwatch_03', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110290, 'en', 'Working Overtime');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110290, 'de', 'Überstunden machen');
 INSERT INTO ranks (talentId, rank) VALUES (110290, 0);
@@ -54730,7 +54730,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110290, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110290, 4, 'en', 'Increases your chance to gain a skill increase from using any primary, secondary, or class-based tradeskill by 20%.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110290, 4, 'de', 'Erhöht Eure Chance, bei Haupt-, Neben- und klassenbasierten Berufen eine Fertigkeitserhöhung zu erhalten, um 20%.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110291, 0, 2, 'inv_misc_bag_18', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110291, 2, 0, 'inv_misc_bag_18', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110291, 'en', 'Bountiful Harvest');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110291, 'de', 'Reiche Ernte');
 INSERT INTO ranks (talentId, rank) VALUES (110291, 0);
@@ -54748,7 +54748,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110291, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110291, 4, 'en', 'You are 100% more likely to discover Scarce materials from Mining, Herbalism, and Skinning.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110291, 4, 'de', 'Eure Chance, durch Bergbau, Kräuterkunde und Kürschnerei seltene Materialien zu erhalten, ist um 100% erhöht.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110289, 1, 0, 'achievement_profession_chefhat', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110289, 0, 1, 'achievement_profession_chefhat', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110289, 'en', 'Master Chef');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110289, 'de', 'Meisterkoch');
 INSERT INTO ranks (talentId, rank) VALUES (110289, 0);
@@ -54775,7 +54775,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110286, 1);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110286, 1, 'en', 'Reduces the gold price of items from all vendors by 10%.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110286, 1, 'de', 'Senkt den Goldpreis für Gegenstände von allen Händlern um 10%.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110292, 1, 2, 'racial_dwarf_findtreasure', 110291, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110292, 2, 1, 'racial_dwarf_findtreasure', 110291, 7);
 INSERT INTO dependencies (talentId, dependencyId) VALUES (110292, 110291);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110292, 'en', 'Performance Bonus');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110292, 'de', 'Leistungsbonus');
@@ -54788,7 +54788,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110292, 2);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110292, 2, 'en', 'You have a 15% chance to receive 100% increased Merchant''s Favor when you turn in a crate to the Azeroth Commerce Authority or Durotar Supply and Logistics.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110292, 2, 'de', 'Ihr habt eine Chance von 15%, 100% mehr Händlergunst zu erhalten, wenn Ihr eine Kiste an die Handelskommission von Azeroth oder an Versorgung und Logistik Durotar liefert.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110293, 1, 3, 'inv_misc_basket_04', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110293, 3, 1, 'inv_misc_basket_04', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110293, 'en', 'Luremaster');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110293, 'de', 'Meister der Köder');
 INSERT INTO ranks (talentId, rank) VALUES (110293, 0);
@@ -54797,7 +54797,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110293, 1);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110293, 1, 'en', 'While fishing with a Lure active, you have a 50% chance to catch an extra fish.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110293, 1, 'de', 'Während Ihr mit einem Köder angelt, besteht eine Chance von 50%, dass Ihr einen zusätzlichen Fisch fangt.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110284, 2, 1, 'inv_misc_book_08', 110286, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 3, 110284, 1, 2, 'inv_misc_book_08', 110286, 7);
 INSERT INTO dependencies (talentId, dependencyId) VALUES (110284, 110286);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110284, 'en', 'Dedicated Study');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110284, 'de', 'Engagiertes Studium');
@@ -54807,7 +54807,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO talent_trees ("classId","id","icon","background") VALUES (10, 4, 'legacy_adventure', 'forever_legacy');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 4, 'en', 'Adventure');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 4, 'de', 'Abenteuer');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110301, 0, 1, 'spell_nature_sleep', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110301, 1, 0, 'spell_nature_sleep', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110301, 'en', 'Well Rested');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110301, 'de', 'Gut ausgeruht');
 INSERT INTO ranks (talentId, rank) VALUES (110301, 0);
@@ -54825,7 +54825,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110301, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110301, 4, 'en', 'Your rested experience accumulates 20% faster and your rested experience cap is increased by 20%.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110301, 4, 'de', 'Euer Ruhebonus sammelt sich um 20% schneller an und Euer maximaler Ruhebonus ist um 20% erhöht.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110296, 0, 2, 'ability_hunter_huntervswild', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110296, 2, 0, 'ability_hunter_huntervswild', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110296, 'en', 'Thrill of Adventure');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110296, 'de', 'Abenteuerlust');
 INSERT INTO ranks (talentId, rank) VALUES (110296, 0);
@@ -54843,7 +54843,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110296, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110296, 4, 'en', 'You gain 5% of your maximum Health and Mana over 10 sec each time you deliver the killing blow to a non-trivial enemy. Ineffective in dungeons, raids, and battlegrounds.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110296, 4, 'de', 'Jedes Mal, wenn Ihr einem nicht trivialen Gegner den Todesstoß versetzt, erhaltet Ihr im Verlauf von 10 Sek. 5% Eurer maximalen Gesundheit und Eures maximalen Manas. Wirkt nicht in Dungeons, Schlachtzügen und Schlachtfeldern.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110305, 1, 0, 'spell_shadow_detectlesserinvisibility', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110305, 0, 1, 'spell_shadow_detectlesserinvisibility', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110305, 'en', 'High Alert');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110305, 'de', 'Höchste Alarmstufe');
 INSERT INTO ranks (talentId, rank) VALUES (110305, 0);
@@ -54871,7 +54871,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110298, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110298, 4, 'en', 'You gain talent points every level starting at level 5 instead of starting at level 10, but you still may not have more than 51 total talent points.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110298, 4, 'de', 'Beginnend mit Stufe 5 erhaltet Ihr mit jeder Stufe Talentpunkte, anstatt ab Stufe 10. Ihr könnt aber trotzdem nicht mehr als 51 Talentpunkte ansammeln.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110304, 1, 2, 'inv_fishingchair', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110304, 2, 1, 'inv_fishingchair', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110304, 'en', 'Field Guide');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110304, 'de', 'Leitfaden');
 INSERT INTO ranks (talentId, rank) VALUES (110304, 0);
@@ -54883,7 +54883,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110304, 2);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110304, 2, 'en', 'Reduces your cooldown on adding Camp features by 25%');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110304, 2, 'de', 'Verringert Eure Abklingzeit für das Hinzufügen von Lagerelementen um 25%.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110303, 1, 3, 'inv_misc_bandage_05', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 4, 110303, 3, 1, 'inv_misc_bandage_05', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110303, 'en', 'Field Medicine');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110303, 'de', 'Feldmedizin');
 INSERT INTO ranks (talentId, rank) VALUES (110303, 0);
@@ -54902,7 +54902,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO talent_trees ("classId","id","icon","background") VALUES (10, 5, 'legacy_resourcefulness', 'forever_legacy');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 5, 'en', 'Resourcefulness');
 INSERT INTO talent_tree_names ("classId","talentTreeId","languageCode","name") VALUES (10, 5, 'de', 'Einfallsreichtum');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110313, 0, 1, 'inv_misc_food_64', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110313, 1, 0, 'inv_misc_food_64', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110313, 'en', 'Gourmand');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110313, 'de', 'Gourmand');
 INSERT INTO ranks (talentId, rank) VALUES (110313, 0);
@@ -54914,7 +54914,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110313, 2);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110313, 2, 'en', 'Increases the duration of beneficial effects from eating food by 100%.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110313, 2, 'de', 'Erhöht die Dauer von positiven Effekten durch das Essen von Nahrung um 100%.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110315, 0, 2, 'spell_shadow_deadofnight', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110315, 2, 0, 'spell_shadow_deadofnight', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110315, 'en', 'The Quick and the Dead');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110315, 'de', 'Schneller als der Tod');
 INSERT INTO ranks (talentId, rank) VALUES (110315, 0);
@@ -54923,7 +54923,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110315, 1);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110315, 1, 'en', 'Increases movement speed while dead by 10% and your helpful spells and abilities cost no resources for 2 min after being resurrected or until you enter combat.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110315, 1, 'de', 'Erhöht die Bewegungsgeschwindigkeit während des Todes um 10% und Eure hilfreichen Zauber und Fähigkeiten kosten 2 Min. nach der Wiederbelebung oder bis Ihr einen Kampf beginnt keine Ressourcen.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110318, 0, 3, 'inv_misc_armorkit_17', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110318, 3, 0, 'inv_misc_armorkit_17', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110318, 'en', 'Reinforce');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110318, 'de', 'Verstärken');
 INSERT INTO ranks (talentId, rank) VALUES (110318, 0);
@@ -54941,7 +54941,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110318, 4);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110318, 4, 'en', 'You take 40% less durability loss when you die.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110318, 4, 'de', 'Eure Gegenstände verlieren 40% weniger Haltbarkeit, wenn Ihr sterbt.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110319, 1, 0, 'achievement_bg_winwsg', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110319, 0, 1, 'achievement_bg_winwsg', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110319, 'en', 'For Great Honor');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110319, 'de', 'Große Ehre');
 INSERT INTO ranks (talentId, rank) VALUES (110319, 0);
@@ -54969,7 +54969,7 @@ INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES
 INSERT INTO ranks (talentId, rank) VALUES (110316, 1);
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110316, 1, 'en', 'Your class abilities which grant long-duration stat or attribute benefits to all party or raid members last 100% longer, and the benefits you gain from resting at a camp last 100% longer.');
 INSERT INTO rank_descriptions (talentId, rank, languageCode, description) VALUES (110316, 1, 'de', 'Eure Klassenfähigkeiten, die allen Gruppen- oder Schlachtzugsmitgliedern langanhaltende Boni auf einen Wert oder ein Attribut gewähren, halten 100% länger an, und Boni, die Ihr durch das Rasten in einem Lager erhaltet, halten 100% länger an.');
-INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110314, 1, 3, 'inv_scroll_03', NULL, 7);
+INSERT INTO talents ("classId","talentTreeId","id","row","column","icon","dependencyId","expansion") VALUES (10, 5, 110314, 3, 1, 'inv_scroll_03', NULL, 7);
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110314, 'en', 'Diplomat');
 INSERT INTO talent_names (talentId, languageCode, name) VALUES (110314, 'de', 'Diplomat');
 INSERT INTO ranks (talentId, rank) VALUES (110314, 0);

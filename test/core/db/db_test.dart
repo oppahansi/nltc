@@ -18,7 +18,7 @@ import "../../helpers/test_db.dart";
 /// The SQL that [dataDbVersion] stands for. See "data changes come with a
 /// version bump".
 const dataSqlHash =
-    "2c7833cb09f87638a5b2fef3ccb7b3422189bb6d0178cf9d496fba68eff960c0";
+    "e56f8a3768e34e3506be7d655cbe8c35bb8c8debf76c239c763ecb8c0e91d345";
 
 void main() {
   late Directory dir;

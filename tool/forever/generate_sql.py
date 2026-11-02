@@ -4,9 +4,9 @@ Usage: python3 -I generate_sql.py <ltc_data.db> <ltc_data.db.sql> <extract_en.js
 
 A talent's id is its client node id, which stays the same across patches, so
 saved builds keep working when the data is regenerated. Legacy perks are stored
-as talents of a pseudo class, turned on their side: the game gates them by
-column at 5 points per column, which is the app's rule for rows. Reruns replace
-the block between the markers, and anything unexpected stops generation.
+as talents of a pseudo class, laid out as in the game: they read left to right,
+gated at 5 points per column. Reruns replace the block between the markers, and
+anything unexpected stops generation.
 """
 
 import os
@@ -137,8 +137,8 @@ def generate(db, repo, en, de):
         real = [n for n in tree["nodes"] if not n["placeholder"]]
         real_ids = {n["node_id"] for n in real}
         for node in real:
-            row, column = node["grid"]["column"], node["grid"]["row"]
-            if node["required_points_in_tree"] != row * 5:
+            row, column = node["grid"]["row"], node["grid"]["column"]
+            if node["required_points_in_tree"] != column * 5:
                 raise SystemExit(f"{node['name']} doesn't follow the column rule")
             if any(p["node"] not in real_ids for p in node["prerequisites"]):
                 raise SystemExit(f"{node['name']} requires a placeholder")
