@@ -116,12 +116,8 @@ class _ShareCodeImportState extends ConsumerState<ShareCodeImport> {
                         setState(() {
                           _importError = switch (input.error!) {
                             ShareInputError.empty => loc.import_empty,
-                            ShareInputError.notWowhead =>
-                              loc.import_vlaidation_only_wowhead,
-                            ShareInputError.unsupportedWowheadLink =>
-                              "${loc.import_vlaidation_only_wowhead} (${loc.e_g} https://www.wowhead.com/tbc/talent-calc/shaman/5530020103-0500315003-500050031)",
                             ShareInputError.invalidFormat =>
-                              "${loc.invalid_format} (exp-class-tree1-tree2-tree3 or wowhead url)",
+                              "${loc.invalid_format} (exp-class-tree1-tree2-tree3)",
                           };
                         });
                         return;

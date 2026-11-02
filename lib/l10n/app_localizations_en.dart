@@ -150,7 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to load builds. Make sure you have internet access.';
 
   @override
-  String get import_build_code => 'Import Build Url / Code';
+  String get import_build_code => 'Import Build Code';
 
   @override
   String get import_canceled => 'Import canceled';
@@ -165,11 +165,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get import_failed => 'Import failed';
 
   @override
-  String get import_vlaidation_only_wowhead =>
-      'Only Wowhead TBC or WotLK talent calculator URLs are supported.';
-
-  @override
-  String get import_from_share_code => 'Import from Url / Code';
+  String get import_from_share_code => 'Import from Code';
 
   @override
   String get no_builds_found => 'No builds found.';
@@ -214,17 +210,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save_to_phone => 'Save to phone?';
 
   @override
-  String get share_build_url => 'Share Build URL';
-
-  @override
   String get share_build_code => 'Share Build Code';
 
   @override
   String get show_build_order => 'Show Build Order';
-
-  @override
-  String get unavailable_for_this_expansion =>
-      'Unavailable for this expansion.';
 
   @override
   String get tutorialTitle => 'Talent Calculator Tutorial';
@@ -262,7 +251,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialShareImportBody =>
-      'Use share codes or Wowhead links (auto normalized) to load or export builds.';
+      'Use share codes to load or export builds.';
 
   @override
   String get tutorialSaveBuilds => 'Save Builds';

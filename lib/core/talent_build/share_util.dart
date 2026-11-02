@@ -6,24 +6,7 @@ import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/talent_build/class_build.dart";
 
-String buildShareUrl(ClassBuild build) {
-  // Use stable internal class code (not localized name)
-  final rawClassCode =
-      idsToClasses[build.classId]?.toLowerCase() ??
-      build.className.toLowerCase();
-  final classSlug = _slugifyClass(rawClassCode, forWowhead: true);
-
-  final treeStrings = <String>[];
-  for (var i = 0; i < build.talentTreeTalents.length; i++) {
-    treeStrings.add(_encodeTree(build.talentTreeTalents[i]));
-  }
-
-  final slug = wowheadEraSlugs[eraOf(build.expansionCode)];
-  if (slug == null) return "Unsupported expansion for url sharing";
-  return "https://www.wowhead.com/$slug/talent-calc/$classSlug/${treeStrings.join("-")}";
-}
-
-// New: compact import/export code: exp-class-tree1-tree2-tree3
+// Compact import/export code: exp-class-tree1-tree2-tree3
 String buildShareCode(ClassBuild build) {
   final exp = build.expansionCode.toLowerCase();
 
@@ -31,7 +14,7 @@ String buildShareCode(ClassBuild build) {
   final rawClassCode =
       idsToClasses[build.classId]?.toLowerCase() ??
       build.className.toLowerCase();
-  final classCode = _slugifyClass(rawClassCode, forWowhead: false);
+  final classCode = _slugifyClass(rawClassCode);
 
   final treeStrings = <String>[];
   for (var i = 0; i < build.talentTreeTalents.length; i++) {
@@ -61,90 +44,7 @@ ParsedShareCode? parseShareCode(String code) {
   return ParsedShareCode(expansion, cls, trees);
 }
 
-// Optional helper to check share availability.
-bool canShareBuild(ClassBuild build) =>
-    wowheadEraSlugs.containsKey(eraOf(build.expansionCode));
-
-String? shareCodeFromWowheadUrl(String input) {
-  final trimmed = input.trim();
-  if (!trimmed.contains("wowhead.com")) return null;
-
-  Uri uri;
-  try {
-    uri = Uri.parse(trimmed);
-  } catch (_) {
-    return null;
-  }
-
-  final segs = uri.pathSegments.where((s) => s.isNotEmpty).toList();
-  if (segs.isEmpty) return null;
-
-  // Detect expansion
-  final slug = wowheadEraSlugs.values.where(segs.contains).firstOrNull;
-  if (slug == null) return null;
-  final expansion = wowheadEraSlugs.entries
-      .firstWhere((e) => e.value == slug)
-      .key;
-
-  final idxCalc = segs.indexOf("talent-calc");
-  if (idxCalc == -1 || idxCalc + 2 >= segs.length) return null;
-
-  final classSlug = segs[idxCalc + 1];
-  // Remaining segment(s) after class may contain tree codes (usually one segment)
-  final treeSegment = segs.sublist(idxCalc + 2).join("-");
-  if (treeSegment.isEmpty) return null;
-
-  final parts = treeSegment.split("-");
-  if (parts.length < 3) return null;
-
-  // First three digit groups are trees
-  final tree1 = parts[0];
-  final tree2 = parts[1];
-  final tree3 = parts[2];
-
-  bool allDigits(String s) => RegExp(r"^[0-9]+$").hasMatch(s);
-  if (!allDigits(tree1) || !allDigits(tree2) || !allDigits(tree3)) {
-    return null;
-  }
-
-  // Map wowhead class slug to internal class code
-  String classCode;
-  switch (classSlug) {
-    case "death-knight":
-      classCode = "deathknight";
-      break;
-    default:
-      classCode = classSlug;
-  }
-
-  return "$expansion-$classCode-$tree1-$tree2-$tree3";
-}
-
-// Normalize any user input (share code or wowhead url) to a share code.
-String? normalizeShareInputToCode(String input) {
-  final raw = input.trim();
-  if (raw.isEmpty) return null;
-
-  // Already a share code?
-  if (parseShareCode(raw) != null) {
-    return raw.toLowerCase();
-  }
-
-  // Try wowhead URL
-  final fromUrl = shareCodeFromWowheadUrl(raw);
-  if (fromUrl != null && parseShareCode(fromUrl) != null) {
-    return fromUrl;
-  }
-
-  return null;
-}
-
-enum ShareInputError {
-  empty,
-  notWowhead,
-  unsupportedWowheadLink,
-  invalidFormat,
-}
+enum ShareInputError { empty, invalidFormat }
 
 /// What pasted share input resolved to: a share code, or why it can't be used.
 typedef ShareInputResult = ({String? code, ShareInputError? error});
@@ -152,26 +52,10 @@ typedef ShareInputResult = ({String? code, ShareInputError? error});
 ShareInputResult classifyShareInput(String input) {
   final raw = input.trim();
   if (raw.isEmpty) return (code: null, error: ShareInputError.empty);
-
-  final lower = raw.toLowerCase();
-  final isUrl =
-      lower.startsWith("http://") ||
-      lower.startsWith("https://") ||
-      lower.startsWith("www.") ||
-      lower.startsWith("wowhead.com");
-  final isWowhead = lower.contains("wowhead.com");
-  if (isUrl && !isWowhead) {
-    return (code: null, error: ShareInputError.notWowhead);
+  if (parseShareCode(raw) == null) {
+    return (code: null, error: ShareInputError.invalidFormat);
   }
-
-  final code = normalizeShareInputToCode(raw);
-  if (code != null) return (code: code, error: null);
-  return (
-    code: null,
-    error: isUrl
-        ? ShareInputError.unsupportedWowheadLink
-        : ShareInputError.invalidFormat,
-  );
+  return (code: raw.toLowerCase(), error: null);
 }
 
 String _encodeTree(List<Talent> talents) {
@@ -190,16 +74,8 @@ String _encodeTree(List<Talent> talents) {
   return sb.toString();
 }
 
-String _slugifyClass(String classCode, {required bool forWowhead}) {
-  final key = classCode
-      .toLowerCase()
-      .replaceAll(" ", "")
-      .replaceAll("’", "")
-      .replaceAll("'", "");
-  switch (key) {
-    case "deathknight":
-      return forWowhead ? "death-knight" : "deathknight";
-    default:
-      return key;
-  }
-}
+String _slugifyClass(String classCode) => classCode
+    .toLowerCase()
+    .replaceAll(" ", "")
+    .replaceAll("’", "")
+    .replaceAll("'", "");

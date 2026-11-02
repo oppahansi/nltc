@@ -103,20 +103,9 @@ class CalculatorDrawer extends ConsumerWidget {
                   buildValue != null &&
                   (!buildState.isBuildSequenceEmpty() ||
                       !buildState.isSkillTreeEmpty());
-              final shareUrl =
-                  (buildValue != null && canShareBuild(buildValue) && hasBuild)
-                  ? buildShareUrl(buildValue)
-                  : "";
               final shareCode = (buildValue != null && hasBuild)
                   ? buildShareCode(buildValue)
                   : "";
-              final shareUrlSubTitle = shareUrl.isEmpty
-                  ? (buildValue == null
-                        ? loc.loading.capitalize()
-                        : canShareBuild(buildValue)
-                        ? loc.no_points_spent
-                        : loc.unavailable_for_this_expansion)
-                  : shareUrl;
               final shareCodeSubTitle = shareCode.isEmpty
                   ? (buildValue == null
                         ? loc.loading.capitalize()
@@ -126,26 +115,6 @@ class CalculatorDrawer extends ConsumerWidget {
               return [
                 Divider(color: expColor),
                 ListTile(
-                  leading: Symbols.link.icon(color: expColor),
-                  title: loc.share_build_url.text(
-                    style: bodyMedium(context).withColor(classColor),
-                  ),
-                  subtitle: shareUrlSubTitle.text(
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: bodySmall(
-                      context,
-                    ).withColor(classColor.withAlpha(180)),
-                  ),
-                  enabled: shareUrl.isNotEmpty,
-                  onTap: shareUrl.isEmpty
-                      ? null
-                      : () {
-                          SharePlus.instance.share(ShareParams(text: shareUrl));
-                          context.pop();
-                        },
-                ),
-                ListTile(
                   leading: Symbols.share.icon(color: expColor),
                   title: loc.share_build_code.text(
                     style: bodyMedium(context).withColor(classColor),
@@ -153,9 +122,8 @@ class CalculatorDrawer extends ConsumerWidget {
                   subtitle: shareCodeSubTitle.text(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: bodySmall(
-                      context,
-                    ).withColor(classColor.withAlpha(180)),
+                    style: bodySmall(context)
+                        .withColor(classColor.withAlpha(180)),
                   ),
                   enabled: shareCode.isNotEmpty,
                   onTap: shareCode.isEmpty

@@ -150,7 +150,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Build-Liste konnte nicht geladen werden. Bitte überprüfe deine Internetverbindung.';
 
   @override
-  String get import_build_code => 'Import Build-Url/-Code';
+  String get import_build_code => 'Build-Code importieren';
 
   @override
   String get import_canceled => 'Import abgebrochen';
@@ -165,11 +165,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get import_failed => 'Import fehlgeschlagen';
 
   @override
-  String get import_vlaidation_only_wowhead =>
-      'Es werden nur Wowhead TBC- oder WotLK-Talentrechner-URLs unterstützt.';
-
-  @override
-  String get import_from_share_code => 'Importiere aus Url / Code';
+  String get import_from_share_code => 'Aus Code importieren';
 
   @override
   String get no_builds_found => 'Keine Builds gefunden.';
@@ -215,17 +211,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get save_to_phone => 'Auf Telefon speichern?';
 
   @override
-  String get share_build_url => 'Build-URL teilen';
-
-  @override
   String get share_build_code => 'Build-Code teilen';
 
   @override
   String get show_build_order => 'Build-Reihenfolge anzeigen';
-
-  @override
-  String get unavailable_for_this_expansion =>
-      'Für diese Erweiterung nicht verfügbar.';
 
   @override
   String get tutorialTitle => 'Talentrechner Tutorial';
@@ -263,7 +252,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tutorialShareImportBody =>
-      'Verwende Teil-Codes oder Wowhead-Links (automatisch normalisiert), um Builds zu laden oder zu exportieren.';
+      'Verwende Teil-Codes, um Builds zu laden oder zu exportieren.';
 
   @override
   String get tutorialSaveBuilds => 'Builds speichern';

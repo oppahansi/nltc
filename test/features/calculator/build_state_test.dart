@@ -428,27 +428,6 @@ void main() {
       }
     });
 
-    test("Wowhead links are built and read for tbc and wotlk only", () async {
-      await select(tbc, mage);
-      expect(
-        buildShareUrl(build()),
-        startsWith("https://www.wowhead.com/tbc/talent-calc/mage/"),
-      );
-      await select(wotlk, 9);
-      expect(
-        buildShareUrl(build()),
-        startsWith("https://www.wowhead.com/wotlk/talent-calc/death-knight/"),
-      );
-      expect(
-        normalizeShareInputToCode(
-          "https://www.wowhead.com/wotlk/talent-calc/death-knight/1-2-3",
-        ),
-        "wotlk-deathknight-1-2-3",
-      );
-      await select(vanilla, mage);
-      expect(canShareBuild(build()), isFalse);
-    });
-
     test("sharing includes points added after loading a build", () async {
       await select(vanilla, mage);
       final t = firstInTree(0);

@@ -371,7 +371,7 @@ abstract class AppLocalizations {
   /// No description provided for @import_build_code.
   ///
   /// In en, this message translates to:
-  /// **'Import Build Url / Code'**
+  /// **'Import Build Code'**
   String get import_build_code;
 
   /// No description provided for @import_canceled.
@@ -398,16 +398,10 @@ abstract class AppLocalizations {
   /// **'Import failed'**
   String get import_failed;
 
-  /// No description provided for @import_vlaidation_only_wowhead.
-  ///
-  /// In en, this message translates to:
-  /// **'Only Wowhead TBC or WotLK talent calculator URLs are supported.'**
-  String get import_vlaidation_only_wowhead;
-
   /// No description provided for @import_from_share_code.
   ///
   /// In en, this message translates to:
-  /// **'Import from Url / Code'**
+  /// **'Import from Code'**
   String get import_from_share_code;
 
   /// No description provided for @no_builds_found.
@@ -488,12 +482,6 @@ abstract class AppLocalizations {
   /// **'Save to phone?'**
   String get save_to_phone;
 
-  /// No description provided for @share_build_url.
-  ///
-  /// In en, this message translates to:
-  /// **'Share Build URL'**
-  String get share_build_url;
-
   /// No description provided for @share_build_code.
   ///
   /// In en, this message translates to:
@@ -505,12 +493,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show Build Order'**
   String get show_build_order;
-
-  /// No description provided for @unavailable_for_this_expansion.
-  ///
-  /// In en, this message translates to:
-  /// **'Unavailable for this expansion.'**
-  String get unavailable_for_this_expansion;
 
   /// No description provided for @tutorialTitle.
   ///
@@ -575,7 +557,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorialShareImportBody.
   ///
   /// In en, this message translates to:
-  /// **'Use share codes or Wowhead links (auto normalized) to load or export builds.'**
+  /// **'Use share codes to load or export builds.'**
   String get tutorialShareImportBody;
 
   /// No description provided for @tutorialSaveBuilds.

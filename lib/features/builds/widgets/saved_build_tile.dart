@@ -67,14 +67,6 @@ class SavedBuildTile extends ConsumerWidget {
       },
     );
 
-    final linkButton = IconButton(
-      icon: Symbols.link.icon(color: expColor, size: gapSize(context)),
-      tooltip: loc.share_build_url,
-      onPressed: () {
-        SharePlus.instance.share(ShareParams(text: buildShareUrl(classBuild)));
-      },
-    );
-
     final shareButton = IconButton(
       icon: Symbols.share.icon(color: expColor, size: gapSize(context)),
       tooltip: loc.share_build_code,
@@ -97,7 +89,6 @@ class SavedBuildTile extends ConsumerWidget {
       ),
       trailing: [
         deleteButton,
-        if (canShareBuild(classBuild)) linkButton,
         shareButton,
         Symbols.arrow_forward.icon(color: expColor),
       ].row(mainAxisSize: MainAxisSize.min),
