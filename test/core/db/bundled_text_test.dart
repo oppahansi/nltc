@@ -1,0 +1,52 @@
+// Dart Imports
+import "dart:io";
+
+// Flutter Imports
+import "package:flutter_test/flutter_test.dart";
+
+// Package Imports
+import "package:sqflite/sqflite.dart";
+
+// Project Imports
+import "package:ltc/core/db/db.dart";
+
+import "../../helpers/test_db.dart";
+
+void main() {
+  late Directory dir;
+  late Database db;
+
+  Future<List<String>> offenders(String condition) async {
+    final rows = await db.rawQuery(
+      "SELECT talentId || ':' || rank || ':' || languageCode AS id "
+      "FROM rank_descriptions WHERE $condition",
+    );
+    return [for (final row in rows) row["id"] as String];
+  }
+
+  setUpAll(() async {
+    dir = await setUpTestDb();
+    db = await Db.getDataDbInstance();
+  });
+  tearDownAll(() => tearDownTestDb(dir));
+
+  test("descriptions contain no scraped markup", () async {
+    expect(await offenders("description LIKE '%<%'"), isEmpty);
+  });
+
+  test("descriptions contain no carriage returns", () async {
+    expect(await offenders("instr(description, char(13)) > 0"), isEmpty);
+  });
+
+  test("commas are followed by a space, except in decimals", () async {
+    expect(await offenders("description GLOB '*,[A-Za-z]*'"), isEmpty);
+  });
+
+  test("descriptions contain no doubled periods", () async {
+    expect(await offenders("description LIKE '%..%'"), isEmpty);
+  });
+
+  test("descriptions contain no unrendered client tokens", () async {
+    expect(await offenders("description LIKE '%\$%'"), isEmpty);
+  });
+}

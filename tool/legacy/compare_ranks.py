@@ -1,6 +1,6 @@
 """Compare the app's English rank descriptions with an original client's spells.
 
-Usage: python3 -I compare_ranks.py <vanilla|tbc|wotlk> <client Data dir> <ltc_data.db> [en|de]
+Usage: python3 -I compare_ranks.py <vanilla|tbc|wotlk> <client Data dir> <ltc_data.db> [en|de] [translated client Data dir]
 
 Client descriptions are templates such as "Increases damage by $s1%.". Each
 template becomes a pattern, so literal text must match exactly. Tokens simple
@@ -18,9 +18,9 @@ from compare_talents import LAYOUTS, CLASS_BITS, load_app  # noqa: E402
 from mpq import Client, Dbc  # noqa: E402
 
 EFFECTS = {
-    "vanilla": dict(die=64, base=76, chance=25, charges=26, chain=100),
-    "tbc": dict(die=68, base=80, chance=29, charges=30, chain=104),
-    "wotlk": dict(die=74, base=80, chance=35, charges=36, chain=104),
+    "vanilla": dict(die=64, base=76, chance=25, charges=26, chain=100, duration=30, amplitude=94),
+    "tbc": dict(die=68, base=80, chance=29, charges=30, chain=104, duration=34, amplitude=101),
+    "wotlk": dict(die=74, base=80, chance=35, charges=36, chain=104, duration=40, amplitude=101),
 }
 
 TOKEN = re.compile(
@@ -29,6 +29,8 @@ TOKEN = re.compile(
       | l[^:;]*:[^;]*;                # $lsingular:plural;
       | \?[^\[]*\[[^\]]*\]\[[^\]]*\]  # $?condition[a][b]
       | /-?\d+;\d*[A-Za-z]\d?         # $/1000;s1
+      | \*-?\d+;\d*[A-Za-z]\d?        # $*5;s1
+      | <[a-z]+>                      # $<percent>
       | \d*[A-Za-z]\d?                # $s1, $12345s1, $d, $h
     )""",
     re.VERBOSE,
@@ -39,7 +41,7 @@ def signed(value):
     return value - (1 << 32) if value >= 1 << 31 else value
 
 
-def simple_value(token, row, fields):
+def simple_value(token, row, fields, to="to"):
     """The expected text for a token, or None when it isn't simple to calculate."""
     match = re.fullmatch(r"\$([smhnxSMHNX])([123]?)", token)
     if not match:
@@ -55,7 +57,7 @@ def simple_value(token, row, fields):
     die = signed(row[fields["die"] + index])
     low = abs(base + 1) if die <= 1 else abs(base + 1)
     if kind == "s" and die > 1:
-        return f"{low} to {abs(base + die)}"
+        return f"{low} {to} {abs(base + die)}"
     return str(low)
 
 
@@ -77,9 +79,11 @@ def clean(text):
 def relaxed(text):
     """Ignore known wording noise, to surface differences that really matter."""
     text = re.sub(r",\s*", ",", clean(text))
+    text = re.sub(r"(\$\d*d\d?)\.", r"\1", text)
     text = re.sub(r"\b(seconds?)\b", "sec", text)
     text = re.sub(r"\b(minutes?)\b", "min", text)
-    return re.sub(r"\bsecs?\b", "sec", text)
+    text = re.sub(r"\bmin\b\.?", "min", text)
+    return re.sub(r"\bsecs?\b\.?", "sec", text)
 
 
 LOCALES = {"en": "enGB", "de": "deDE"}
@@ -87,7 +91,9 @@ LOCALES = {"en": "enGB", "de": "deDE"}
 
 def relaxed_de(text):
     text = re.sub(r",\s*", ",", clean(text))
-    text = re.sub(r"\bSek\.?(?=\W|$)", "Sek", text)
+    text = re.sub(r"(\$\d*d\d?)\.", r"\1", text)
+    text = re.sub(r"\b(?:Sek|sec)\b\.?", "Sek", text)
+    text = re.sub(r"\b(?:Min|min)\b\.?", "Min", text)
     return re.sub(r"\bSekunden?\b", "Sek", text)
 
 
@@ -112,7 +118,9 @@ def main():
         r[0]: (r[layout["tab_class"]], tab_dbc.string(r[layout["tab_name"]]))
         for r in tab_dbc.rows()
     }
-    source = Client(data_dir, LOCALES[lang]) if lang != "en" else client
+    # Some translated clients are a separate download holding only locale files.
+    lang_dir = sys.argv[5] if len(sys.argv) > 5 else data_dir
+    source = Client(lang_dir, LOCALES[lang]) if lang != "en" else client
     spell_dbc = Dbc(source.read("DBFilesClient\\Spell.dbc"))
     spells = {r[0]: r for r in spell_dbc.rows()}
 
@@ -153,7 +161,7 @@ def main():
                 continue
             counts["text_ok"] += 1
             for token, actual in zip(tokens, match.groups()):
-                expected = simple_value(token, row, fields)
+                expected = simple_value(token, row, fields, "to" if lang == "en" else "bis")
                 if expected is None:
                     counts["tokens_not_calculated"] += 1
                 elif expected == actual:
