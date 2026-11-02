@@ -15,11 +15,13 @@ void main() {
       expect(maxTalentPoints(original), points);
       expect(maxTalentPoints(classic), points);
     }
+    expect(maxTalentPoints("forever"), 51);
     expect(maxTalentPoints("unknown"), 0);
   });
 
   test("labels name the edition and the era", () {
     expect(expansionLabel("tbc"), "Original TBC");
     expect(expansionLabel("classic_wotlk"), "Classic WotLK");
+    expect(expansionLabel("forever"), "Forever");
   });
 }

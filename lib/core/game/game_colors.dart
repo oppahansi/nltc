@@ -23,6 +23,9 @@ Map<String, List<Color>> expColors = {
     Color(0xFF2F2F2F), // Dark gray for Scourge themes
     Color(0xFF6A0DAD), // Purple for necromantic/Dalaran elements
   ],
+  "forever": [
+    Color(0xFFB98CFF), // Violet, set apart from the other eras
+  ],
 };
 
 Map<String, String> classColors = {
@@ -44,6 +47,8 @@ Color getExpansionColor(String expansionCode) {
       return expColors['tbc']!.first;
     case 'wotlk':
       return expColors['wotlk']![1];
+    case 'forever':
+      return expColors['forever']!.first;
     default:
       return expColors['vanilla']!.first;
   }

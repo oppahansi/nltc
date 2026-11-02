@@ -7,11 +7,23 @@ const expansionsToIds = {
   "classic_vanilla": 4,
   "classic_tbc": 5,
   "classic_wotlk": 6,
+  "forever": 7,
 };
 
 const _classicPrefix = "classic_";
-const _maxTalentPointsByEra = {"vanilla": 51, "tbc": 61, "wotlk": 71};
-const _eraLabels = {"vanilla": "Vanilla", "tbc": "TBC", "wotlk": "WotLK"};
+const _foreverCode = "forever";
+const _maxTalentPointsByEra = {
+  "vanilla": 51,
+  "tbc": 61,
+  "wotlk": 71,
+  _foreverCode: 51,
+};
+const _eraLabels = {
+  "vanilla": "Vanilla",
+  "tbc": "TBC",
+  "wotlk": "WotLK",
+  _foreverCode: "Forever",
+};
 
 /// The game era of an expansion code: `classic_tbc` and `tbc` are both `tbc`.
 String eraOf(String expansionCode) => expansionCode.startsWith(_classicPrefix)
@@ -24,8 +36,9 @@ int maxTalentPoints(String expansionCode) =>
 
 String eraLabel(String era) => _eraLabels[era] ?? era;
 
-/// How saved builds name their expansion, for example `Classic TBC`.
+/// How saved builds name their expansion, for example `Classic TBC` or `Forever`.
 String expansionLabel(String expansionCode) {
+  if (expansionCode == _foreverCode) return eraLabel(_foreverCode);
   final edition = expansionCode.startsWith(_classicPrefix)
       ? "Classic"
       : "Original";
