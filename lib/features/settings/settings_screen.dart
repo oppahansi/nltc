@@ -11,9 +11,9 @@ import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/utils/text_styles.dart";
-import "package:ltc/features/settings/ex_import_setting.dart";
-import "package:ltc/features/settings/language_setting.dart";
-import "package:ltc/features/settings/show_order_numbers_setting.dart";
+import "package:ltc/features/settings/widgets/ex_import_setting.dart";
+import "package:ltc/features/settings/widgets/language_setting.dart";
+import "package:ltc/features/settings/widgets/show_order_numbers_setting.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class SettingsScreen extends ConsumerWidget {

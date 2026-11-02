@@ -16,9 +16,9 @@ import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/features/builds/widgets/saved_builds.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
-import "package:ltc/features/home/class_selection.dart";
-import "package:ltc/features/home/expansion_selection.dart";
-import "package:ltc/features/home/home_button.dart";
+import "package:ltc/features/home/widgets/class_selection.dart";
+import "package:ltc/features/home/widgets/expansion_selection.dart";
+import "package:ltc/features/home/widgets/home_button.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {

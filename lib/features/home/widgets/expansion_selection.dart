@@ -12,7 +12,7 @@ import "package:ltc/core/game/data_providers.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/utils/text_styles.dart";
-import "package:ltc/features/home/expansion_chip.dart";
+import "package:ltc/features/home/widgets/expansion_chip.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class ExpansionSelection extends ConsumerWidget {
