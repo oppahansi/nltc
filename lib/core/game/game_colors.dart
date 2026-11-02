@@ -24,7 +24,7 @@ Map<String, List<Color>> expColors = {
     Color(0xFF6A0DAD), // Purple for necromantic/Dalaran elements
   ],
   "forever": [
-    Color(0xFFB98CFF), // Violet, set apart from the other eras
+    Color(0xFF2DD4BF), // Teal from the logo, clearly greener than WotLK's blues
   ],
 };
 
