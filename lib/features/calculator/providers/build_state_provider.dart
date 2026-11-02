@@ -68,7 +68,7 @@ class BuildState extends _$BuildState {
     required Expansion expansion,
     required Class clazz,
   }) async {
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.read(settingsProvider).value!;
     final repo = DataRepo();
     final talentTrees =
         await repo.getTalentTrees(
@@ -115,7 +115,7 @@ class BuildState extends _$BuildState {
   }
 
   Future<void> startNewBuild() async {
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.read(settingsProvider).value!;
     final selectedExp = settings.selectedExp;
     final selectedClass = settings.selectedClass;
     final empty = await _createEmptyBuild(
@@ -342,7 +342,7 @@ class BuildState extends _$BuildState {
     final classId = classNamesToIds[parsed.classCode];
     if (expansionId == null || classId == null) return false;
     final dataRepo = DataRepo();
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.read(settingsProvider).value!;
 
     // Fetch base data (replace with actual repo/provider calls in your codebase).
     final trees = await dataRepo.getTalentTrees(

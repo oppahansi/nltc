@@ -156,7 +156,7 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
   }
 
   void _handleUndo(WidgetRef ref) async {
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.read(settingsProvider).value!;
     final classColor = settings.classColor;
     final loc = AppLocalizations.of(context)!;
 
@@ -164,7 +164,7 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
     final talent = notifier.getLastTalent();
     if (talent == null) return;
 
-    ref.read(treeIndexProvider.notifier).setTreeIndex(talent.id);
+    ref.read(treeIndexProvider.notifier).setTreeIndex(talent.talentTreeId);
 
     await _animateTabAndWait(talent.talentTreeId);
 

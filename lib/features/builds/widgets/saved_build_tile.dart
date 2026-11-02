@@ -131,7 +131,7 @@ class SavedBuildTile extends ConsumerWidget {
 
   Future<bool?> _deleteConfirmation(BuildContext context, WidgetRef ref) async {
     final loc = AppLocalizations.of(context)!;
-    final settings = ref.watch(settingsProvider).value!;
+    final settings = ref.read(settingsProvider).value!;
     final expColor = settings.expColor;
 
     final cancelButton = TextButton(
