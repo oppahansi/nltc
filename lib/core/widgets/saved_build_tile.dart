@@ -8,6 +8,7 @@ import "package:material_symbols_icons/symbols.dart";
 import "package:share_plus/share_plus.dart";
 
 // Project Imports
+import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/extensions.dart";
@@ -17,7 +18,6 @@ import "package:ltc/core/utils/text_styles.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 import "package:ltc/features/calculator/providers/calculator_providers.dart";
-import "package:ltc/features/calculator/talent_calculator_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class SavedBuildTile extends ConsumerWidget {
@@ -122,7 +122,7 @@ class SavedBuildTile extends ConsumerWidget {
             .loadSavedBuild(classBuild.id!);
 
         if (context.mounted) {
-          context.pushNamed(TalentCalculatorScreen.path);
+          context.pushNamed(RoutePaths.calculator);
         }
       },
     );

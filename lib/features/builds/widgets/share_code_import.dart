@@ -6,6 +6,7 @@ import "package:exui/exui.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
+import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -13,7 +14,6 @@ import "package:ltc/core/utils/share_util.dart";
 import "package:ltc/core/utils/text_styles.dart";
 import "package:ltc/core/widgets/shared.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
-import "package:ltc/features/calculator/talent_calculator_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class ShareCodeImport extends ConsumerStatefulWidget {
@@ -182,7 +182,7 @@ class _ShareCodeImportState extends ConsumerState<ShareCodeImport> {
                         context.showSnackBar(
                           SnackBar(content: loc.build_imported.text()),
                         );
-                        context.pushNamed(TalentCalculatorScreen.path);
+                        context.pushNamed(RoutePaths.calculator);
                       }
                     },
               child: _importing

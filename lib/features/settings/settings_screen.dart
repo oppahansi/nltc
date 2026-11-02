@@ -19,8 +19,6 @@ import "package:ltc/l10n/app_localizations.dart";
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
-  static const String path = "/settings";
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider).value!;

@@ -19,11 +19,7 @@ const knownViolations = <String>{
   "core/widgets/saved_build_tile.dart -> features/calculator/models/class_build.dart",
   "core/widgets/saved_build_tile.dart -> features/calculator/providers/build_state_provider.dart",
   "core/widgets/saved_build_tile.dart -> features/calculator/providers/calculator_providers.dart",
-  "core/widgets/saved_build_tile.dart -> features/calculator/talent_calculator_screen.dart",
   "core/widgets/saved_builds.dart -> features/calculator/providers/calculator_providers.dart",
-  "core/widgets/saved_builds.dart -> features/home/home_screen.dart",
-  "features/home/home_screen.dart -> features/settings/settings_screen.dart",
-  "features/calculator/widgets/calculator_drawer.dart -> features/settings/settings_screen.dart",
 };
 
 final _import = RegExp(

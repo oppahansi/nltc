@@ -7,6 +7,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
+import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -14,7 +15,6 @@ import "package:ltc/core/utils/text_styles.dart";
 import "package:ltc/core/widgets/saved_build_tile.dart";
 import "package:ltc/core/widgets/shared.dart";
 import "package:ltc/features/calculator/providers/calculator_providers.dart";
-import "package:ltc/features/home/home_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class SavedBuilds extends ConsumerStatefulWidget {
@@ -48,7 +48,7 @@ class _SavedBuildsState extends ConsumerState<SavedBuilds> {
         : titleLarge(context);
     final currentScreen = ModalRoute.of(context)?.settings.name;
     final isOnHomeScreen =
-        currentScreen == HomeScreen.path || currentScreen == "/";
+        currentScreen == RoutePaths.home || currentScreen == "/";
 
     final noBuildsText = loc.no_saved_builds
         .text(style: bodyLarge(context).withColor(Colors.white70))

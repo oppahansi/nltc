@@ -24,8 +24,6 @@ import "package:ltc/features/calculator/widgets/talent_tree_view.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class TalentCalculatorScreen extends ConsumerStatefulWidget {
-  static const String path = "/calculator";
-
   const TalentCalculatorScreen({super.key});
 
   @override

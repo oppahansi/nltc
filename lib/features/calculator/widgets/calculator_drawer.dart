@@ -8,6 +8,7 @@ import "package:material_symbols_icons/symbols.dart";
 import "package:share_plus/share_plus.dart";
 
 // Project Imports
+import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/repos/data_providers.dart";
 import "package:ltc/core/utils/constants.dart";
@@ -19,7 +20,6 @@ import "package:ltc/features/calculator/providers/build_state_provider.dart";
 import "package:ltc/features/calculator/providers/calculator_providers.dart";
 import "package:ltc/features/calculator/widgets/build_sequence_sheet.dart";
 import "package:ltc/features/calculator/widgets/save_build_sheet.dart";
-import "package:ltc/features/settings/settings_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class CalculatorDrawer extends ConsumerWidget {
@@ -228,9 +228,7 @@ class CalculatorDrawer extends ConsumerWidget {
               style: bodyMedium(context).withColor(classColor),
             ),
             onTap: () {
-              context.push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
+              context.pushNamed(RoutePaths.settings);
             },
           ),
         ],

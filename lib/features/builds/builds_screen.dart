@@ -12,8 +12,6 @@ import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/features/builds/widgets/share_code_import.dart";
 
 class BuildsScreen extends ConsumerStatefulWidget {
-  static const String path = "/builds";
-
   const BuildsScreen({super.key});
 
   @override

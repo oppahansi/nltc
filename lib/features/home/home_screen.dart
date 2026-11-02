@@ -9,23 +9,19 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
+import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/constants.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/widgets/saved_builds.dart";
-import "package:ltc/features/builds/builds_screen.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
-import "package:ltc/features/calculator/talent_calculator_screen.dart";
 import "package:ltc/features/home/class_selection.dart";
 import "package:ltc/features/home/expansion_selection.dart";
 import "package:ltc/features/home/home_button.dart";
-import "package:ltc/features/settings/settings_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
-  static const String path = "/home";
-
   const HomeScreen({super.key});
 
   @override
@@ -68,7 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 HomeButton(
                   icon: Symbols.school,
                   title: loc.plan_build,
-                  path: TalentCalculatorScreen.path,
+                  path: RoutePaths.calculator,
                   onTap: () async {
                     await ref.read(buildStateProvider.notifier).startNewBuild();
                   },
@@ -76,11 +72,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 HomeButton(
                   icon: Symbols.download,
                   title: loc.load_build,
-                  path: BuildsScreen.path,
+                  path: RoutePaths.builds,
                 ),
                 HomeButton(
                   icon: Symbols.settings,
-                  path: SettingsScreen.path,
+                  path: RoutePaths.settings,
                   title: loc.settings.capitalize(),
                 ),
                 gapSize(context).gapColumn,
