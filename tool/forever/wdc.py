@@ -5,6 +5,19 @@ Encrypted sections (tact_key_hash != 0) are SKIPPED and reported, never decrypte
 import os, re, struct
 
 
+def fit_width(value, size):
+    """An integer at its column's declared width, such as "u8" or "16". Palettes store
+    32 bits, and what lies above a narrower column's width is garbage."""
+    digits = re.sub(r"\D", "", size or "")
+    if not digits:
+        return value
+    bits = int(digits)
+    value &= (1 << bits) - 1
+    if not size.startswith("u") and value >> (bits - 1):
+        value -= 1 << bits
+    return value
+
+
 def parse_dbd(path):
     """Returns (columns: name->(type,fk), layouts: list of dict(layouts, builds, fields))."""
     cols = {}
@@ -227,7 +240,6 @@ class WDC:
                 break
             fs = self.fsi[i]
             ftype = self.columns.get(f["name"], ("int", None))[0]
-            signed = not (f["size"] or "").startswith("u") if f["size"] else False
             vals = []
             c = fs["comp"]
             if c == 0:
@@ -271,10 +283,7 @@ class WDC:
                 elif ftype == "float":
                     out.append(struct.unpack("<f", struct.pack("<I", v & 0xffffffff))[0])
                 else:
-                    sz = int(re.sub(r"\D", "", f["size"])) if f["size"] and re.sub(r"\D", "", f["size"]) else 32
-                    if signed and sz in (8, 16, 32) and v >= (1 << (sz - 1)):
-                        v -= 1 << sz
-                    out.append(v)
+                    out.append(fit_width(v, f["size"]))
             row[f["name"]] = out if f["arr"] > 1 else out[0]
         return row
 
@@ -282,7 +291,12 @@ class WDC:
         for rid, row in self.rows.items():
             for k, v in list(row.items()):
                 if isinstance(v, tuple) and v and v[0] == "__common__":
-                    row[k] = self.common[v[1]].get(rid, v[2])
+                    field = self.inline[v[1]]
+                    raw = self.common[v[1]].get(rid, v[2])
+                    if self.columns.get(field["name"], ("int", None))[0] == "float":
+                        row[k] = struct.unpack("<f", struct.pack("<I", raw & 0xffffffff))[0]
+                    else:
+                        row[k] = fit_width(raw, field["size"])
         return self
 
 

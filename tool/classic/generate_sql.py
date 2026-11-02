@@ -1,6 +1,6 @@
 """Write the Classic rows into ltc_data.db.sql, from extract_classic.py's output.
 
-Usage: python3 -I generate_sql.py <ltc_data.db> <ltc_data.db.sql> <vanilla_en> <vanilla_de> <tbc_en> <tbc_de>
+Usage: python3 -I generate_sql.py <ltc_data.db> <ltc_data.db.sql> <vanilla_en> <vanilla_de> <tbc_en> <tbc_de> <wotlk_en> <wotlk_de>
 
 A Classic talent's id is its Original counterpart's id plus a fixed offset, so
 ids don't depend on generation order and saved builds keep working. A talent
@@ -15,12 +15,47 @@ import sqlite3
 import sys
 
 BEGIN, END = "-- BEGIN GENERATED CLASSIC DATA", "-- END GENERATED CLASSIC DATA"
-LEVELS = {"vanilla": 60, "tbc": 70}
+LEVELS = {"vanilla": 60, "tbc": 70, "wotlk": 80}
 # expansion row, Original row, id offset, era, names.
 ROWS = [
     (4, 1, 10000, "vanilla", "classic_vanilla", {"en": "Vanilla", "de": "Vanilla"}),
     (5, 2, 20000, "tbc", "classic_tbc", {"en": "The Burning Crusade", "de": "Der brennende Kreuzzug"}),
+    (6, 3, 30000, "wotlk", "classic_wotlk", {"en": "Wrath of the Lich King", "de": "Zorn des Lichkönigs"}),
 ]
+SEAL_MIN, SEAL_MAX = "[[?${0.19*$mw+0.08*$AP+0.13*$SPH}]]", "[[?${0.19*$MW+0.08*$AP+0.13*$SPH}]]"
+# Formulas that need a character's stats, written the way the app writes them.
+# Their spell values were compared with the 3.4.5 tables.
+FORMULAS = {
+    "en": [
+        ("[[?${$51052m1+2*$AP}]]", "(10000 + 2*Attack Power)"),
+        ("[[?${$AP*0.2+$m1}]]", "(0.2*Attack Power + 48)"),
+        ("[[?${$RAP*0.1+$m1*5}]]", "(0.1*Ranged Attack Power + 785)"),
+        ("[[?${$RAP*0.14+$m1}]]-[[?${$RAP*0.14+$M1}]]", "(0.14*Ranged Attack Power + 144 to 172)"),
+        (
+            "[[?${$m1+0.07*$SPH+0.07*$AP}]] to [[?${$M1+0.07*$SPH+0.07*$AP}]]",
+            "(440 to 536) + 7% of Spell power + 7% of Attack power",
+        ),
+        ("[[?${0.36*$mw}]] to [[?${0.36*$MW}]]", "36% of Mainhand weapon damage"),
+        (f"{SEAL_MIN} to {SEAL_MAX}", "19% of Mainhand weapon damage + 8% of Attack power + 13% of Spell power"),
+        ("[[?$Ghe:she;]]", "they"),
+        # The spell lost this effect in 3.4.5. Wowhead lists a 15 sec proc cooldown.
+        ("[[?$57470s3]]", "15"),
+    ],
+    "de": [
+        ("[[?${$51052m1+2*$AP}]]", "(10000 + 2*Angriffskraft)"),
+        ("[[?${$AP*0.2+$m1}]]", "(0,2*Angriffskraft + 48)"),
+        ("[[?${$RAP*0.1+$m1*5}]]", "(0,1*Distanzangriffskraft + 785)"),
+        ("[[?${$RAP*0.14+$m1}]] bis [[?${$RAP*0.14+$M1}]]", "(0,14*Distanzangriffskraft + 144 bis 172)"),
+        (
+            "[[?${$m1+0.07*$SPH+0.07*$AP}]] bis [[?${$M1+0.07*$SPH+0.07*$AP}]]",
+            "(440 bis 536) + 7% der Zaubermacht + 7% der Angriffskraft",
+        ),
+        ("[[?${0.36*$mw}]] bis [[?${0.36*$MW}]]", "36% des Waffenschadens der Waffenhand"),
+        (f"{SEAL_MIN} bis {SEAL_MAX}", "19% des Waffenschadens der Waffenhand + 8% der Angriffskraft + 13% der Zaubermacht"),
+        ("[[?$57470s3]]", "15"),
+    ],
+}
+ATTACK_POWER_SHARES = ("[[?${$AP*$m1/100}]]", "[[?${$m3/100*$AP}]]")
 LANGS = {"en": "enUS", "de": "deDE"}
 
 
@@ -41,10 +76,13 @@ def render(rank, lang, era, original_en):
         # The base value is 0 and it grows with level. The game truncates.
         per_level = float(re.search(r"(-?[\d.]+) per level", rank["level_scaled"][0]).group(1))
         text = text.replace("[[?$s2]]", str(int(abs(per_level) * LEVELS[era])))
-    if "[[?${$AP*$m1/100}]]" in text:
-        share = re.search(r"\((\d+)% of Attack Power\)", original_en).group(1)
-        word = f"({share}% of Attack Power)" if lang == "en" else f"({share}% der Angriffskraft)"
-        text = text.replace("[[?${$AP*$m1/100}]]", word)
+    for token in ATTACK_POWER_SHARES:
+        if token in text:
+            share = re.search(r"(\d+)% of Attack [Pp]ower", original_en).group(1)
+            word = f"({share}% of Attack Power)" if lang == "en" else f"({share}% der Angriffskraft)"
+            text = text.replace(token, word)
+    for token, word in FORMULAS[lang]:
+        text = text.replace(token, word)
     if text.endswith("eine Chance, 10 Sek.."):
         # Era's German Vindication lost its effect to a Season of Discovery condition.
         share = re.search(r"by (\d+)% for", original_en).group(1)
@@ -54,6 +92,10 @@ def render(rank, lang, era, original_en):
         )
     # Era's English Vindication has the same problem.
     text = re.sub(r"(\d+%)10 sec\.", r"\1 for 10 sec.", text)
+    text = text.replace("Sek.. ", "Sek. ")
+    # 0.50 sec reads as 0.5 sec, and 1.0 sec as 1 sec.
+    text = re.sub(r"(\d\.\d*?)0+(?= (?:sec|Sek))", r"\1", text)
+    text = re.sub(r"(\d)\.(?= (?:sec|Sek))", r"\1", text)
     if "$" in text or "[[" in text:
         raise SystemExit(f"unresolved token: {text}")
     return text
@@ -100,7 +142,8 @@ def generate(db, repo, row, extracts):
                 original_id, original_dep = known[key]
                 tid = new_ids[talent["talent_id"]]
                 prereqs = talent["prerequisites"]
-                dep = new_ids[_prereq_id(prereqs[0])] if prereqs else None
+                # 3.4.5 has prerequisites pointing at talents that no longer exist.
+                dep = new_ids.get(_prereq_id(prereqs[0])) if prereqs else None
                 expected = None if original_dep is None else original_dep + offset
                 if dep != expected:
                     raise SystemExit(f"{code}: {talent['name']} dependency {dep}, Original has {expected}")

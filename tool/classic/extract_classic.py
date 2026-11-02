@@ -1,6 +1,10 @@
-"""Extract talent data from a local Classic client (static, read-only).
+"""Extract talent data from a local Classic client (static, read-only), or from
+tables downloaded from wago.tools when no client is available.
 
 Usage: python3 -I extract_classic.py <install> <wow_classic_era|wow_anniversary> <dbd_dir> <listfile.csv> <out.json> [locale]
+       python3 -I extract_classic.py --csv <csv_dir> <build> <product> <dbd_dir> <out.json> <locale>
+
+The CSV folder holds <Table>_<locale>.csv for each table in TABLES.
 
 Reads CASC storage with mode 'rb' only and never starts anything. Encrypted DB2
 sections are skipped and counted, never decrypted. Server hotfixes are not part
@@ -13,6 +17,8 @@ Anything that can't be calculated stays visible as [[?token]] and is counted.
 
 import ast
 import collections
+import csv
+import hashlib
 import json
 import operator
 import os
@@ -22,6 +28,7 @@ import sys
 import time
 import zlib
 
+csv.field_size_limit(1 << 24)
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "forever"))
 import casc  # noqa: E402
 import wdc  # noqa: E402
@@ -52,6 +59,9 @@ TABLES = (
     "SpellAuraOptions",
     "ManifestInterfaceData",
 )
+
+# Only the CSV mode loads these. They're empty or unused in Era and Anniversary.
+CSV_ONLY_TABLES = ("SpellDescriptionVariables", "SpellXDescriptionVariables", "SpellTargetRestrictions")
 
 # Words the client takes from its global strings, not from the spell's template.
 # deDE matches the original German client text in the app's data.
@@ -94,31 +104,107 @@ def build_listed(build, builds):
     return False
 
 
-def normalize_table(table):
-    """Fix two things wdc.py leaves raw: palette integers keep garbage above their
-    declared width (a u8 ProcChance of 101 reads as 2149), and common-block values
-    aren't converted to their column type."""
-    for field in table.inline:
-        name = field["name"]
-        kind = table.columns.get(name, ("int", None))[0]
-        size = field["size"]
-        bits = int(re.sub(r"\D", "", size)) if size else None
-        unsigned = bool(size) and size.startswith("u")
+def choose_definition(defs, build):
+    """The .dbd definition listing this build, or else the one listing the newest
+    build of the same patch. Returns (definition, the build it was chosen by)."""
+    for definition in defs:
+        if build_listed(build, definition["builds"]):
+            return definition, build
+    patch = build.rsplit(".", 1)[0] + "."
+    best = None
+    for definition in defs:
+        for item in definition["builds"]:
+            listed = item.split("-")[-1]
+            if listed.startswith(patch) and (not best or int(listed.rsplit(".", 1)[1]) > int(best[1].rsplit(".", 1)[1])):
+                best = (definition, listed)
+    if not best:
+        raise SystemExit(f"no definition for patch {patch}x")
+    return best
 
-        def fix(value):
-            if kind == "float" and isinstance(value, int):
-                return struct.unpack("<f", struct.pack("<I", value & 0xFFFFFFFF))[0]
-            if isinstance(value, int) and bits:
-                value &= (1 << bits) - 1
-                if not unsigned and value >> (bits - 1):
-                    value -= 1 << bits
-            return value
 
-        for row in table.rows.values():
-            if name in row:
-                value = row[name]
-                row[name] = [fix(v) for v in value] if isinstance(value, list) else fix(value)
-    return table
+class CsvTable:
+    """A wago.tools CSV shaped like a wdc.WDC table: rows by ID, arrays as lists."""
+
+    def __init__(self, path, dbd_path, build, name):
+        columns, defs = wdc.parse_dbd(dbd_path)
+        definition, self.definition_build = choose_definition(defs, build)
+        with open(path, encoding="utf-8", newline="") as source:
+            reader = csv.reader(source)
+            header = next(reader)
+            lines = list(reader)
+        expected = []
+        for field in definition["fields"]:
+            count = field["arr"]
+            expected += [field["name"]] if count == 1 else [f"{field['name']}_{i}" for i in range(count)]
+        self.headers_match = sorted(header) == sorted(expected)
+        if not self.headers_match:
+            raise SystemExit(f"{name}: columns differ from the definition of {self.definition_build}: "
+                             f"{sorted(set(header) ^ set(expected))}")
+        self.fields_outside_width = collections.Counter()
+        self.rows = {}
+        index = {column: i for i, column in enumerate(header)}
+        for line in lines:
+            row = {}
+            for field in definition["fields"]:
+                kind = columns.get(field["name"], ("int", None))[0]
+                if field["arr"] == 1:
+                    row[field["name"]] = self._value(line[index[field["name"]]], kind, field)
+                else:
+                    row[field["name"]] = [
+                        self._value(line[index[f"{field['name']}_{i}"]], kind, field) for i in range(field["arr"])
+                    ]
+            self.rows[row["ID"]] = row
+
+    def _value(self, text, kind, field):
+        if kind in ("string", "locstring"):
+            return text
+        if kind == "float":
+            return float(text)
+        value = int(text)
+        fitted = wdc.fit_width(value, field["size"])
+        if fitted != value:
+            self.fields_outside_width[field["name"]] += 1
+        return fitted
+
+
+class CsvClient:
+    """Tables downloaded from wago.tools, named <Table>_<locale>.csv."""
+
+    def __init__(self, csv_dir, build, product, dbd_dir, locale):
+        self.locale = locale
+        self.build = build
+        self.product = product
+        self.tables_info = {}
+        for name in TABLES + CSV_ONLY_TABLES:
+            path = os.path.join(csv_dir, f"{name}_{locale}.csv")
+            table = CsvTable(path, os.path.join(dbd_dir, f"{name}.dbd"), build, name)
+            with open(path, "rb") as source:
+                digest = hashlib.sha256(source.read()).hexdigest()
+            self.tables_info[name] = dict(
+                sha256=digest,
+                rows=len(table.rows),
+                definition_build=table.definition_build,
+                definition_lists_build=table.definition_build == build,
+                columns_match_definition=table.headers_match,
+                values_outside_width=dict(table.fields_outside_width),
+            )
+            setattr(self, name, table)
+        self.retrieved = time.strftime("%Y-%m-%d", time.gmtime(os.path.getmtime(path)))
+
+    def source_fields(self, product, locale, retries):
+        return dict(
+            product=product,
+            build=self.build,
+            locale=locale,
+            provider="wago.tools",
+            url=f"https://wago.tools/db2/<table>/csv?build={self.build}&locale={locale}",
+            retrieved=self.retrieved,
+            official_client="no: decoded CSVs, not read from a client on this machine",
+            hotfixes="unknown: the hotfixes option was not requested",
+        )
+
+    def encrypted_fields(self):
+        return dict(sections=None, records=None, blte_chunks=None, note="not visible in a CSV")
 
 
 class Client:
@@ -141,7 +227,6 @@ class Client:
             raise SystemExit(f"{name}: {table.field_count} fields, definition has {len(table.inline)}")
         if len(keys) != 1:
             raise SystemExit(f"{name}: {len(keys)} files for {self.locale} in root")
-        normalize_table(table)
         self.tables_info[name] = dict(
             fdid=fdid,
             content_key=keys.pop(),
@@ -157,6 +242,27 @@ class Client:
         )
         return table
 
+    def source_fields(self, product, locale, retries):
+        info = self.casc.info
+        return dict(
+            product=product,
+            build=self.build,
+            build_key=info["Build Key"],
+            cdn_key=info["CDN Key"],
+            locale=locale,
+            install_tags=info["Tags"],
+            read_retries=retries,
+            hotfixes="not included: the client files don't hold server hotfixes",
+        )
+
+    def encrypted_fields(self):
+        tables = self.tables_info.values()
+        return dict(
+            sections=sum(t["encrypted_sections"] for t in tables),
+            records=sum(t["encrypted_records"] for t in tables),
+            blte_chunks=sum(t["encrypted_blte_chunks"] for t in tables),
+        )
+
 
 class Renderer:
     def __init__(self, client, product, locale):
@@ -168,6 +274,17 @@ class Renderer:
         if self.words is None:
             raise SystemExit(f"no duration and range words for locale {locale}: add them to WORDS")
         self.season_min = SEASON_SPELL_MIN if product == "wow_classic_era" else None
+        # A talent calculator knows no glyphs, and 3.3.5a's text is written as if the
+        # character has none of what these conditions ask about.
+        self.conditions_false = product == "wow_classic"
+        self.targets = {}
+        self.variables = collections.defaultdict(list)
+        if hasattr(client, "SpellTargetRestrictions"):
+            self.targets = self._first_by_spell(client.SpellTargetRestrictions)
+            texts = client.SpellDescriptionVariables.rows
+            for row in client.SpellXDescriptionVariables.rows.values():
+                if row["SpellDescriptionVariablesID"] in texts:
+                    self.variables[row["SpellID"]].append(texts[row["SpellDescriptionVariablesID"]]["Variables"])
         self.misc = self._first_by_spell(client.SpellMisc)
         self.auras = self._first_by_spell(client.SpellAuraOptions)
         self.effects = collections.defaultdict(dict)
@@ -230,7 +347,13 @@ class Renderer:
         """A token's signed value, or None when it can't be calculated."""
         index = (number or 1) - 1
         effect = self.effects.get(spell, {}).get(index)
+        if kind == "M":
+            points = self._points(spell, index, notes)
+            return points[1] if points else None
         kind = kind.lower()
+        if kind == "i":
+            target = self.targets.get(spell)
+            return target["MaxTargets"] if target and target["MaxTargets"] else None
         if kind in ("s", "m"):
             points = self._points(spell, index, notes)
             return points[0] if points else None
@@ -269,6 +392,26 @@ class Renderer:
             return aura["CumulativeAura"] if aura else None
         return None
 
+    def _variable(self, name, spell, notes):
+        """The value of a $<name> from the spell's description variables, or None."""
+        for text in self.variables.get(spell, []):
+            for line in text.splitlines():
+                match = re.fullmatch(r"\s*\$" + re.escape(name) + r"=(.*?)\s*", line)
+                if match:
+                    return self._variable_value(match.group(1), spell, notes)
+        return None
+
+    def _variable_value(self, source, spell, notes):
+        source = source.strip()
+        if source.startswith("$?"):
+            conditions, _, other, used = split_conditional(source)
+            if used != len(source) or not self._conditions_are_false(conditions):
+                return None
+            notes["assumed_false_conditions"].extend(c.strip() for c in conditions)
+            return self._variable_value(other, spell, notes)
+        match = re.fullmatch(r"\$\{(.*)\}", source)
+        return self._expression(match.group(1) if match else source, spell, notes)
+
     def _expression(self, source, spell, notes):
         failed = []
 
@@ -280,6 +423,14 @@ class Renderer:
                 return "0"
             return f"({float(value)!r})"
 
+        def variable(match):
+            value = self._variable(match.group(1), spell, notes)
+            if value is None:
+                failed.append(match.group(0))
+                return "0"
+            return f"({float(value)!r})"
+
+        source = re.sub(r"\$<(\w+)>", variable, source)
         if re.search(r"\$[A-Z]{2,}|\$pl\b", source):
             return None  # Character stats such as $AP and $PL.
         replaced = re.sub(r"\$(\d+)?([A-Za-z])(\d?)", substitute, source)
@@ -349,7 +500,14 @@ class Renderer:
                 out.append(match.group(1) if single else match.group(2))
                 pos += match.end()
                 continue
-            match = re.match(r"\$[gG][^:;]*:[^;]*;|\$<\w+>|\$@\w+|\$[A-Z]{2,}|\$pl\b", rest)
+            match = re.match(r"\$<(\w+)>", rest)
+            if match:
+                notes["token_kinds"].add("$<>")
+                value = self._variable(match.group(1), spell, notes)
+                out.append(self._unknown(match.group(0), notes) if value is None else self._number(abs(value)))
+                pos += match.end()
+                continue
+            match = re.match(r"\$[gG][^:;]*:[^;]*;|\$@\w+|\$[A-Z]{2,}|\$pl\b", rest)
             if match:
                 out.append(self._unknown(match.group(0), notes))
                 pos += match.end()
@@ -403,32 +561,44 @@ class Renderer:
         return marker(token)
 
     def _conditional(self, text, spell, notes):
-        """$?cond[then]?cond[then][else]. Only Season of Discovery conditions are
-        decidable, and they're false on Classic Era. Returns (rendered, length)."""
+        """Conditions that can be decided are false: Season of Discovery ones on Era, and
+        all of them on 3.4.5. Returns (rendered, length)."""
         notes["token_kinds"].add("$?")
-        pos = 1
-        conditions, bodies = [], []
-        while pos < len(text) and text[pos] == "?":
-            start = text.find("[", pos)
-            if start < 0:
-                return self._unknown(text[:pos + 1], notes), pos + 1
-            end = closing_bracket(text, start)
-            conditions.append(text[pos + 1 : start])
-            bodies.append(text[start + 1 : end])
-            pos = end + 1
-        other = ""
-        if pos < len(text) and text[pos] == "[":
-            end = closing_bracket(text, pos)
-            other = text[pos + 1 : end]
-            pos = end + 1
-        decidable = self.season_min is not None and all(
+        conditions, _, other, used = split_conditional(text)
+        if not conditions or not self._conditions_are_false(conditions):
+            return self._unknown(text[:used], notes), used
+        notes["assumed_false_conditions"].extend(c.strip() for c in conditions)
+        return self._render(other, spell, notes), used
+
+    def _conditions_are_false(self, conditions):
+        if any("!" in c for c in conditions):
+            return False
+        if self.conditions_false:
+            return True
+        return self.season_min is not None and all(
             ids and all(int(i) >= self.season_min for i in ids)
             for ids in (re.findall(r"\d+", c) for c in conditions)
-        ) and not any("!" in c for c in conditions)
-        if not decidable:
-            return self._unknown(text[:pos], notes), pos
-        notes["assumed_false_conditions"].extend(c.strip() for c in conditions)
-        return self._render(other, spell, notes), pos
+        )
+
+
+def split_conditional(text):
+    """Splits $?cond[then]?cond[then][else]. Returns (conditions, bodies, else, length)."""
+    pos = 1
+    conditions, bodies = [], []
+    while pos < len(text) and text[pos] == "?":
+        start = text.find("[", pos)
+        if start < 0:
+            return [], [], "", pos + 1
+        end = closing_bracket(text, start)
+        conditions.append(text[pos + 1 : start])
+        bodies.append(text[start + 1 : end])
+        pos = end + 1
+    other = ""
+    if pos < len(text) and text[pos] == "[":
+        end = closing_bracket(text, pos)
+        other = text[pos + 1 : end]
+        pos = end + 1
+    return conditions, bodies, other, pos
 
 
 def closing_bracket(text, start):
@@ -493,7 +663,7 @@ def assemble(client, product, locale, retries):
         out_talents = []
         for talent in sorted(by_tab[tab["ID"]], key=lambda t: (t["TierID"], t["ColumnIndex"])):
             where = f"{code}/{tab['Name_lang']}/{talent['TierID']},{talent['ColumnIndex']}"
-            if talent["ClassID"] != entry["class_id"]:
+            if talent["ClassID"] not in (0, entry["class_id"]):  # 3.4.5 leaves it at 0.
                 anomalies.append(f"{where}: Talent.ClassID {talent['ClassID']} differs from its tab's class")
             spells = [s for s in talent["SpellRank"] if s]
             if spells != talent["SpellRank"][: len(spells)]:
@@ -595,25 +765,10 @@ def assemble(client, product, locale, retries):
     counts["classes"] = len(classes)
     counts["trees"] = sum(len(c["trees"]) for c in classes.values())
     counts["pet_tabs_excluded"] = len(pet_tabs)
-    info = client.casc.info
     return dict(
-        source=dict(
-            product=product,
-            build=client.build,
-            build_key=info["Build Key"],
-            cdn_key=info["CDN Key"],
-            locale=locale,
-            install_tags=info["Tags"],
-            read_retries=retries,
-            hotfixes="not included: the client files don't hold server hotfixes",
-        ),
+        source=client.source_fields(product, locale, retries),
         tables=client.tables_info,
-        encrypted=dict(
-            sections=sum(t["encrypted_sections"] for t in client.tables_info.values()),
-            records=sum(t["encrypted_records"] for t in client.tables_info.values()),
-            blte_chunks=sum(t["encrypted_blte_chunks"] for t in client.tables_info.values()),
-            talent_rank_rows_missing=dict(missing_rows),
-        ),
+        encrypted=dict(**client.encrypted_fields(), talent_rank_rows_missing=dict(missing_rows)),
         counts=dict(sorted(counts.items())),
         anomalies=anomalies,
         classes=dict(sorted(classes.items())),
@@ -630,7 +785,24 @@ def read_fdids(listfile):
     return fdids
 
 
+def write(result, out):
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as output:
+        json.dump(result, output, ensure_ascii=False, indent=1)
+    print(out)
+    print(json.dumps(dict(source=result["source"], counts=result["counts"], encrypted=result["encrypted"]), ensure_ascii=False))
+    print(f"anomalies: {len(result['anomalies'])}")
+    for line in result["anomalies"]:
+        print(" ", line)
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--csv":
+        if len(sys.argv) != 8:
+            raise SystemExit(__doc__)
+        csv_dir, build, product, dbd, out, locale = sys.argv[2:8]
+        write(assemble(CsvClient(csv_dir, build, product, dbd, locale), product, locale, 0), out)
+        return
     if len(sys.argv) not in (6, 7):
         raise SystemExit(__doc__)
     install, product, dbd, listfile, out = sys.argv[1:6]
@@ -651,14 +823,7 @@ def main():
             if attempt == attempts - 1:
                 raise SystemExit(f"{locale} of {product} is not readable: {error}")
             time.sleep(30)
-    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
-    with open(out, "w", encoding="utf-8") as output:
-        json.dump(result, output, ensure_ascii=False, indent=1)
-    print(out)
-    print(json.dumps(dict(source=result["source"], counts=result["counts"], encrypted=result["encrypted"]), ensure_ascii=False))
-    print(f"anomalies: {len(result['anomalies'])}")
-    for line in result["anomalies"]:
-        print(" ", line)
+    write(result, out)
 
 
 if __name__ == "__main__":

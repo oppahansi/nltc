@@ -22,10 +22,10 @@ import re
 import sqlite3
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "legacy"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "original"))
 from compare_ranks import clean, relaxed, relaxed_de, template_pattern  # noqa: E402
 
-EXPANSIONS = {"wow_classic_era": 1, "wow_anniversary": 2}
+EXPANSIONS = {"wow_classic_era": 1, "wow_anniversary": 2, "wow_classic": 3}
 LANGUAGES = {"enUS": "en", "enGB": "en", "deDE": "de"}
 MARKER = re.compile(r"\[\[\?.*?\]\]", re.DOTALL)
 NUMBER = re.compile(r"\d+(?:[.,]\d+)?")

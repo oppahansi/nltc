@@ -27,10 +27,16 @@ python3 -I tool/classic/compare_original.py <out.json> assets/db/ltc_data.db
 
 `<dbd_dir>` is WoWDBDefs' `definitions` folder, and `<listfile.csv>` is the community listfile.
 
+WotLK Classic (3.4.5) has no client we can read, so its extract comes from wago.tools CSVs, downloaded as `<Table>_<locale>.csv` from `https://wago.tools/db2/<Table>/csv?build=<build>&locale=<locale>`:
+
+```sh
+python3 -I tool/classic/extract_classic.py --csv <csv_dir> <build> wow_classic <dbd_dir> <out.json> <enUS|deDE>
+```
+
 `generate_sql.py` writes the extracts into `assets/db/ltc_data.db.sql`, replacing its generated block. Rebuild the DB afterwards.
 
 ```sh
-python3 -I tool/classic/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data.db.sql <vanilla_en.json> <vanilla_de.json> <tbc_en.json> <tbc_de.json>
+python3 -I tool/classic/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data.db.sql <vanilla_en.json> <vanilla_de.json> <tbc_en.json> <tbc_de.json> <wotlk_en.json> <wotlk_de.json>
 ```
 
 ## `forever/`: WoW Forever client (CASC and DB2)
