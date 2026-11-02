@@ -3,11 +3,11 @@ import "dart:convert";
 import "dart:ui";
 
 // Project Imports
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
-import "package:ltc/core/game/data_entities.dart";
-import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/talent_build/build_point.dart";
+import "package:ltc/core/utils/extensions.dart";
 
 class ClassBuild {
   static const tableName = "class_builds";

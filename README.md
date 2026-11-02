@@ -67,12 +67,20 @@ Generated `*.g.dart` and `lib/l10n/app_localizations*.dart` files are committed,
 
 ```
 lib/
-├── core/        Shared database, data models, settings and utilities
+├── app/         App widget and routes
+├── core/
+│   ├── db/            SQLite setup and migrations
+│   ├── game/          Expansions, classes, talents
+│   ├── navigation/    Route names
+│   ├── settings/      Preferences and language
+│   ├── talent_build/  Saved builds and share codes
+│   ├── utils/         General helpers
+│   └── widgets/       General widgets
 ├── features/
-│   ├── builds/       Saved builds and share code import
-│   ├── calculator/   Talent trees and rules
-│   ├── home/         Expansion and class selection
-│   └── settings/     Preferences and backups
+│   ├── builds/        Saved builds list and share code import
+│   ├── calculator/    Talent trees and rules
+│   ├── home/          Expansion and class selection
+│   └── settings/      Preferences screen and backups
 └── l10n/        Strings, in English and German
 ```
 

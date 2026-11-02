@@ -2,21 +2,20 @@
 import "dart:convert";
 import "dart:io";
 
-// Flutter Imports
-import "package:flutter_test/flutter_test.dart";
-
 // Package Imports
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_test/flutter_test.dart";
 
 // Project Imports
-import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
-import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/core/talent_build/class_build.dart";
+import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 
+// Relative Project Imports
 import "../../helpers/test_db.dart";
 
 const vanilla = 1;

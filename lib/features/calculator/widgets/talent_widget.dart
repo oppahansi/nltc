@@ -7,8 +7,8 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
 import "package:ltc/core/game/data_entities.dart";
-import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/settings/settings_service.dart";
+import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 import "package:ltc/features/calculator/widgets/talent_detail_sheet.dart";

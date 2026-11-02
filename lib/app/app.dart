@@ -1,9 +1,9 @@
 // Flutter Imports
 import "package:flutter/material.dart";
-import "package:flutter_localizations/flutter_localizations.dart";
 
 // Package Imports
 import "package:exui/exui.dart";
+import "package:flutter_localizations/flutter_localizations.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports

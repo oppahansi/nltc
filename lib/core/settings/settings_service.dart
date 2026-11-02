@@ -2,12 +2,12 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "package:ltc/core/settings/setting_keys.dart";
+import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
-import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings.dart";
-import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/settings/settings_repo.dart";
 import "package:ltc/core/utils/extensions.dart";
 

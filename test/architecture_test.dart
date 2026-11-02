@@ -1,7 +1,7 @@
 // Dart Imports
 import "dart:io";
 
-// Flutter Imports
+// Package Imports
 import "package:flutter_test/flutter_test.dart";
 
 /// Features may only depend on each other in these directions, which keeps the
@@ -11,6 +11,18 @@ const allowedFeatureEdges = {
   "builds": {"calculator"},
   "calculator": <String>{},
   "settings": <String>{},
+};
+
+/// Which parts of core may depend on which. Shared basics know nothing about the
+/// game, and the game data knows nothing about settings or builds.
+const allowedCoreEdges = {
+  "db": <String>{},
+  "navigation": <String>{},
+  "utils": <String>{},
+  "widgets": {"utils"},
+  "game": {"db", "utils"},
+  "settings": {"db", "game", "utils"},
+  "talent_build": {"db", "game", "settings", "utils"},
 };
 
 /// Violations being worked off. This list may only ever shrink.
@@ -37,6 +49,14 @@ String? violation(String from, String to) {
   if (from.startsWith("core/") &&
       (to.startsWith("features/") || to.startsWith("app/"))) {
     return "core must not depend on features or app";
+  }
+  if (from.startsWith("core/") && to.startsWith("core/")) {
+    final fromLayer = from.split("/")[1];
+    final toLayer = to.split("/")[1];
+    if (fromLayer != toLayer &&
+        !(allowedCoreEdges[fromLayer] ?? const {}).contains(toLayer)) {
+      return "core/$fromLayer must not depend on core/$toLayer";
+    }
   }
   if (from.startsWith("features/")) {
     if (to.startsWith("app/")) return "features must not depend on app";
@@ -84,6 +104,8 @@ void main() {
     expect(violation("features/home/a.dart", "features/builds/b.dart"), isNull);
     expect(violation("features/home/a.dart", "features/home/b.dart"), isNull);
     expect(violation("app/app.dart", "features/settings/a.dart"), isNull);
+    expect(violation("core/game/a.dart", "core/settings/b.dart"), isNotNull);
+    expect(violation("core/settings/a.dart", "core/game/b.dart"), isNull);
   });
 
   test("every feature is covered by the rules", () {
@@ -93,5 +115,12 @@ void main() {
         .map((d) => d.path.split("/").last)
         .toSet();
     expect(features, allowedFeatureEdges.keys.toSet());
+
+    final layers = Directory("lib/core")
+        .listSync()
+        .whereType<Directory>()
+        .map((d) => d.path.split("/").last)
+        .toSet();
+    expect(layers, allowedCoreEdges.keys.toSet());
   });
 }

@@ -10,6 +10,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Tests: `flutter test`. `test/helpers/test_db.dart` gives a test its own first-install copy of the bundled DBs. Coverage is still thin, so also run the app to verify UI changes.
 
+## Architecture
+
+Feature-first: `lib/features/<feature>/` holds a feature's screen, widgets, providers and logic, and `lib/core/` holds what several features share. `lib/app/` is the only place that imports every screen; navigate with `RoutePaths`. `test/architecture_test.dart` enforces the allowed dependencies, so change its tables deliberately rather than working around them. Code moves to `core/` only when a second feature needs it.
+
 ## Generated code
 
 `*.g.dart` and `lib/l10n/app_localizations*.dart` are committed. Never edit them by hand. After changing a provider or an ARB file, regenerate and commit the output with the source change.

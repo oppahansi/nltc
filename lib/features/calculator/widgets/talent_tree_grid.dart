@@ -1,11 +1,13 @@
 // Flutter Imports
+import "package:flutter/material.dart";
+
 // Package Imports
 import "package:exui/exui.dart";
-import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+
 // Project Imports
-import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
