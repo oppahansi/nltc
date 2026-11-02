@@ -11,6 +11,8 @@ import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/talent_build/share_util.dart";
 import 'package:ltc/core/settings/settings_service_provider.dart';
+import "package:ltc/features/calculator/logic/talent_rules.dart"
+    as talent_rules;
 
 part "build_state_provider.g.dart";
 
@@ -275,27 +277,8 @@ class BuildState extends _$BuildState {
     );
   }
 
-  bool isTalentEnabled(Talent talent) {
-    final classBuild = state.value!;
-    final maxPoints = expansionToMaxTalentPoints[classBuild.expansionCode];
-
-    if (classBuild.pointsSpentPerTree.reduce((a, b) => a + b) >= maxPoints!) {
-      return false;
-    }
-
-    final pointsInTree = classBuild.pointsSpentPerTree[talent.talentTreeId];
-    final requiredPoints = talent.row * 5;
-    if (pointsInTree < requiredPoints) return false;
-
-    if (talent.dependencyId != null) {
-      final dependency = classBuild.talentTreeTalents[talent.talentTreeId]
-          .firstWhere((t) => t.id == talent.dependencyId);
-
-      if (dependency.currentRank < dependency.ranks.length) return false;
-    }
-
-    return true;
-  }
+  bool isTalentEnabled(Talent talent) =>
+      talent_rules.isTalentEnabled(state.value!, talent);
 
   Talent? getLastTalent() {
     final classBuild = state.value!;
@@ -309,52 +292,9 @@ class BuildState extends _$BuildState {
   }
 
   bool canRemovePoint({Talent? talent}) {
-    final classBuild = state.value!;
-
-    // Must have state, a point invested, and the last spent point must belong to this talent
-    if (classBuild.buildSequence.isEmpty) return false;
     talent ??= getLastTalent();
     if (talent == null) return false;
-    if (talent.currentRank <= 0) return false;
-    final lastPoint = classBuild.buildSequence.last;
-    if (lastPoint.talentId != talent.id) {
-      // We only support undoing the most recently added point to keep
-      // dependency logic simple and deterministic.
-      return false;
-    }
-
-    final treeIndex = talent.talentTreeId;
-    final pointsInTree = classBuild.pointsSpentPerTree[treeIndex];
-    final newPointsInTree = pointsInTree - 1;
-
-    // 1. Dependency (prerequisite) protection:
-    // If any other talent in the same tree depends on THIS talent and has points,
-    // removing would invalidate its prerequisite (it requires the dependency maxed).
-    final dependents = classBuild.talentTreeTalents[treeIndex].where(
-      (t) => t.dependencyId == talent!.id && t.currentRank > 0,
-    );
-    if (dependents.isNotEmpty) return false;
-
-    // 2. Row gating protection:
-    // For every talent in this tree that will still have at least 1 point after removal
-    // ensure the (new) total points in tree still satisfies its row requirement: row * 5.
-    for (final t in classBuild.talentTreeTalents[treeIndex]) {
-      int ranksAfterRemoval;
-      if (t.id == talent.id) {
-        ranksAfterRemoval = talent.currentRank - 1;
-      } else {
-        ranksAfterRemoval = t.currentRank;
-      }
-      if (ranksAfterRemoval <= 0) continue; // not invested after removal
-      final requiredPoints = t.row * 5;
-      if (newPointsInTree < requiredPoints) {
-        return false; // would lock an already invested deeper-row talent
-      }
-    }
-
-    // 3. (Optional) Global cap considerations are unnecessary for removal;
-    // no other constraints violated, so it is safe to remove.
-    return true;
+    return talent_rules.canRemovePoint(state.value!, talent);
   }
 
   void updateBuildTitle(String value) {
