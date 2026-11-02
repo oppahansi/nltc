@@ -5,7 +5,7 @@ import "dart:math" as math;
 import "package:flutter/material.dart";
 
 // Project Imports
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 
 String getBgImage(String name) {
   return "assets/images/bgs/$name.webp";

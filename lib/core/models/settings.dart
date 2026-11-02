@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 
 class Settings {
   final Locale locale;

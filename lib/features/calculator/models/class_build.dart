@@ -5,7 +5,7 @@ import "dart:ui";
 // Project Imports
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/features/calculator/models/build_point.dart";
 

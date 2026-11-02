@@ -3,8 +3,8 @@ import "package:sqflite/sqflite.dart";
 
 // Project Imports
 import "package:ltc/core/db/db.dart";
-import "package:ltc/core/models/data_entities.dart";
-import "package:ltc/core/repos/data_repo.dart";
+import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/services/settings_service.dart";
 import "package:ltc/features/calculator/models/build_point.dart";
 import "package:ltc/features/calculator/models/class_build.dart";

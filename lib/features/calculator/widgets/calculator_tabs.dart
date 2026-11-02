@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 

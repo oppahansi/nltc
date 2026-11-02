@@ -3,7 +3,7 @@ import "dart:core";
 
 // Project Imports
 import "package:ltc/core/game/game_catalog.dart";
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 
 String buildShareUrl(ClassBuild build) {

@@ -5,9 +5,9 @@ import "package:flutter/material.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/models/settings.dart";
-import "package:ltc/core/repos/data_repo.dart";
+import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/repos/settings_repo.dart";
 import "package:ltc/core/utils/extensions.dart";
 

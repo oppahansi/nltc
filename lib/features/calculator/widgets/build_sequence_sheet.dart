@@ -8,7 +8,7 @@ import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
 import "package:ltc/core/game/game_colors.dart";
-import "package:ltc/core/models/data_entities.dart";
+import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/providers/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
