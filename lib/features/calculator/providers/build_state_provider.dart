@@ -447,10 +447,16 @@ class BuildState extends _$BuildState {
         list.fold<int>(0, (s, t) => s + t.currentRank),
     ];
 
-    final className = trees.isNotEmpty
-        ? trees.first.names[settings.locale.languageCode] ??
-              trees.first.names.values.first
-        : parsed.classCode;
+    final classes = await dataRepo.getClassesByExpansion(
+      expansionId,
+      languageCode: settings.locale.languageCode,
+    );
+    final className =
+        classes
+            .where((c) => c.id == classId)
+            .firstOrNull
+            ?.names[settings.locale.languageCode] ??
+        parsed.classCode;
     final build = ClassBuild(
       id: null,
       title: "",
