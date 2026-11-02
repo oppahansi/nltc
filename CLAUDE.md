@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Localizations: edit `lib/l10n/app_en.arb` and `app_de.arb`, then run `flutter gen-l10n`. Ignore the `flutter_intl` block in `pubspec.yaml`.
 - Lint: `flutter analyze` (also runs `riverpod_lint`, enabled as an analyzer plugin in `analysis_options.yaml`).
 
-There are no tests (`test/` does not exist), so verify changes with `flutter analyze` and by running the app.
+Tests: `flutter test`. `test/helpers/test_db.dart` gives a test its own first-install copy of the bundled DBs. Coverage is still thin, so also run the app to verify UI changes.
 
 ## Generated code
 

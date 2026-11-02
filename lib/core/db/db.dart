@@ -2,6 +2,7 @@
 import "dart:io";
 
 // Flutter Imports
+import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
 
 // Package Imports
@@ -19,8 +20,15 @@ class Db {
   static Database? _dataDbInstance;
   static Database? _userDbInstance;
 
+  /// When set, DB files live here and the legacy location check is skipped.
+  @visibleForTesting
+  static Directory? testDirectoryOverride;
+
   // Resolve a platform-appropriate directory for DB files.
   static Future<Directory> getDatabaseDirectory() async {
+    if (testDirectoryOverride != null) {
+      return testDirectoryOverride!;
+    }
     if (Platform.isAndroid) {
       final dbPath = await getDatabasesPath(); // sqflite helper
       return Directory(dbPath);
@@ -34,6 +42,8 @@ class Db {
 
   // Migrate a DB file from the old documents dir to the new platform dir if needed.
   static Future<void> _migrateIfNeeded(String fileName) async {
+    if (testDirectoryOverride != null) return;
+
     final oldDocs = await getApplicationDocumentsDirectory();
     final oldPath = join(oldDocs.path, fileName);
 
