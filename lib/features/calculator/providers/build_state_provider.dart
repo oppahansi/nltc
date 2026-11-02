@@ -375,6 +375,7 @@ class BuildState extends _$BuildState {
     if (treeTalents.length < 3 || parsed.trees.length > treeTalents.length) {
       return false;
     }
+    trees.sort((a, b) => a.id.compareTo(b.id));
     for (int ti = 0; ti < parsed.trees.length; ti++) {
       final codeStr = parsed.trees[ti];
       final talents = treeTalents[ti];
@@ -414,8 +415,37 @@ class BuildState extends _$BuildState {
       pointsSpentPerTree: pointsPerTree,
     );
 
+    if (parsed.order != null && !_replayOrder(build, parsed.order!)) {
+      return false;
+    }
+
     _preloadedBuild = build;
     state = AsyncData(build);
+    return true;
+  }
+
+  /// Spends a shared order's points on an empty [build], following the rules as
+  /// if they were tapped in. False if the order isn't a legal one.
+  bool _replayOrder(ClassBuild build, List<int> order) {
+    final talents = talentsInShareOrder(build.talentTreeTalents);
+    for (final index in order) {
+      if (index >= talents.length) return false;
+      final talent = talents[index];
+      if (talent.currentRank >= talent.ranks.length) return false;
+      if (!talent_rules.isTalentEnabled(build, talent)) return false;
+
+      talent.currentRank++;
+      build.pointsSpentPerTree[talent.talentTreeId]++;
+      build.buildSequence.add(
+        BuildPoint(
+          id: null,
+          classBuildId: 0,
+          treeId: talent.talentTreeId,
+          talentId: talent.id,
+          order: build.buildSequence.length,
+        ),
+      );
+    }
     return true;
   }
 

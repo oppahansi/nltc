@@ -17,7 +17,7 @@ LTC is a non-commercial fan project. It has no ads or purchases, and it isn't fo
 
 - **Talent calculator:** interactive trees that enforce row requirements, prerequisites and point limits, with undo and a build order view.
 - **Saved builds:** save builds on your device with your own titles.
-- **Sharing:** export and import compact share codes (`expansion-class-tree1-tree2-tree3`).
+- **Sharing:** export and import compact share codes that carry the build order.
 - **Backups:** export and restore your saved builds through the system file picker.
 - **English and German:** switch language at any time.
 

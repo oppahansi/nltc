@@ -439,10 +439,177 @@ void main() {
       final code = buildShareCode(build());
 
       expect(talent(t.id).currentRank, 2);
-      expect(
-        code.split("-")[2].split("").map(int.parse).reduce((a, b) => a + b),
-        2,
-      );
+      expect(await notifier().importFromShareCode(code), isTrue);
+      expect(talent(t.id).currentRank, 2);
+    });
+
+    group("with a build order", () {
+      /// Spends [points] on the first talents that accept them, skipping around
+      /// so the order isn't just tree by tree.
+      List<int> spend(int points) {
+        final spent = <int>[];
+        var tree = 0;
+        while (spent.length < points) {
+          final next = build().talentTreeTalents[tree % 3]
+              .where(
+                (t) =>
+                    t.currentRank < t.ranks.length &&
+                    notifier().isTalentEnabled(t),
+              )
+              .firstOrNull;
+          if (next != null) {
+            notifier().addPoint(next);
+            spent.add(next.id);
+          }
+          tree++;
+        }
+        return spent;
+      }
+
+      List<int> sequence() => [
+        for (final point in build().buildSequence) point.talentId,
+      ];
+
+      test("the order and ranks come back exactly", () async {
+        await select(wotlk, 9);
+        final spent = spend(40);
+        final ranks = {for (final t in talents()) t.id: t.currentRank};
+        final code = buildShareCode(build());
+        expect(code, startsWith("wotlk-deathknight-o"));
+
+        await select(tbc, mage);
+        expect(await notifier().importFromShareCode(code), isTrue);
+
+        expect(build().expansionCode, "wotlk");
+        expect(sequence(), spent);
+        expect({for (final t in talents()) t.id: t.currentRank}, ranks);
+        expect(buildShareCode(build()), code);
+      });
+
+      test("Legacy points are part of the order", () async {
+        await select(forever, druid);
+        final perk = build().talentTreeTalents[firstLegacyTreeId].firstWhere(
+          (t) => t.column == 0,
+        );
+        spend(3);
+        notifier().addPoint(perk);
+        spend(2);
+        final spent = sequence();
+        final code = buildShareCode(build());
+
+        await select(vanilla, mage);
+        expect(await notifier().importFromShareCode(code), isTrue);
+
+        expect(sequence(), spent);
+        expect(talent(perk.id).currentRank, 1);
+        expect(build().pointsSpentPerTree[firstLegacyTreeId], 1);
+      });
+
+      test("an imported order can be undone point by point", () async {
+        await select(vanilla, mage);
+        final spent = spend(6);
+        await notifier().importFromShareCode(buildShareCode(build()));
+
+        expect(notifier().canRemovePoint(), isTrue);
+        notifier().removeLastPoint();
+        expect(sequence(), spent.sublist(0, 5));
+        expect(total(), 5);
+      });
+
+      test("a talent-by-talent build is shorter than its digits", () async {
+        await select(wotlk, 9);
+        final digits = buildShareCode(build()).length;
+        while (total() < 71) {
+          final next = talents().firstWhere(
+            (t) =>
+                t.currentRank < t.ranks.length && notifier().isTalentEnabled(t),
+          );
+          while (next.currentRank < next.ranks.length && total() < 71) {
+            if (!notifier().isTalentEnabled(next)) break;
+            notifier().addPoint(next);
+          }
+        }
+        final code = buildShareCode(build());
+        // ignore: avoid_print
+        print("LEN ordered=${code.length} digits=$digits");
+        expect(code.length, lessThan(digits));
+      });
+
+      test("case changes are fine, but damage is caught", () async {
+        await select(vanilla, mage);
+        spend(10);
+        final code = buildShareCode(build());
+
+        expect(parseShareCode(code.toUpperCase())?.order, isNotNull);
+        expect(parseShareCode(code.substring(0, code.length - 2)), isNull);
+        expect(parseShareCode(code.substring(0, code.length - 1)), isNull);
+
+        final last = code.length - 3;
+        final typo = code[last] == "0" ? "1" : "0";
+        expect(parseShareCode(code.replaceRange(last, last + 1, typo)), isNull);
+      });
+
+      test("an order that breaks the rules doesn't import", () async {
+        await select(vanilla, mage);
+        final tree = build().talentTreeTalents[0];
+        final locked = tree.firstWhere((t) => t.row == 3);
+        // A real sequence for a talent that needs points first, built by hand.
+        await notifier().importFromShareCode(
+          "vanilla-mage-${"0" * tree.length}-0-0",
+        );
+        final ordered = talentsInShareOrder(build().talentTreeTalents);
+        final index = ordered.indexWhere((t) => t.id == locked.id);
+        const base32 = "0123456789abcdefghijklmnopqrstuv";
+        final value = index << 3;
+        final pair = "${base32[value >> 5]}${base32[value & 31]}";
+        final checksums = [
+          for (final a in base32.split(""))
+            for (final b in base32.split("")) "$a$b",
+        ];
+        final code = checksums
+            .map((c) => "vanilla-mage-o$pair$c")
+            .firstWhere((c) => parseShareCode(c) != null);
+
+        expect(await notifier().importFromShareCode(code), isFalse);
+      });
+
+      test("builds with an incomplete order fall back to ranks", () async {
+        await notifier().importFromShareCode("vanilla-mage-05-0-0");
+        expect(buildShareCode(build()), startsWith("vanilla-mage-0"));
+
+        notifier().addPoint(firstInTree(0));
+        expect(buildShareCode(build()), isNot(contains("-o")));
+      });
+
+      test("every class fits in the encoding's 7 bits per talent", () async {
+        final db = await Db.getDataDbInstance();
+        final rows = await db.rawQuery(
+          "SELECT expansion, classId, COUNT(*) n FROM talents "
+          "WHERE classId <> $legacyClassId GROUP BY 1, 2",
+        );
+        final legacy = await db.rawQuery(
+          "SELECT COUNT(*) n FROM talents WHERE classId = $legacyClassId",
+        );
+        for (final row in rows) {
+          final extra = row["expansion"] == forever
+              ? legacy.first["n"] as int
+              : 0;
+          expect((row["n"] as int) + extra, lessThanOrEqualTo(128));
+        }
+      });
+
+      test("saved builds share with their order", () async {
+        await select(vanilla, mage);
+        spend(4);
+        final id = await notifier().saveBuild("ordered");
+        final saved = await ClassBuildsRepo().listBuilds(
+          includeBuildPoints: true,
+        );
+        expect(
+          buildShareCode(saved.firstWhere((b) => b.id == id)),
+          buildShareCode(build()),
+        );
+      });
     });
 
     test(

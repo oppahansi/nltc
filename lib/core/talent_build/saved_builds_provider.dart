@@ -10,5 +10,5 @@ part "saved_builds_provider.g.dart";
 @riverpod
 Future<List<ClassBuild>> savedBuilds(Ref ref, int limit) async {
   final repo = ClassBuildsRepo();
-  return repo.listBuilds(includeBuildPoints: false, limit: limit);
+  return repo.listBuilds(includeBuildPoints: true, limit: limit);
 }
