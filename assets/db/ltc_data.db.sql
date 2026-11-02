@@ -39,7 +39,9 @@ CREATE TABLE expansion_names (
 DROP TABLE IF EXISTS "expansions";
 CREATE TABLE expansions (
       id INTEGER PRIMARY KEY,
-      code TEXT NOT NULL
+      code TEXT NOT NULL,
+      edition TEXT NOT NULL,
+      era TEXT
     );
 
 DROP TABLE IF EXISTS "languages";
@@ -420,10 +422,10 @@ INSERT INTO "expansion_names" ("expansionId","languageCode","name") VALUES
  (1,'de','Vanilla'),
  (2,'de','Der brennende Kreuzzug'),
  (3,'de','Zorn des Lichkönigs');
-INSERT INTO "expansions" ("id","code") VALUES
- (1,'vanilla'),
- (2,'tbc'),
- (3,'wotlk');
+INSERT INTO "expansions" ("id","code","edition","era") VALUES
+ (1,'vanilla','legacy','vanilla'),
+ (2,'tbc','legacy','tbc'),
+ (3,'wotlk','legacy','wotlk');
 INSERT INTO "languages" ("code","name") VALUES
 ('en','English'),
 ('de','German');

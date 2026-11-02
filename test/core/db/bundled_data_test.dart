@@ -52,6 +52,19 @@ void main() {
     });
   });
 
+  test(
+    "every expansion has a known edition, and an era unless it's Forever",
+    () async {
+      final rows = await db.rawQuery(
+        "SELECT code, edition, era FROM expansions",
+      );
+      for (final row in rows) {
+        expect(["legacy", "classic", "forever"], contains(row["edition"]));
+        expect(row["era"] == null, row["edition"] == "forever", reason: "$row");
+      }
+    },
+  );
+
   group("translations", () {
     for (final lang in ["en", "de"]) {
       test("every talent has a $lang name", () async {

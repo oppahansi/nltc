@@ -1,9 +1,22 @@
+// Project Imports
+import "package:ltc/core/game/edition.dart";
+
 class Expansion {
   final int id;
   final String code;
+  final Edition edition;
+
+  /// `vanilla`, `tbc` or `wotlk`. Null for an edition without expansions.
+  final String? era;
   final Map<String, String> names;
 
-  Expansion({required this.id, required this.code, required this.names});
+  Expansion({
+    required this.id,
+    required this.code,
+    required this.edition,
+    required this.era,
+    required this.names,
+  });
 }
 
 class Class {
