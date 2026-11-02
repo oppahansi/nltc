@@ -2,8 +2,8 @@
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 // Project Imports
-import "package:ltc/core/models/settings.dart";
-import "package:ltc/core/services/settings_service.dart";
+import "package:ltc/core/settings/settings.dart";
+import "package:ltc/core/settings/settings_service.dart";
 
 part "settings_service_provider.g.dart";
 

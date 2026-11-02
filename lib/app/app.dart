@@ -8,7 +8,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
 import "package:ltc/app/routes.dart";
-import "package:ltc/core/providers/settings_service_provider.dart";
+import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/features/home/home_screen.dart";
 import "package:ltc/l10n/app_localizations.dart";
 

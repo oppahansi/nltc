@@ -3,7 +3,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 // Project Imports
 import "package:ltc/core/game/data_entities.dart";
-import "package:ltc/core/providers/settings_service_provider.dart";
+import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/game/data_repo.dart";
 
 part "data_providers.g.dart";

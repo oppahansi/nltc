@@ -5,7 +5,7 @@ import "package:sqflite/sqflite.dart";
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/game/data_repo.dart";
-import "package:ltc/core/services/settings_service.dart";
+import "package:ltc/core/settings/settings_service.dart";
 import "package:ltc/features/calculator/models/build_point.dart";
 import "package:ltc/features/calculator/models/class_build.dart";
 import "package:ltc/features/calculator/repos/build_points_repo.dart";

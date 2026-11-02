@@ -7,7 +7,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
-import "package:ltc/core/providers/settings_service_provider.dart";
+import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/text_styles.dart";
 import "package:ltc/core/widgets/shared.dart";

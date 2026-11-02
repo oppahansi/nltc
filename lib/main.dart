@@ -8,7 +8,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 // Project Imports
 import "package:ltc/app/app.dart";
 import "package:ltc/core/db/db.dart";
-import "package:ltc/core/services/settings_service.dart";
+import "package:ltc/core/settings/settings_service.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
