@@ -275,10 +275,8 @@ class BuildState extends _$BuildState {
   }
 
   bool isTalentEnabled(Talent talent) {
-    final settings = ref.watch(settingsProvider).value!;
-    final selectedExp = settings.selectedExp;
-    final maxPoints = expansionToMaxTalentPoints[selectedExp.code];
     final classBuild = state.value!;
+    final maxPoints = expansionToMaxTalentPoints[classBuild.expansionCode];
 
     if (classBuild.pointsSpentPerTree.reduce((a, b) => a + b) >= maxPoints!) {
       return false;
