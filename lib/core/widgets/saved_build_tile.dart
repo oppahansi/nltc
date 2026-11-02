@@ -8,17 +8,17 @@ import "package:material_symbols_icons/symbols.dart";
 import "package:share_plus/share_plus.dart";
 
 // Project Imports
+import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/game/game_colors.dart";
 import "package:ltc/core/navigation/route_paths.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
-import "package:ltc/core/utils/share_util.dart";
+import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/core/utils/text_styles.dart";
-import "package:ltc/features/calculator/models/class_build.dart";
+import "package:ltc/core/talent_build/class_build.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
-import "package:ltc/features/calculator/providers/calculator_providers.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
 class SavedBuildTile extends ConsumerWidget {

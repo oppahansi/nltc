@@ -15,11 +15,7 @@ const allowedFeatureEdges = {
 
 /// Violations being worked off. This list may only ever shrink.
 const knownViolations = <String>{
-  "core/utils/share_util.dart -> features/calculator/models/class_build.dart",
-  "core/widgets/saved_build_tile.dart -> features/calculator/models/class_build.dart",
   "core/widgets/saved_build_tile.dart -> features/calculator/providers/build_state_provider.dart",
-  "core/widgets/saved_build_tile.dart -> features/calculator/providers/calculator_providers.dart",
-  "core/widgets/saved_builds.dart -> features/calculator/providers/calculator_providers.dart",
 };
 
 final _import = RegExp(

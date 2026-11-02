@@ -1,14 +1,14 @@
 // Package Imports
 // Project Imports
+import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/data_entities.dart";
 import 'package:ltc/core/settings/settings_service_provider.dart';
 import "package:ltc/core/game/data_repo.dart";
-import "package:ltc/core/utils/share_util.dart";
-import "package:ltc/features/calculator/models/build_point.dart";
-import "package:ltc/features/calculator/models/class_build.dart";
-import "package:ltc/features/calculator/providers/calculator_providers.dart";
-import "package:ltc/features/calculator/repos/class_builds_repo.dart";
+import "package:ltc/core/talent_build/share_util.dart";
+import "package:ltc/core/talent_build/build_point.dart";
+import "package:ltc/core/talent_build/class_build.dart";
+import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "build_state_provider.g.dart";

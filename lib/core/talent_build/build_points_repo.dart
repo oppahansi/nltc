@@ -3,7 +3,7 @@ import "package:sqflite/sqflite.dart";
 
 // Project Imports
 import "package:ltc/core/db/db.dart";
-import "package:ltc/features/calculator/models/build_point.dart";
+import "package:ltc/core/talent_build/build_point.dart";
 
 class BuildPointsRepo {
   static final BuildPointsRepo _instance = BuildPointsRepo._internal();

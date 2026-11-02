@@ -6,9 +6,9 @@ import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/game/data_repo.dart";
 import "package:ltc/core/settings/settings_service.dart";
-import "package:ltc/features/calculator/models/build_point.dart";
-import "package:ltc/features/calculator/models/class_build.dart";
-import "package:ltc/features/calculator/repos/build_points_repo.dart";
+import "package:ltc/core/talent_build/build_point.dart";
+import "package:ltc/core/talent_build/class_build.dart";
+import "package:ltc/core/talent_build/build_points_repo.dart";
 
 /// Talent names that were corrected after release. Saves from older versions
 /// are keyed by name, so they need to keep finding these talents.

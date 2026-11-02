@@ -13,8 +13,8 @@ import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
-import "package:ltc/core/utils/share_util.dart";
-import "package:ltc/features/calculator/models/class_build.dart";
+import "package:ltc/core/talent_build/share_util.dart";
+import "package:ltc/core/talent_build/class_build.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 
 import "../../helpers/test_db.dart";
