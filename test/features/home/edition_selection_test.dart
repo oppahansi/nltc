@@ -75,38 +75,19 @@ void main() {
     }
 
     testWidgets("stays hidden while only Original has data", (tester) async {
+      await tester.runAsync(() async {
+        final db = await Db.getDataDbInstance();
+        await db.execute("PRAGMA foreign_keys = OFF");
+        await db.delete("talents", where: "expansion > 3");
+      });
       await pump(tester);
       expect(find.byType(SegmentedButton<Edition>), findsNothing);
       expect(find.text("TBC"), findsOneWidget);
     });
 
     testWidgets("switches to the same era in Classic", (tester) async {
-      await tester.runAsync(() async {
-        final db = await Db.getDataDbInstance();
-        await db.insert("expansions", {
-          "id": 5,
-          "code": "classic_tbc",
-          "edition": "classic",
-          "era": "tbc",
-        });
-        await db.insert("expansion_names", {
-          "expansionId": 5,
-          "languageCode": "en",
-          "name": "TBC",
-        });
-        await db.execute(
-          "INSERT INTO talents SELECT classId, talentTreeId, id + 10000, row, "
-          '"column", icon, NULL, 5 FROM talents WHERE expansion = 2',
-        );
-      });
-
       await pump(tester);
       expect(find.byType(SegmentedButton<Edition>), findsOneWidget);
-      expect(
-        find.text("Vanilla"),
-        findsOneWidget,
-        reason: "Original is selected",
-      );
 
       Future<void> waitForChange() async {
         for (var i = 0; i < 20; i++) {
@@ -125,11 +106,6 @@ void main() {
       await waitForChange();
 
       expect(container.read(settingsProvider).value!.selectedExpId, 5);
-      expect(
-        find.text("Vanilla"),
-        findsNothing,
-        reason: "Classic has only TBC",
-      );
     });
   });
 }

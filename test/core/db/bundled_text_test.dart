@@ -51,6 +51,7 @@ void main() {
       isEmpty,
     );
     expect(await offenders("description LIKE '%[%'"), isEmpty);
+    expect(await offenders("description GLOB '*[0-9]%[0-9]*'"), isEmpty);
     expect(
       await offenders(
         "languageCode = 'de' AND description LIKE '%attack power%'",

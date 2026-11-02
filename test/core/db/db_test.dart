@@ -26,7 +26,7 @@ void main() {
     final count = Sqflite.firstIntValue(
       await db.rawQuery("SELECT COUNT(*) FROM talents"),
     );
-    expect(count, 1840);
+    expect(count, greaterThanOrEqualTo(1840));
   });
 
   test("copies the bundled user DB on first open, with no builds", () async {

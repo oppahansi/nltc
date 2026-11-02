@@ -27,6 +27,12 @@ python3 -I tool/classic/compare_original.py <out.json> assets/db/ltc_data.db
 
 `<dbd_dir>` is WoWDBDefs' `definitions` folder, and `<listfile.csv>` is the community listfile.
 
+`generate_sql.py` writes the extracts into `assets/db/ltc_data.db.sql`, replacing its generated block. Rebuild the DB afterwards.
+
+```sh
+python3 -I tool/classic/generate_sql.py assets/db/ltc_data.db assets/db/ltc_data.db.sql <vanilla_en.json> <vanilla_de.json> <tbc_en.json> <tbc_de.json>
+```
+
 ## `forever/`: WoW Forever client (CASC and DB2)
 
 `data/` holds the extract from pre-launch build 1.60.1.70707 and its Wowhead comparison. **This data is provisional**: re-extract from the live build before using it.

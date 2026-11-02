@@ -78,10 +78,12 @@ class DataRepo {
     final db = await Db.getDataDbInstance();
     final result = await db.rawQuery(
       '''
-      SELECT DISTINCT s.classId, s.id, s.icon, s.background, sn.name
+      SELECT DISTINCT s.classId, s.id, COALESCE(o.icon, s.icon) AS icon, s.background, sn.name
       FROM talent_trees s
       JOIN talent_tree_names sn ON s.classId = sn.classId AND s.id = sn.talentTreeId
       JOIN talents t ON t.classId = s.classId AND t.talentTreeId = s.id
+      LEFT JOIN talent_tree_icons o
+        ON o.expansionId = t.expansion AND o.classId = s.classId AND o.talentTreeId = s.id
       WHERE t.expansion = ? AND s.classId = ? AND sn.languageCode = ?
     ''',
       [expansionId, classId, langCode],

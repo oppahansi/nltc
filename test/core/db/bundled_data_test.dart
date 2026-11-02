@@ -52,6 +52,34 @@ void main() {
     });
   });
 
+  group("Classic rows", () {
+    for (final (classic, original, offset) in [(4, 1, 10000), (5, 2, 20000)]) {
+      test(
+        "row $classic has the layout of row $original, ids offset",
+        () async {
+          Future<List<Map<String, Object?>>> layout(
+            int expansion,
+            int by,
+          ) => db.rawQuery(
+            'SELECT id - $by AS id, classId, talentTreeId, row, "column", '
+            "dependencyId - $by AS dep, "
+            "(SELECT COUNT(*) FROM ranks r WHERE r.talentId = t.id) AS ranks "
+            "FROM talents t WHERE expansion = $expansion ORDER BY 1",
+          );
+          final rows = await layout(classic, offset);
+          expect(rows, isNotEmpty);
+          expect(rows, await layout(original, 0));
+        },
+      );
+    }
+
+    test("tree icon overrides name existing assets", () async {
+      for (final icon in await strings("SELECT icon FROM talent_tree_icons")) {
+        expect(File("assets/images/icons/$icon.webp").existsSync(), isTrue);
+      }
+    });
+  });
+
   test(
     "every expansion has a known edition, and an era unless it's Forever",
     () async {
@@ -137,7 +165,9 @@ void main() {
     test("names from later game versions are gone", () async {
       expect(
         await strings(
-          "SELECT name FROM talent_names WHERE name IN ('Improved Sayaad', "
+          "SELECT n.name FROM talent_names n JOIN talents t ON t.id = n.talentId "
+          "JOIN expansions e ON e.id = t.expansion "
+          "WHERE e.edition = 'original' AND n.name IN ('Improved Sayaad', "
           "'Unholy Frenzy', 'Verbesserte Sayaad', 'Unheilige Raserei')",
         ),
         isEmpty,

@@ -268,16 +268,13 @@ void main() {
     test("codes round trip for every expansion and class", () async {
       final db = await Db.getDataDbInstance();
       final pairs = await db.rawQuery(
-        "SELECT DISTINCT t.expansion e, c.id c, c.code code FROM talents t "
-        "JOIN classes c ON c.id = t.classId ORDER BY 1, 2",
+        "SELECT DISTINCT t.expansion e, x.code exp, c.id c, c.code code "
+        "FROM talents t JOIN classes c ON c.id = t.classId "
+        "JOIN expansions x ON x.id = t.expansion ORDER BY 1, 3",
       );
-      expect(pairs.length, 9 + 9 + 10);
+      expect(pairs.length, 9 + 9 + 10 + 9 + 9);
       for (final pair in pairs) {
-        final expansion = const {
-          1: "vanilla",
-          2: "tbc",
-          3: "wotlk",
-        }[pair["e"]]!;
+        final expansion = pair["exp"] as String;
         final classCode = (pair["code"] as String).toLowerCase();
         final counts = await db.rawQuery(
           "SELECT COUNT(*) n FROM talents WHERE expansion = ? AND classId = ? "
@@ -301,12 +298,12 @@ void main() {
       "classic codes parse, but don't import until their data exists",
       () async {
         expect(
-          parseShareCode("classic_tbc-mage-1-2-3")?.expansion,
-          "classic_tbc",
+          parseShareCode("classic_wotlk-mage-1-2-3")?.expansion,
+          "classic_wotlk",
         );
         expect(parseShareCode("retail-mage-1-2-3"), isNull);
         expect(
-          await notifier().importFromShareCode("classic_tbc-mage-1-2-3"),
+          await notifier().importFromShareCode("classic_wotlk-mage-1-2-3"),
           isFalse,
         );
       },
