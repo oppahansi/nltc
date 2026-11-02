@@ -7,6 +7,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -47,7 +48,14 @@ class _TalentTreeViewState extends ConsumerState<TalentTreeView>
         final first = classBuild.pointsSpentPerTree[0];
         final second = classBuild.pointsSpentPerTree[1];
         final third = classBuild.pointsSpentPerTree[2];
-        final spentPointState = "($first/$second/$third)";
+        final spentPointState = isLegacyTree(widget.tree.id)
+            ? loc.legacyPointsSpent(
+                classBuild.pointsSpentPerTree
+                    .skip(firstLegacyTreeId)
+                    .fold(0, (a, b) => a + b),
+                maxLegacyPoints,
+              )
+            : "($first/$second/$third)";
         final summaryRow =
             [
                   "${widget.tree.names[settings.locale.languageCode]} ($pointsInTree)"
@@ -72,10 +80,7 @@ class _TalentTreeViewState extends ConsumerState<TalentTreeView>
                 switchOutCurve: Curves.easeOut,
                 layoutBuilder: (currentChild, previousChildren) => Stack(
                   fit: StackFit.expand,
-                  children: [
-                    ...previousChildren,
-                    ?currentChild,
-                  ],
+                  children: [...previousChildren, ?currentChild],
                 ),
                 child: Image.asset(
                   background,

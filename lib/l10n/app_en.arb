@@ -89,5 +89,13 @@
   "tutorialGotIt": "Got it",
   "edition_original": "Original",
   "edition_classic": "Classic",
-  "edition_forever": "Forever"
+  "edition_forever": "Forever",
+  "legacyPointsSpent": "Legacy: {spent}/{cap}",
+  "@legacyPointsSpent": {
+    "description": "Forever: Legacy points spent out of the cap",
+    "placeholders": {
+      "spent": {"type": "int"},
+      "cap": {"type": "int"}
+    }
+  }
 }

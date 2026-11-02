@@ -45,6 +45,14 @@ String expansionLabel(String expansionCode) {
   return "$edition ${eraLabel(eraOf(expansionCode))}";
 }
 
+/// Forever's account-wide Legacy perks are stored as talents of this pseudo
+/// class, in these trees. A Forever build holds them after its class's trees.
+const legacyClassId = 10;
+const firstLegacyTreeId = 3;
+const maxLegacyPoints = 16;
+
+bool isLegacyTree(int treeId) => treeId >= firstLegacyTreeId;
+
 const maxColumns = 4;
 const classNamesToIds = {
   "druid": 0,

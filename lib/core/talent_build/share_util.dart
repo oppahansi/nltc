@@ -43,11 +43,13 @@ String buildShareCode(ClassBuild build) {
 class ParsedShareCode {
   final String expansion;
   final String classCode;
-  final List<String> trees; // length 3
+  final List<String> trees; // 3, or 6 with Forever's Legacy trees
   ParsedShareCode(this.expansion, this.classCode, this.trees);
 }
 
-final _codeRegex = RegExp(r"^([a-z_]+)-([a-z]+)-([0-9]+)-([0-9]+)-([0-9]+)$");
+final _codeRegex = RegExp(
+  r"^([a-z_]+)-([a-z]+)-([0-9]+)-([0-9]+)-([0-9]+)(?:-([0-9]+)-([0-9]+)-([0-9]+))?$",
+);
 
 ParsedShareCode? parseShareCode(String code) {
   final m = _codeRegex.firstMatch(code.trim().toLowerCase());
@@ -55,10 +57,8 @@ ParsedShareCode? parseShareCode(String code) {
   final expansion = m.group(1)!;
   if (!expansionsToIds.containsKey(expansion)) return null;
   final cls = m.group(2)!;
-  final t1 = m.group(3)!;
-  final t2 = m.group(4)!;
-  final t3 = m.group(5)!;
-  return ParsedShareCode(expansion, cls, [t1, t2, t3]);
+  final trees = [for (var i = 3; i <= 8; i++) ?m.group(i)];
+  return ParsedShareCode(expansion, cls, trees);
 }
 
 // Optional helper to check share availability.

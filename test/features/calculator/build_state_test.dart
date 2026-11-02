@@ -9,11 +9,13 @@ import "package:flutter_test/flutter_test.dart";
 // Project Imports
 import "package:ltc/core/db/db.dart";
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/talent_build/class_build.dart";
 import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:ltc/core/talent_build/share_util.dart";
+import "package:ltc/features/calculator/logic/talent_rules.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
 
 // Relative Project Imports
@@ -22,6 +24,7 @@ import "../../helpers/test_db.dart";
 const vanilla = 1;
 const tbc = 2;
 const wotlk = 3;
+const forever = 7;
 const druid = 0;
 const mage = 2;
 
@@ -264,6 +267,74 @@ void main() {
     );
   });
 
+  group("Forever Legacy", () {
+    Future<void> startForever() async {
+      await select(forever, druid);
+    }
+
+    List<Talent> legacyTalents(int row) => [
+      for (final tree in build().talentTreeTalents.skip(firstLegacyTreeId))
+        ...tree.where((t) => t.row == row),
+    ];
+
+    int legacySpent() => build().pointsSpentPerTree
+        .skip(firstLegacyTreeId)
+        .fold(0, (a, b) => a + b);
+
+    test(
+      "a Forever build holds the class's trees and the Legacy trees",
+      () async {
+        await startForever();
+        expect(build().talentTrees.map((t) => t.id), [0, 1, 2, 3, 4, 5]);
+        expect(build().talentTreeTalents.length, 6);
+      },
+    );
+
+    test("Legacy points have their own cap, apart from talents", () async {
+      await startForever();
+      for (final perk in legacyTalents(0)) {
+        for (var i = 0; i < perk.ranks.length; i++) {
+          notifier().addPoint(perk);
+        }
+      }
+      expect(legacySpent(), maxLegacyPoints);
+      expect(build().pointsSpentPerTree.take(3), [0, 0, 0]);
+      final unspent = legacyTalents(0)
+          .firstWhere((t) => t.currentRank < t.ranks.length);
+      expect(notifier().isTalentEnabled(unspent), isFalse);
+      final classTalent = build().talentTreeTalents[0].firstWhere(
+        (t) => t.row == 0,
+      );
+      expect(notifier().isTalentEnabled(classTalent), isTrue);
+    });
+
+    test("Legacy perks unlock at 5 points per row in their tree", () async {
+      await startForever();
+      final tree = build().talentTreeTalents[firstLegacyTreeId];
+      final gated = tree.firstWhere(
+        (t) => t.row == 1 && t.dependencyId == null,
+      );
+      expect(notifier().isTalentEnabled(gated), isFalse);
+      final first = tree.firstWhere((t) => t.row == 0);
+      for (var i = 0; i < pointsPerRow; i++) {
+        notifier().addPoint(first);
+      }
+      expect(notifier().isTalentEnabled(gated), isTrue);
+    });
+
+    test("Legacy perks don't hold back undoing talents", () async {
+      await startForever();
+      final classTalent = build().talentTreeTalents[0].firstWhere(
+        (t) => t.row == 0,
+      );
+      final perk = legacyTalents(0).first;
+      notifier().addPoint(classTalent);
+      notifier().addPoint(perk);
+      expect(notifier().canRemovePoint(talent: classTalent), isTrue);
+      expect(notifier().canRemovePoint(talent: perk), isTrue);
+    });
+  });
+
   group("share codes", () {
     test("codes round trip for every expansion and class", () async {
       final db = await Db.getDataDbInstance();
@@ -272,12 +343,13 @@ void main() {
         "FROM talents t JOIN classes c ON c.id = t.classId "
         "JOIN expansions x ON x.id = t.expansion ORDER BY 1, 3",
       );
-      expect(pairs.length, 9 + 9 + 10 + 9 + 9 + 10);
+      expect(pairs.length, 9 + 9 + 10 + 9 + 9 + 10 + 9);
       for (final pair in pairs) {
         final expansion = pair["exp"] as String;
         final classCode = (pair["code"] as String).toLowerCase();
         final counts = await db.rawQuery(
-          "SELECT COUNT(*) n FROM talents WHERE expansion = ? AND classId = ? "
+          "SELECT COUNT(*) n FROM talents WHERE expansion = ? "
+          "AND classId IN (?, $legacyClassId) "
           "GROUP BY talentTreeId ORDER BY talentTreeId",
           [pair["e"], pair["c"]],
         );

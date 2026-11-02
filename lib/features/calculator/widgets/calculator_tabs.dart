@@ -6,6 +6,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 
@@ -15,7 +16,8 @@ List<Widget> buildCalculatorTabs(
   List<TalentTree> talentTrees,
 ) {
   final settings = ref.watch(settingsProvider).value!;
-  final themeColor = settings.classColor;
+  final classColor = settings.classColor;
+  final legacyColor = settings.expColor;
 
   return talentTrees
       .map(
@@ -30,7 +32,10 @@ List<Widget> buildCalculatorTabs(
                 fit: BoxFit.fill,
               ),
               shape: BoxShape.circle,
-              border: Border.all(color: themeColor, width: 2.0),
+              border: Border.all(
+                color: isLegacyTree(entry.id) ? legacyColor : classColor,
+                width: 2.0,
+              ),
             ),
           ),
         ),

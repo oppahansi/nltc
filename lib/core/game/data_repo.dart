@@ -84,7 +84,7 @@ class DataRepo {
       JOIN talents t ON t.classId = s.classId AND t.talentTreeId = s.id
       LEFT JOIN talent_tree_icons o
         ON o.expansionId = t.expansion AND o.classId = s.classId AND o.talentTreeId = s.id
-      WHERE t.expansion = ? AND s.classId = ? AND sn.languageCode = ?
+      WHERE t.expansion = ? AND s.classId IN (?, $legacyClassId) AND sn.languageCode = ?
     ''',
       [expansionId, classId, langCode],
     );
@@ -136,7 +136,7 @@ class DataRepo {
       SELECT t.classId, t.talentTreeId, t.id, t.row, t.column, t.icon, t.dependencyId, t.expansion, tn.name
       FROM talents t
       JOIN talent_names tn ON t.id = tn.talentId
-      WHERE t.expansion = ? AND t.classId = ? AND t.talentTreeId IN  (0, 1, 2) AND tn.languageCode = ?
+      WHERE t.expansion = ? AND t.classId IN (?, $legacyClassId) AND tn.languageCode = ?
     ''',
       [expansionId, classId, langCode],
     );

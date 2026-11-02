@@ -372,8 +372,10 @@ class BuildState extends _$BuildState {
       treeTalents.add(ts);
     }
 
-    if (treeTalents.length != 3) return false;
-    for (int ti = 0; ti < 3; ti++) {
+    if (treeTalents.length < 3 || parsed.trees.length > treeTalents.length) {
+      return false;
+    }
+    for (int ti = 0; ti < parsed.trees.length; ti++) {
       final codeStr = parsed.trees[ti];
       final talents = treeTalents[ti];
       if (codeStr.length > talents.length) return false;

@@ -89,5 +89,6 @@
   "tutorialGotIt": "Verstanden",
   "edition_original": "Original",
   "edition_classic": "Classic",
-  "edition_forever": "Forever"
+  "edition_forever": "Forever",
+  "legacyPointsSpent": "Vermächtnis: {spent}/{cap}"
 }

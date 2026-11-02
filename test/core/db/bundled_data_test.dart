@@ -7,6 +7,7 @@ import "package:sqflite/sqflite.dart";
 
 // Project Imports
 import "package:ltc/core/db/db.dart";
+import "package:ltc/core/game/game_catalog.dart";
 
 // Relative Project Imports
 import "../../helpers/test_db.dart";
@@ -49,6 +50,36 @@ void main() {
         {"expansion": 2, "lo": 432, "hi": 1010, "n": 579},
         {"expansion": 3, "lo": 1011, "hi": 1839, "n": 829},
       ]);
+    });
+  });
+
+  group("Forever rows", () {
+    Future<int> count(String where) async => Sqflite.firstIntValue(
+      await db.rawQuery("SELECT COUNT(*) FROM talents WHERE $where"),
+    )!;
+
+    test("every class gets the three Legacy trees' 21 perks", () async {
+      expect(await count("expansion = 7 AND classId = $legacyClassId"), 21);
+      expect(await count("expansion = 7 AND classId <> $legacyClassId"), 464);
+      expect(await count("classId = $legacyClassId AND expansion <> 7"), 0);
+    });
+
+    test("Legacy perks fit the grid, and placeholders are left out", () async {
+      expect(
+        await count(
+          "classId = $legacyClassId AND "
+          '(talentTreeId NOT IN (3, 4, 5) OR row > 2 OR "column" > 3)',
+        ),
+        0,
+      );
+      expect(
+        await strings("SELECT name FROM talent_names WHERE name = 'Unknown'"),
+        isEmpty,
+      );
+    });
+
+    test("ids are client node ids, clear of the other editions", () async {
+      expect(await count("expansion = 7 AND id < 100000"), 0);
     });
   });
 

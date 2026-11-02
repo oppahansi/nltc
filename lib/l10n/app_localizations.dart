@@ -637,6 +637,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Forever'**
   String get edition_forever;
+
+  /// Forever: Legacy points spent out of the cap
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy: {spent}/{cap}'**
+  String legacyPointsSpent(int spent, int cap);
 }
 
 class _AppLocalizationsDelegate

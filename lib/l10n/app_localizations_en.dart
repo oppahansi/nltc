@@ -296,4 +296,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edition_forever => 'Forever';
+
+  @override
+  String legacyPointsSpent(int spent, int cap) {
+    return 'Legacy: $spent/$cap';
+  }
 }

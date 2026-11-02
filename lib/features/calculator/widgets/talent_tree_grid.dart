@@ -66,12 +66,12 @@ class TreeGrid extends ConsumerWidget {
         final buildState = buildStateAsync.value;
         final Map<int, List<int>> buildOrderMap = {};
         if (buildState != null) {
-          final seq = buildState.buildSequence;
-          for (var i = 0; i < seq.length; i++) {
-            final step = seq[i];
-            buildOrderMap
-                .putIfAbsent(step.talentId, () => [])
-                .add(i + 1); // 1-based
+          // Legacy perks aren't part of the leveling order, so each side counts
+          // on its own.
+          var order = 0;
+          for (final step in buildState.buildSequence) {
+            if (isLegacyTree(step.treeId) != isLegacyTree(tree.id)) continue;
+            buildOrderMap.putIfAbsent(step.talentId, () => []).add(++order);
           }
         }
 

@@ -8,6 +8,7 @@ import "package:material_symbols_icons/symbols.dart";
 
 // Project Imports
 import "package:ltc/core/game/data_entities.dart";
+import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/game/game_colors.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
@@ -48,8 +49,11 @@ class BuildSequenceSheet extends ConsumerWidget {
         final rankCounters = <int, int>{};
         final entries = <_SeqRow>[];
 
-        for (var i = 0; i < sequence.length; i++) {
-          final bp = sequence[i];
+        // Legacy perks aren't part of the leveling order, so each side counts on
+        // its own.
+        var talentOrder = 0;
+        var legacyOrder = 0;
+        for (final bp in sequence) {
           final talent = talentMap[bp.talentId];
           if (talent == null) continue;
           final newRank = (rankCounters.update(
@@ -59,7 +63,7 @@ class BuildSequenceSheet extends ConsumerWidget {
           ));
           entries.add(
             _SeqRow(
-              index: i + 1,
+              index: isLegacyTree(bp.treeId) ? ++legacyOrder : ++talentOrder,
               talent: talent,
               rankAtStep: newRank,
               maxRank: talent.ranks.length,
