@@ -33,7 +33,7 @@ final class BuildStateProvider
   BuildState create() => BuildState();
 }
 
-String _$buildStateHash() => r'8ae952fc83933ba249c6274d107ad0a1fed26737';
+String _$buildStateHash() => r'bd16ea75b9ff449476053ebca1d0c085787cea3f';
 
 abstract class _$BuildState extends $AsyncNotifier<ClassBuild> {
   FutureOr<ClassBuild> build();

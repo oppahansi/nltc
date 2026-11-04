@@ -15,6 +15,7 @@ import "package:ltc/core/settings/setting_keys.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/talent_build/class_build.dart";
 import "package:ltc/core/talent_build/class_builds_repo.dart";
+import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/features/calculator/logic/talent_rules.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
@@ -1142,6 +1143,24 @@ void main() {
 
       final held = talents().firstWhere((t) => t.row == 0 && t.currentRank > 0);
       expect(notifier().canRemovePoint(talent: held), isFalse);
+    });
+
+    test("the saved builds list follows the language", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().saveBuild("saved");
+      final list = container.listen(savedBuildsProvider(5), (_, _) {});
+      expect(
+        (await container.read(savedBuildsProvider(5).future)).first.className,
+        "Mage",
+      );
+
+      await set(settingsKeyLocale, "de");
+
+      expect(
+        (await container.read(savedBuildsProvider(5).future)).first.className,
+        "Magier",
+      );
+      list.close();
     });
   });
 }
