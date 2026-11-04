@@ -44,6 +44,28 @@ class ClassBuild {
     this.glyphIds = const [],
   });
 
+  /// What a build is called until it's given a name, like "Mage (5/0/0)". Only
+  /// the class's trees: Legacy points aren't part of a spec's summary.
+  String get generatedTitle =>
+      "$className (${pointsSpentPerTree.take(firstLegacyTreeId).join("/")})";
+
+  /// Whether [title] is one of ours rather than a name the user chose. Older
+  /// versions used the class's code instead of its name.
+  bool get hasGeneratedTitle {
+    final summary = title.endsWith(")") && title.contains(" (")
+        ? title.substring(0, title.lastIndexOf(" ("))
+        : null;
+    if (summary != className &&
+        summary != idsToClasses[classId]?.capitalize()) {
+      return false;
+    }
+    return RegExp(r" \(\d+/\d+/\d+\)$").hasMatch(title);
+  }
+
+  /// The title to offer when saving.
+  String get suggestedTitle =>
+      title.isEmpty || hasGeneratedTitle ? generatedTitle : title;
+
   Map<String, dynamic> toDbMap() {
     return {
       "id": id,
@@ -132,6 +154,7 @@ class ClassBuild {
   ClassBuild copyWith({
     int? id,
     String? title,
+    String? className,
     List<TalentTree>? talentTrees,
     List<List<Talent>>? talentTreeTalents,
     Map<String, int>? talentRanks,
@@ -145,7 +168,7 @@ class ClassBuild {
       expansionId: expansionId,
       expansionCode: expansionCode,
       classId: classId,
-      className: className,
+      className: className ?? this.className,
       talentTrees:
           talentTrees ?? this.talentTrees.map((t) => t.copyWith()).toList(),
       talentTreeTalents:

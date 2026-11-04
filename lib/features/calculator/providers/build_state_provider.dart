@@ -556,31 +556,27 @@ class BuildState extends _$BuildState {
           if (oldTalentsById.containsKey(bp.talentId)) bp,
       ];
 
-      state = AsyncData(
-        current.copyWith(
-          title: current.title,
-          talentTrees: newTalentTrees,
-          talentTreeTalents: mergedTalentTreeTalents,
-          buildSequence: newSequence,
-        ),
+      final classes = await repo.getClassesByExpansion(
+        current.expansionId,
+        languageCode: langCode,
       );
+      final className = classes
+          .where((c) => c.id == current.classId)
+          .firstOrNull
+          ?.names[langCode];
 
-      // Update localized title WITHOUT deep cloning talents again (which would drop supports)
-      final pointsSummary = _pointsSummaryString(current.pointsSpentPerTree);
-      final localizedClassName = current.className;
-      // mutate title directly
-      state.value!.title = "$localizedClassName $pointsSummary";
-      // re-emit to notify listeners
-      state = AsyncData(state.value!);
+      final relocalized = current.copyWith(
+        className: className,
+        talentTrees: newTalentTrees,
+        talentTreeTalents: mergedTalentTreeTalents,
+        buildSequence: newSequence,
+      );
+      if (current.hasGeneratedTitle) {
+        relocalized.title = relocalized.generatedTitle;
+      }
+      state = AsyncData(relocalized);
     } catch (e, st) {
       state = AsyncError(e, st);
     }
-  }
-
-  String _pointsSummaryString(List<int> pts) {
-    final first = pts.isNotEmpty ? pts[0] : 0;
-    final second = pts.length > 1 ? pts[1] : 0;
-    final third = pts.length > 2 ? pts[2] : 0;
-    return "($first/$second/$third)";
   }
 }

@@ -929,5 +929,33 @@ void main() {
       notifier().addPoint(firstInTree(0));
       expect(await notifier().saveBuild("next"), isNot(0));
     });
+
+    test("a language change translates the class, not a chosen title", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().saveBuild("My PvP build");
+
+      await notifier().relocalize("de");
+
+      expect(build().title, "My PvP build");
+      expect(build().className, "Magier");
+    });
+
+    test("a language change translates a generated title", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().saveBuild(build().generatedTitle);
+
+      await notifier().relocalize("de");
+
+      expect(build().title, "Magier (1/0/0)");
+    });
+
+    test("a language change leaves an imported build untitled", () async {
+      await notifier().importFromShareCode("vanilla-mage-05-0-0");
+
+      await notifier().relocalize("de");
+
+      expect(build().title, isEmpty);
+      expect(build().suggestedTitle, "Magier (5/0/0)");
+    });
   });
 }
