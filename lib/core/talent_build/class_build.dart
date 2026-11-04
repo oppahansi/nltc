@@ -52,14 +52,10 @@ class ClassBuild {
   /// Whether [title] is one of ours rather than a name the user chose. Older
   /// versions used the class's code instead of its name.
   bool get hasGeneratedTitle {
-    final summary = title.endsWith(")") && title.contains(" (")
-        ? title.substring(0, title.lastIndexOf(" ("))
-        : null;
-    if (summary != className &&
-        summary != idsToClasses[classId]?.capitalize()) {
-      return false;
-    }
-    return RegExp(r" \(\d+/\d+/\d+\)$").hasMatch(title);
+    final match = RegExp(r"^(.*) \(\d+/\d+/\d+\)$").firstMatch(title);
+    if (match == null) return false;
+    final name = match.group(1);
+    return name == className || name == idsToClasses[classId]?.capitalize();
   }
 
   /// The title to offer when saving.

@@ -965,5 +965,31 @@ void main() {
 
       expect(build().talentTrees.map((t) => t.id), [0, 1, 2, 3, 4, 5]);
     });
+
+    test("the offered title follows the points, whatever the class's name", () async {
+      await select(wotlk, classNamesToIds["deathknight"]!);
+      expect(build().title, "Death Knight (0/0/0)");
+      notifier().addPoint(firstInTree(0));
+      expect(build().suggestedTitle, "Death Knight (1/0/0)");
+
+      await notifier().relocalize("de");
+      expect(build().suggestedTitle, startsWith("Todesritter (1/0/0"));
+    });
+
+    test("titles from older versions still count as generated", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().relocalize("de");
+      await notifier().saveBuild("Mage (0/0/0)");
+      expect(build().suggestedTitle, "Magier (1/0/0)");
+
+      await notifier().saveBuild("Mage (0/0/0) for raids");
+      expect(build().suggestedTitle, "Mage (0/0/0) for raids");
+    });
+
+    test("the offered title leaves out Legacy points", () async {
+      await select(forever, mage);
+      notifier().addPoint(firstInTree(firstLegacyTreeId));
+      expect(build().suggestedTitle, "Mage (0/0/0)");
+    });
   });
 }

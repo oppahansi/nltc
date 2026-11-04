@@ -343,19 +343,9 @@ class BuildState extends _$BuildState {
     );
   }
 
-  String getBuildTitle() {
-    final classBuild = state.value!;
-    return classBuild.title;
-  }
-
   bool isBuildSequenceEmpty() {
     final classBuild = state.value!;
     return classBuild.buildSequence.isEmpty;
-  }
-
-  List<int> getPointsSpentPerTree() {
-    final classBuild = state.value!;
-    return classBuild.pointsSpentPerTree;
   }
 
   bool isSkillTreeEmpty() {

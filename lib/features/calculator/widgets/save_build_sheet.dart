@@ -6,7 +6,6 @@ import "package:exui/exui.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 // Project Imports
-import "package:ltc/core/game/game_catalog.dart";
 import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
@@ -22,7 +21,9 @@ class SaveBuildSheet extends ConsumerStatefulWidget {
 }
 
 class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
-  late final TextEditingController _controller = TextEditingController();
+  late final TextEditingController _controller = TextEditingController(
+    text: ref.read(buildStateProvider).value!.suggestedTitle,
+  );
 
   @override
   void dispose() {
@@ -44,20 +45,10 @@ class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider).value!;
-    final selectedClass = settings.selectedClass;
-    final buildState = ref.watch(buildStateProvider.notifier);
     final loc = AppLocalizations.of(context)!;
-
-    final title = _getBuildTitle(
-      loc: loc,
-      classCode: selectedClass.code,
-      buildState: buildState,
-    );
 
     final expColor = settings.expColor;
     final classColor = settings.classColor;
-
-    _controller.text = title;
 
     return [
           loc.save_build.text(
@@ -122,26 +113,5 @@ class _SaveBuildSheetState extends ConsumerState<SaveBuildSheet> {
             bottom: MediaQuery.of(context).viewInsets.bottom + gapSize(context),
           ),
         );
-  }
-
-  String _getBuildTitle({
-    required AppLocalizations loc,
-    required String classCode,
-    required BuildState buildState,
-  }) {
-    final localizedClassName = classCode.capitalize();
-    final defaultTitle = "$localizedClassName (0/0/0)";
-
-    if (buildState.getBuildTitle().isNotEmpty &&
-        buildState.getBuildTitle() != defaultTitle) {
-      return buildState.getBuildTitle();
-    }
-
-    // Only the class's trees: Legacy points aren't part of a spec's summary.
-    final spentPerTree = buildState.getPointsSpentPerTree().take(
-      firstLegacyTreeId,
-    );
-
-    return "$localizedClassName (${spentPerTree.join("/")})";
   }
 }
