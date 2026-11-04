@@ -174,32 +174,36 @@ class DataRepo {
       [expansionId, classId, langCode],
     );
 
-    final talents = <Talent>[];
-    for (var row in talentResult) {
-      // Fetch ranks for this talent
-      final ranksResult = await db.rawQuery(
-        '''
-        SELECT r.talentId, r.rank, rd.description
-        FROM ranks r
-        LEFT JOIN rank_descriptions rd ON r.talentId = rd.talentId AND r.rank = rd.rank AND rd.languageCode = ?
-        WHERE r.talentId = ?
-      ''',
-        [langCode, row['id']],
-      );
+    final rankResult = await db.rawQuery(
+      '''
+      SELECT r.talentId, r.rank, rd.description
+      FROM ranks r
+      JOIN talents t ON t.id = r.talentId
+      LEFT JOIN rank_descriptions rd ON r.talentId = rd.talentId AND r.rank = rd.rank AND rd.languageCode = ?
+      WHERE t.expansion = ? AND t.classId IN (?, $legacyClassId)
+      ORDER BY r.talentId, r.rank
+    ''',
+      [langCode, expansionId, classId],
+    );
 
-      final ranks = ranksResult
-          .map(
-            (r) => Rank(
-              talentId: r['talentId'] as int,
+    final ranksByTalent = <int, List<Rank>>{};
+    for (final r in rankResult) {
+      final talentId = r['talentId'] as int;
+      ranksByTalent
+          .putIfAbsent(talentId, () => [])
+          .add(
+            Rank(
+              talentId: talentId,
               rank: r['rank'] as int,
               descriptions: r['description'] != null
                   ? {langCode: r['description'] as String}
                   : {},
             ),
-          )
-          .toList();
+          );
+    }
 
-      talents.add(
+    final talents = [
+      for (final row in talentResult)
         Talent(
           classId: row['classId'] as int,
           talentTreeId: row['talentTreeId'] as int,
@@ -207,21 +211,22 @@ class DataRepo {
           row: row['row'] as int,
           column: row['column'] as int,
           icon: row['icon'] as String,
-          dependencyId: row['dependencyId'] != null
-              ? row['dependencyId'] as int
-              : null,
+          dependencyId: row['dependencyId'] as int?,
           expansion: row['expansion'] as int,
           names: {langCode: row['name'] as String},
-          ranks: ranks,
+          ranks: ranksByTalent[row['id']] ?? [],
         ),
-      );
+    ];
 
-      // Fetch and assign supports
-      for (var talent in talents) {
-        talent.supports = talents
-            .where((t) => t.dependencyId == talent.id)
-            .toList();
+    final dependents = <int, List<Talent>>{};
+    for (final talent in talents) {
+      final prerequisite = talent.dependencyId;
+      if (prerequisite != null) {
+        dependents.putIfAbsent(prerequisite, () => []).add(talent);
       }
+    }
+    for (final talent in talents) {
+      talent.supports = dependents[talent.id] ?? [];
     }
 
     final talentsMap = <int, List<Talent>>{};

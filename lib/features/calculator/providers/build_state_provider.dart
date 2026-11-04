@@ -479,9 +479,6 @@ class BuildState extends _$BuildState {
             t.currentRank = old.currentRank;
           }
         }
-        for (final t in list) {
-          t.supports = list.where((x) => x.dependencyId == t.id).toList();
-        }
         mergedTalentTreeTalents.add(list);
       }
 
