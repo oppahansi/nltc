@@ -74,13 +74,11 @@ class BuildState extends _$BuildState {
   }) async {
     final settings = ref.read(settingsProvider).value!;
     final repo = DataRepo();
-    final talentTrees =
-        await repo.getTalentTrees(
-            expansionId: expansion.id,
-            classId: clazz.id,
-            languageCode: settings.locale.languageCode,
-          )
-          ..sort((a, b) => a.id.compareTo(b.id));
+    final talentTrees = await repo.getTalentTrees(
+      expansionId: expansion.id,
+      classId: clazz.id,
+      languageCode: settings.locale.languageCode,
+    );
     final treeTalents = <List<Talent>>[];
     final talentsMap = await repo.getTalents(
       expansionId: expansion.id,
@@ -409,7 +407,6 @@ class BuildState extends _$BuildState {
     if (treeTalents.length < 3 || parsed.trees.length > treeTalents.length) {
       return false;
     }
-    trees.sort((a, b) => a.id.compareTo(b.id));
     for (int ti = 0; ti < parsed.trees.length; ti++) {
       final codeStr = parsed.trees[ti];
       final talents = treeTalents[ti];

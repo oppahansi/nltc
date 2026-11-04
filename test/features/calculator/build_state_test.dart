@@ -957,5 +957,13 @@ void main() {
       expect(build().title, isEmpty);
       expect(build().suggestedTitle, "Magier (5/0/0)");
     });
+
+    test("a language change keeps the trees in order", () async {
+      await select(forever, mage);
+
+      await notifier().relocalize("de");
+
+      expect(build().talentTrees.map((t) => t.id), [0, 1, 2, 3, 4, 5]);
+    });
   });
 }

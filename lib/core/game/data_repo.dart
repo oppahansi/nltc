@@ -68,7 +68,8 @@ class DataRepo {
         .toList();
   }
 
-  /// Fetches talent trees (specs) for a given expansion and class.
+  /// Fetches talent trees (specs) for a given expansion and class, by id. Tabs and
+  /// `pointsSpentPerTree` rely on that order.
   Future<List<TalentTree>> getTalentTrees({
     int expansionId = 1,
     int classId = 1,
@@ -85,6 +86,7 @@ class DataRepo {
       LEFT JOIN talent_tree_icons o
         ON o.expansionId = t.expansion AND o.classId = s.classId AND o.talentTreeId = s.id
       WHERE t.expansion = ? AND s.classId IN (?, $legacyClassId) AND sn.languageCode = ?
+      ORDER BY s.id
     ''',
       [expansionId, classId, langCode],
     );

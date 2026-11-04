@@ -110,7 +110,6 @@ class ClassBuildsRepo {
       classId: classId,
       languageCode: settings.locale.languageCode,
     );
-    talentTrees.sort((a, b) => a.id.compareTo(b.id));
 
     final treeTalents = <List<Talent>>[];
     final talentsMap = await _dataRepo.getTalents(
