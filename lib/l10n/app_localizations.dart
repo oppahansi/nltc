@@ -446,6 +446,12 @@ abstract class AppLocalizations {
   /// **'Will exit on next attempt.'**
   String get prompt_for_exit;
 
+  /// No description provided for @in_tree.
+  ///
+  /// In en, this message translates to:
+  /// **'in {tree}'**
+  String in_tree(Object tree);
+
   /// No description provided for @removed_point_in.
   ///
   /// In en, this message translates to:
@@ -493,6 +499,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show Build Order'**
   String get show_build_order;
+
+  /// No description provided for @tutorial.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial'**
+  String get tutorial;
 
   /// No description provided for @tutorialTitle.
   ///

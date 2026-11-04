@@ -118,7 +118,7 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
             ),
             actions: [
               IconButton(
-                tooltip: "Tutorial",
+                tooltip: AppLocalizations.of(context)!.tutorial,
                 icon: Symbols.help_outline.icon(size: gapSize(context) * 1.5),
                 onPressed: _showTutorial,
               ),

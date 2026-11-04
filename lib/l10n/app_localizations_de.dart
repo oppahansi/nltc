@@ -189,6 +189,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get prompt_for_exit => 'Wird beim nächsten Versuch beendet.';
 
   @override
+  String in_tree(Object tree) {
+    return 'in $tree';
+  }
+
+  @override
   String removed_point_in(Object value) {
     return 'Punkt in $value entfernt.';
   }
@@ -215,6 +220,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get show_build_order => 'Build-Reihenfolge anzeigen';
+
+  @override
+  String get tutorial => 'Anleitung';
 
   @override
   String get tutorialTitle => 'Talentrechner Tutorial';

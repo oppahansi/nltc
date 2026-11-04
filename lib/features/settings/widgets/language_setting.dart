@@ -76,7 +76,7 @@ class LanguageSetting extends ConsumerWidget {
       loading: () => ListTile(
         leading: const Icon(Symbols.language),
         title: Text(loc.language),
-        subtitle: Text("${"loc.loading"}..."),
+        subtitle: Text("${loc.loading}..."),
       ),
       error: (e, st) => ListTile(
         leading: const Icon(Symbols.language),

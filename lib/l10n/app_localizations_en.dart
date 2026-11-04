@@ -189,6 +189,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prompt_for_exit => 'Will exit on next attempt.';
 
   @override
+  String in_tree(Object tree) {
+    return 'in $tree';
+  }
+
+  @override
   String removed_point_in(Object value) {
     return 'Removed point in $value.';
   }
@@ -214,6 +219,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get show_build_order => 'Show Build Order';
+
+  @override
+  String get tutorial => 'Tutorial';
 
   @override
   String get tutorialTitle => 'Talent Calculator Tutorial';

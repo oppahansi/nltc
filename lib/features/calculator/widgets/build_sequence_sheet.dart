@@ -179,7 +179,7 @@ class _SequenceList extends ConsumerWidget {
             style: bodyMedium(context).withColor(Colors.white),
           ),
           subtitle:
-              "${loc.rank.capitalize()} ${e.rankAtStep}/${e.maxRank}  •  in $treeName"
+              "${loc.rank.capitalize()} ${e.rankAtStep}/${e.maxRank}  •  ${loc.in_tree(treeName)}"
                   .text(style: bodySmall(context).withColor(Colors.white70)),
           trailing: Image.asset(
             "assets/images/icons/${e.talent.icon.toLowerCase()}.webp",
