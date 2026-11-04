@@ -53,14 +53,16 @@ bool isTalentEnabled(ClassBuild build, Talent talent) {
 
 /// Whether [talent] can lose a point. Only the most recently spent point on its
 /// side of the build can be undone, so Legacy perks don't hold talents back, and
-/// only if every remaining talent in the tree stays valid.
+/// only if every remaining talent in the tree stays valid. Imported points have
+/// no order, so once nothing was spent after them any of them can go.
 bool canRemovePoint(ClassBuild build, Talent talent) {
   if (talent.currentRank <= 0) return false;
   final legacy = isLegacyTree(talent.talentTreeId);
   final lastOnSide = build.buildSequence
       .where((point) => isLegacyTree(point.treeId) == legacy)
       .lastOrNull;
-  if (lastOnSide?.talentId != talent.id) return false;
+  if (lastOnSide == null) return _isLegalWithout(build, talent);
+  if (lastOnSide.talentId != talent.id) return false;
 
   final tree = build.talentTreeTalents[talent.talentTreeId];
 
@@ -78,6 +80,15 @@ bool canRemovePoint(ClassBuild build, Talent talent) {
   }
 
   return true;
+}
+
+bool _isLegalWithout(ClassBuild build, Talent talent) {
+  talent.currentRank--;
+  build.pointsSpentPerTree[talent.talentTreeId]--;
+  final legal = ranksAreLegal(build);
+  talent.currentRank++;
+  build.pointsSpentPerTree[talent.talentTreeId]++;
+  return legal;
 }
 
 /// Whether [build]'s ranks could have been reached by spending points one at a

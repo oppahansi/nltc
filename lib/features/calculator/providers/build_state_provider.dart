@@ -11,7 +11,7 @@ import "package:ltc/core/talent_build/class_builds_repo.dart";
 import "package:ltc/core/talent_build/saved_builds_provider.dart";
 import "package:ltc/core/talent_build/share_util.dart";
 import "package:ltc/core/settings/setting_keys.dart";
-import 'package:ltc/core/settings/settings_service_provider.dart';
+import "package:ltc/core/settings/settings_service_provider.dart";
 import "package:ltc/features/calculator/logic/glyph_rules.dart";
 import "package:ltc/features/calculator/logic/talent_rules.dart"
     as talent_rules;
@@ -254,23 +254,15 @@ class BuildState extends _$BuildState {
 
   void removePoint(Talent talent) {
     final classBuild = state.value!;
-    if (classBuild.buildSequence.isEmpty) {
-      return;
-    }
+    if (talent.currentRank <= 0) return;
 
-    // Find the last occurrence of this talent in the build sequence
+    // Imported points aren't in the sequence.
     final index = classBuild.buildSequence.lastIndexWhere(
       (bp) => bp.talentId == talent.id,
     );
-    if (index == -1) {
-      return; // Talent not found in build sequence
-    }
+    if (index != -1) classBuild.buildSequence.removeAt(index);
 
-    if (talent.currentRank > 0) {
-      talent.currentRank--;
-    }
-
-    classBuild.buildSequence.removeAt(index);
+    talent.currentRank--;
     classBuild.pointsSpentPerTree[talent.talentTreeId] =
         (classBuild.pointsSpentPerTree[talent.talentTreeId] - 1).clamp(0, 999);
 

@@ -1098,5 +1098,50 @@ void main() {
       expect(await notifier().importFromShareCode(code(gated)), isFalse);
       expect(await notifier().importFromShareCode(code(open)), isTrue);
     });
+
+    test("imported points can be removed, within the rules", () async {
+      await notifier().importFromShareCode("vanilla-mage-23000-0-0");
+      final spent = talents().where((t) => t.currentRank > 0).toList();
+
+      expect(notifier().canRemovePoint(talent: spent.first), isTrue);
+      notifier().removePoint(spent.first);
+
+      expect(total(), 4);
+      expect(spent.first.currentRank, spent.first.ranks.length - 1);
+    });
+
+    test("imported points wait for points spent after them", () async {
+      await notifier().importFromShareCode("vanilla-mage-23000-0-0");
+      final imported = talents().firstWhere((t) => t.currentRank > 0);
+      notifier().addPoint(firstInTree(1));
+
+      expect(notifier().canRemovePoint(talent: imported), isFalse);
+      notifier().removeLastPoint();
+      expect(notifier().canRemovePoint(talent: imported), isTrue);
+    });
+
+    test("imported points holding up a row can't be removed", () async {
+      final tree = build().talentTreeTalents[0];
+      final top = tree.where((t) => t.row == 0).toList()
+        ..sort((a, b) => a.column.compareTo(b.column));
+      final digits = StringBuffer();
+      var spent = 0;
+      for (final t in top) {
+        final rank = t.ranks.length.clamp(0, 5 - spent);
+        digits.write(rank);
+        spent += rank;
+      }
+      expect(spent, 5);
+      final second = tree.where((t) => t.row == 1).toList()
+        ..sort((a, b) => a.column.compareTo(b.column));
+      final digit = "1${"0" * (second.length - 1)}";
+      expect(
+        await notifier().importFromShareCode("vanilla-mage-$digits$digit-0-0"),
+        isTrue,
+      );
+
+      final held = talents().firstWhere((t) => t.row == 0 && t.currentRank > 0);
+      expect(notifier().canRemovePoint(talent: held), isFalse);
+    });
   });
 }
