@@ -869,4 +869,18 @@ void main() {
       expect(de.first.name, isNot(en.first.name));
     });
   });
+
+  group("review regressions", () {
+    setUp(() => select(vanilla, mage));
+
+    test("imported ranks survive saving with points spent on top", () async {
+      await notifier().importFromShareCode("vanilla-mage-23000-0-0");
+      notifier().addPoint(firstInTree(1));
+
+      final id = await notifier().saveBuild("partial order");
+      await notifier().loadSavedBuild(id);
+
+      expect(build().pointsSpentPerTree, [5, 1, 0]);
+    });
+  });
 }

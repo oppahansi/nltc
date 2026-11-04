@@ -1,5 +1,6 @@
 // Dart Imports
 import "dart:convert";
+import "dart:math";
 import "dart:ui";
 
 // Project Imports
@@ -75,20 +76,21 @@ class ClassBuild {
     final talentsById = {
       for (final t in talentTreeTalents.expand((v) => v)) t.id: t,
     };
-    if (buildSequence.isNotEmpty) {
-      for (final bp in buildSequence) {
-        final t = talentsById[bp.talentId];
-        if (t != null) {
-          t.currentRank = (t.currentRank + 1).clamp(0, t.ranks.length);
-        }
+    for (final bp in buildSequence) {
+      final t = talentsById[bp.talentId];
+      if (t != null) {
+        t.currentRank = (t.currentRank + 1).clamp(0, t.ranks.length);
       }
-    } else {
-      // Imported builds have no sequence, only ranks.
-      decodedTalentRanks.forEach((key, rank) {
-        final t = talentsById[int.parse(key)];
-        if (t != null) t.currentRank = rank.clamp(0, t.ranks.length);
-      });
     }
+    // Imported builds have ranks with no order, and points spent on top of them
+    // only make a partial sequence. An older save's rank may be missing if its
+    // talent name can't be resolved any more, so neither source alone is enough.
+    decodedTalentRanks.forEach((key, rank) {
+      final t = talentsById[int.parse(key)];
+      if (t != null) {
+        t.currentRank = max(t.currentRank, rank.clamp(0, t.ranks.length));
+      }
+    });
 
     final pointsPerTree = List<int>.filled(talentTrees.length, 0);
     for (final t in talentsById.values) {
