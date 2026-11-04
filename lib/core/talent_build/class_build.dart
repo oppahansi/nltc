@@ -147,6 +147,8 @@ class ClassBuild {
     return ranks;
   }
 
+  /// Shares everything not passed in. Talents refer to each other by identity, so
+  /// cloning only some of them would cut those links.
   ClassBuild copyWith({
     int? id,
     String? title,
@@ -165,19 +167,11 @@ class ClassBuild {
       expansionCode: expansionCode,
       classId: classId,
       className: className ?? this.className,
-      talentTrees:
-          talentTrees ?? this.talentTrees.map((t) => t.copyWith()).toList(),
-      talentTreeTalents:
-          talentTreeTalents ??
-          this.talentTreeTalents
-              .map((list) => list.map((t) => t.copyWith()).toList())
-              .toList(),
-      talentRanks: talentRanks ?? Map<String, int>.from(this.talentRanks),
-      buildSequence:
-          buildSequence ??
-          this.buildSequence.map((bp) => bp.copyWith()).toList(),
-      pointsSpentPerTree:
-          pointsSpentPerTree ?? List<int>.from(this.pointsSpentPerTree),
+      talentTrees: talentTrees ?? this.talentTrees,
+      talentTreeTalents: talentTreeTalents ?? this.talentTreeTalents,
+      talentRanks: talentRanks ?? this.talentRanks,
+      buildSequence: buildSequence ?? this.buildSequence,
+      pointsSpentPerTree: pointsSpentPerTree ?? this.pointsSpentPerTree,
       glyphIds: glyphIds ?? this.glyphIds,
     );
   }

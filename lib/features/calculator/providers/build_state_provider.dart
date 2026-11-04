@@ -203,15 +203,7 @@ class BuildState extends _$BuildState {
 
   void _setGlyphs(List<int> glyphIds) {
     final classBuild = state.value!;
-    state = AsyncData(
-      classBuild.copyWith(
-        talentTrees: classBuild.talentTrees,
-        talentTreeTalents: classBuild.talentTreeTalents,
-        buildSequence: classBuild.buildSequence,
-        pointsSpentPerTree: classBuild.pointsSpentPerTree,
-        glyphIds: glyphIds,
-      ),
-    );
+    state = AsyncData(classBuild.copyWith(glyphIds: glyphIds));
   }
 
   void addPoint(Talent talent) {
@@ -232,15 +224,7 @@ class BuildState extends _$BuildState {
     );
     classBuild.pointsSpentPerTree[talent.talentTreeId]++;
 
-    state = AsyncData(
-      classBuild.copyWith(
-        title: classBuild.title,
-        talentTrees: classBuild.talentTrees,
-        talentTreeTalents: classBuild.talentTreeTalents,
-        buildSequence: classBuild.buildSequence,
-        pointsSpentPerTree: classBuild.pointsSpentPerTree,
-      ),
-    );
+    state = AsyncData(classBuild.copyWith());
   }
 
   void removeLastPoint() {
@@ -265,15 +249,7 @@ class BuildState extends _$BuildState {
           999,
         );
 
-    state = AsyncData(
-      classBuild.copyWith(
-        title: classBuild.title,
-        talentTrees: classBuild.talentTrees,
-        talentTreeTalents: classBuild.talentTreeTalents,
-        buildSequence: classBuild.buildSequence,
-        pointsSpentPerTree: classBuild.pointsSpentPerTree,
-      ),
-    );
+    state = AsyncData(classBuild.copyWith());
   }
 
   void removePoint(Talent talent) {
@@ -298,15 +274,7 @@ class BuildState extends _$BuildState {
     classBuild.pointsSpentPerTree[talent.talentTreeId] =
         (classBuild.pointsSpentPerTree[talent.talentTreeId] - 1).clamp(0, 999);
 
-    state = AsyncData(
-      classBuild.copyWith(
-        title: classBuild.title,
-        talentTrees: classBuild.talentTrees,
-        talentTreeTalents: classBuild.talentTreeTalents,
-        buildSequence: classBuild.buildSequence,
-        pointsSpentPerTree: classBuild.pointsSpentPerTree,
-      ),
-    );
+    state = AsyncData(classBuild.copyWith());
   }
 
   bool isTalentEnabled(Talent talent) =>
@@ -327,20 +295,6 @@ class BuildState extends _$BuildState {
     talent ??= getLastTalent();
     if (talent == null) return false;
     return talent_rules.canRemovePoint(state.value!, talent);
-  }
-
-  void updateBuildTitle(String value) {
-    final classBuild = state.value!;
-    classBuild.title = value;
-    state = AsyncData(
-      classBuild.copyWith(
-        title: classBuild.title,
-        talentTrees: classBuild.talentTrees,
-        talentTreeTalents: classBuild.talentTreeTalents,
-        buildSequence: classBuild.buildSequence,
-        pointsSpentPerTree: classBuild.pointsSpentPerTree,
-      ),
-    );
   }
 
   bool isBuildSequenceEmpty() {

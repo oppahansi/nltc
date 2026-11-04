@@ -991,5 +991,15 @@ void main() {
       notifier().addPoint(firstInTree(firstLegacyTreeId));
       expect(build().suggestedTitle, "Mage (0/0/0)");
     });
+
+    test("talents still reach each other after a save", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().saveBuild("saved");
+
+      final all = talents().toSet();
+      final linked = talents().expand((t) => t.supports ?? const <Talent>[]);
+      expect(linked, isNotEmpty);
+      expect(linked.where((t) => !all.contains(t)), isEmpty);
+    });
   });
 }
