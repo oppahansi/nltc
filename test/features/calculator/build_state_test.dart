@@ -917,5 +917,17 @@ void main() {
 
       expect(build().id, id);
     });
+
+    test("deleting the active build leaves one that can be saved", () async {
+      notifier().addPoint(firstInTree(0));
+      final id = await notifier().saveBuild("doomed");
+
+      await notifier().deleteBuild(id);
+
+      expect(build().id, isNull);
+      expect(total(), 0);
+      notifier().addPoint(firstInTree(0));
+      expect(await notifier().saveBuild("next"), isNot(0));
+    });
   });
 }

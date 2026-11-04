@@ -155,7 +155,7 @@ class BuildState extends _$BuildState {
     await _buildsRepo.delete(buildId);
 
     if (state.value?.id == buildId) {
-      ref.invalidateSelf();
+      await startNewBuild();
     }
 
     ref.invalidate(savedBuildsProvider);
