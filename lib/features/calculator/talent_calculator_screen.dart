@@ -16,7 +16,6 @@ import "package:ltc/core/utils/extensions.dart";
 import "package:ltc/core/utils/screen_sizes.dart";
 import "package:ltc/core/utils/text_styles.dart";
 import "package:ltc/features/calculator/providers/build_state_provider.dart";
-import "package:ltc/features/calculator/providers/calculator_providers.dart";
 import "package:ltc/features/calculator/utils/utility_methods.dart";
 import "package:ltc/features/calculator/widgets/calculator_drawer.dart";
 import "package:ltc/features/calculator/widgets/calculator_tabs.dart";
@@ -36,7 +35,6 @@ class TalentCalculatorScreen extends ConsumerStatefulWidget {
 class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  late final VoidCallback _tabAnimListener = _handleTabAnimation;
   bool _maybeAutoShown = false; // prevents duplicate auto-open
 
   Future<void> _animateTabAndWait(int targetIndex) async {
@@ -69,10 +67,7 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
 
   @override
   void dispose() {
-    _tabController
-      ?..removeListener(_handleTabChange)
-      ..animation?.removeListener(_tabAnimListener)
-      ..dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 
@@ -113,8 +108,6 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
             backgroundColor: Colors.black,
             title: TabBar(
               controller: _tabController,
-              onTap: (i) =>
-                  ref.read(treeIndexProvider.notifier).setTreeIndex(i),
               indicatorColor: classColor,
               dividerColor: Colors.black.withAlpha(150),
               tabs: [
@@ -174,8 +167,6 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
     final talent = notifier.getLastTalent();
     if (talent == null) return;
 
-    ref.read(treeIndexProvider.notifier).setTreeIndex(talent.talentTreeId);
-
     await _animateTabAndWait(talent.talentTreeId);
 
     notifier.removeLastPoint();
@@ -194,34 +185,12 @@ class _TalentCalculatorScreenState extends ConsumerState<TalentCalculatorScreen>
     );
   }
 
-  void _handleTabChange() {
-    if (_tabController == null) return;
-    // Kept for tap fallback (index changes immediately on tap).
-    ref.read(treeIndexProvider.notifier).setTreeIndex(_tabController!.index);
-  }
-
-  void _handleTabAnimation() {
-    final c = _tabController;
-    if (c == null) return;
-    final v = c.animation?.value;
-    if (v == null) return;
-    final target = v.round(); // nearest tab the user is swiping toward
-    if (target != ref.read(treeIndexProvider)) {
-      ref.read(treeIndexProvider.notifier).setTreeIndex(target);
-    }
-  }
-
   void _ensureController(int length) {
     if (_tabController != null && _tabController!.length == length) {
       return;
     }
-    _tabController
-      ?..removeListener(_handleTabChange)
-      ..animation?.removeListener(_tabAnimListener)
-      ..dispose();
+    _tabController?.dispose();
     _tabController = TabController(length: length, vsync: this);
-    _tabController!.addListener(_handleTabChange);
-    _tabController!.animation?.addListener(_tabAnimListener);
   }
 
   void _showTutorial() {

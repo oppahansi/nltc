@@ -8,13 +8,6 @@ import "package:ltc/core/settings/settings_service_provider.dart";
 
 part "calculator_providers.g.dart";
 
-@Riverpod(keepAlive: true)
-class TreeIndex extends _$TreeIndex {
-  @override
-  int build() => 0;
-  void setTreeIndex(int value) => state = value;
-}
-
 /// A class's glyphs in the current language.
 @Riverpod(keepAlive: true)
 Future<List<Glyph>> classGlyphs(
