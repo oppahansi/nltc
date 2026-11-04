@@ -57,7 +57,8 @@ class BuildState extends _$BuildState {
 
       return b;
     } else if (current != null &&
-        (current.buildSequence.isNotEmpty ||
+        (current.id != null ||
+            current.buildSequence.isNotEmpty ||
             current.pointsSpentPerTree.any((p) => p > 0) ||
             current.talentRanks.isNotEmpty ||
             current.glyphIds.isNotEmpty)) {
@@ -113,7 +114,6 @@ class BuildState extends _$BuildState {
     final saved = await _buildsRepo.fetch(id);
     if (saved == null) return;
 
-    _preloadedBuild = saved;
     state = AsyncData(saved);
   }
 
@@ -475,6 +475,9 @@ class BuildState extends _$BuildState {
       settingsKeySelectedClassId,
       classId.toString(),
     );
+    // Only meant for the rebuilds above. Left set, it would replace whatever build
+    // is active at the next settings change.
+    _preloadedBuild = null;
     state = AsyncData(build);
     return true;
   }

@@ -882,5 +882,40 @@ void main() {
 
       expect(build().pointsSpentPerTree, [5, 1, 0]);
     });
+
+    test("a settings change keeps the active build", () async {
+      notifier().addPoint(firstInTree(0));
+      final saved = await notifier().saveBuild("saved A");
+      await notifier().loadSavedBuild(saved);
+      await notifier().startNewBuild();
+      notifier().addPoint(firstInTree(1));
+
+      await set(settingsKeyShowOrderNumbers, "true");
+      await container.read(buildStateProvider.future);
+
+      expect(build().id, isNull);
+      expect(build().pointsSpentPerTree, [0, 1, 0]);
+    });
+
+    test("a settings change keeps an imported build out of later ones", () async {
+      await notifier().importFromShareCode("vanilla-mage-05-0-0");
+      await notifier().startNewBuild();
+      notifier().addPoint(firstInTree(1));
+
+      await set(settingsKeyShowOrderNumbers, "true");
+      await container.read(buildStateProvider.future);
+
+      expect(build().pointsSpentPerTree, [0, 1, 0]);
+    });
+
+    test("a settings change keeps a loaded build with no points", () async {
+      final id = await ClassBuildsRepo().insert(build());
+      await notifier().loadSavedBuild(id);
+
+      await set(settingsKeyShowOrderNumbers, "true");
+      await container.read(buildStateProvider.future);
+
+      expect(build().id, id);
+    });
   });
 }
