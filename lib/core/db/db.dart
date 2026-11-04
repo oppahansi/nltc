@@ -120,6 +120,10 @@ class Db {
       data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
       flush: true,
     );
+    await _swapIn(temp, path);
+  }
+
+  static Future<void> _swapIn(File temp, String path) async {
     // A leftover journal would be replayed against the new file.
     for (final suffix in ["-journal", "-wal", "-shm"]) {
       final sidecar = File("$path$suffix");
@@ -195,6 +199,33 @@ class Db {
       await _dataDbInstance!.close();
       _dataDbInstance = null;
     }
+  }
+
+  /// Whether the file at [path] is an intact database with the user DB's tables.
+  /// Opening anything else later would keep the app from starting.
+  static Future<bool> isUserDb(String path) async {
+    if (await _fileVersion(path) == null) return false;
+    Database? db;
+    try {
+      db = await openReadOnlyDatabase(path, singleInstance: false);
+      final check = await db.rawQuery("PRAGMA quick_check");
+      if (check.first.values.first != "ok") return false;
+      final tables = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type = 'table' "
+        "AND name IN ('class_builds', 'build_points')",
+      );
+      return tables.length == 2;
+    } on DatabaseException {
+      return false;
+    } finally {
+      await db?.close();
+    }
+  }
+
+  /// Makes the file at [path] the user DB, replacing it atomically.
+  static Future<void> replaceUserDb(String path) async {
+    await close();
+    await _swapIn(File(path), await getDbPath());
   }
 
   /// Absolute path to the active database file in the app documents directory.
