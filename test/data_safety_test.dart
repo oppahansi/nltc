@@ -19,15 +19,55 @@ void main() {
       pubspec.indexOf("dependencies:"),
       pubspec.indexOf("dev_dependencies:"),
     );
+    final names = RegExp(
+      r"^  ([a-z0-9_]+):",
+      multiLine: true,
+    ).allMatches(dependencies).map((match) => match.group(1)!).toList();
+
+    // Guards against the parsing above silently finding nothing to check.
+    expect(names, contains("sqflite"));
+    expect(names.where(_isBanned), isEmpty);
+  });
+
+  test("the banned package check matches anywhere in a name", () {
     for (final name in [
       "http",
+      "cupertino_http",
       "dio",
-      "firebase",
-      "sentry",
-      "webview",
-      "ads",
+      "firebase_core",
+      "sentry_flutter",
+      "flutter_inappwebview",
+      "google_mobile_ads",
+      "easy_ads_flutter",
+      "flutter_admob",
+      "applovin_max",
     ]) {
-      expect(dependencies, isNot(contains("  $name")), reason: name);
+      expect(_isBanned(name), isTrue, reason: name);
+    }
+    for (final name in ["uploads", "audio_session", "sqflite", "share_plus"]) {
+      expect(_isBanned(name), isFalse, reason: name);
     }
   });
 }
+
+// Short enough to appear inside unrelated names, like "uploads" or "audio", so
+// these only match a whole word of the package name.
+const _bannedWords = {"ad", "ads", "dio"};
+
+const _bannedFragments = {
+  "admob",
+  "analytics",
+  "applovin",
+  "appodeal",
+  "crashlytics",
+  "firebase",
+  "http",
+  "ironsource",
+  "mixpanel",
+  "sentry",
+  "webview",
+};
+
+bool _isBanned(String name) =>
+    name.split("_").any(_bannedWords.contains) ||
+    _bannedFragments.any(name.contains);
