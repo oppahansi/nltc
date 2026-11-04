@@ -16,17 +16,25 @@ import "package:ltc/features/settings/widgets/language_setting.dart";
 import "package:ltc/features/settings/widgets/show_order_numbers_setting.dart";
 import "package:ltc/l10n/app_localizations.dart";
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  // Picked once, so changing a setting doesn't change it.
+  final _bgImagePath = getRngBgImagePath();
+
+  @override
+  Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider).value!;
     final loc = AppLocalizations.of(context)!;
 
     final boxDecoration = BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(getRngBgImagePath()),
+        image: AssetImage(_bgImagePath),
         fit: BoxFit.cover,
       ),
     );

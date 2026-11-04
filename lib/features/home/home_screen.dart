@@ -31,14 +31,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   DateTime? lastBackPressTime;
 
-  late Image bgImage;
-
-  @override
-  initState() {
-    super.initState();
-
-    bgImage = Image.asset(getRngBgImagePath(), fit: BoxFit.cover);
-  }
+  // Picked once, so selecting a class or expansion doesn't change it.
+  final _bgImagePath = getRngBgImagePath();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SavedBuilds(),
               ].column(crossAxisAlignment: CrossAxisAlignment.center),
             ).imageBox(
-              image: AssetImage(getRngBgImagePath()),
+              image: AssetImage(_bgImagePath),
               opacity: 0.5,
               fit: BoxFit.fill,
             ),
