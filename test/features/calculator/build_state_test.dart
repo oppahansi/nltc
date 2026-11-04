@@ -1162,5 +1162,22 @@ void main() {
       );
       list.close();
     });
+
+    test("changing the language setting translates the active build", () async {
+      notifier().addPoint(firstInTree(0));
+      await notifier().saveBuild("My PvP build");
+
+      await set(settingsKeyLocale, "de");
+      for (var i = 0; i < 50 && build().className != "Magier"; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+
+      expect(build().className, "Magier");
+      expect(build().title, "My PvP build");
+      expect(build().pointsSpentPerTree, [1, 0, 0]);
+      expect(build().talentTrees.first.names.keys, ["de"]);
+      expect(talents().first.names.keys, ["de"]);
+    });
   });
 }
