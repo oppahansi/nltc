@@ -378,7 +378,12 @@ void main() {
           "GROUP BY talentTreeId ORDER BY talentTreeId",
           [pair["e"], pair["c"]],
         );
-        final trees = [for (final c in counts) "1" * (c["n"] as int)];
+        // One point at the top of each talent tree, which is always legal. Legacy
+        // trees are gated by column instead, so they stay empty here.
+        final trees = [
+          for (final (i, c) in counts.indexed)
+            "${i < firstLegacyTreeId ? 1 : 0}${"0" * ((c["n"] as int) - 1)}",
+        ];
         final code = "$expansion-$classCode-${trees.join("-")}";
 
         expect(
@@ -387,7 +392,7 @@ void main() {
           reason: code,
         );
         expect(buildShareCode(build()), code);
-        expect(total(), trees.join().length, reason: code);
+        expect(total(), firstLegacyTreeId, reason: code);
       }
     });
 
@@ -897,16 +902,19 @@ void main() {
       expect(build().pointsSpentPerTree, [0, 1, 0]);
     });
 
-    test("a settings change keeps an imported build out of later ones", () async {
-      await notifier().importFromShareCode("vanilla-mage-05-0-0");
-      await notifier().startNewBuild();
-      notifier().addPoint(firstInTree(1));
+    test(
+      "a settings change keeps an imported build out of later ones",
+      () async {
+        await notifier().importFromShareCode("vanilla-mage-05-0-0");
+        await notifier().startNewBuild();
+        notifier().addPoint(firstInTree(1));
 
-      await set(settingsKeyShowOrderNumbers, "true");
-      await container.read(buildStateProvider.future);
+        await set(settingsKeyShowOrderNumbers, "true");
+        await container.read(buildStateProvider.future);
 
-      expect(build().pointsSpentPerTree, [0, 1, 0]);
-    });
+        expect(build().pointsSpentPerTree, [0, 1, 0]);
+      },
+    );
 
     test("a settings change keeps a loaded build with no points", () async {
       final id = await ClassBuildsRepo().insert(build());
@@ -930,15 +938,18 @@ void main() {
       expect(await notifier().saveBuild("next"), isNot(0));
     });
 
-    test("a language change translates the class, not a chosen title", () async {
-      notifier().addPoint(firstInTree(0));
-      await notifier().saveBuild("My PvP build");
+    test(
+      "a language change translates the class, not a chosen title",
+      () async {
+        notifier().addPoint(firstInTree(0));
+        await notifier().saveBuild("My PvP build");
 
-      await notifier().relocalize("de");
+        await notifier().relocalize("de");
 
-      expect(build().title, "My PvP build");
-      expect(build().className, "Magier");
-    });
+        expect(build().title, "My PvP build");
+        expect(build().className, "Magier");
+      },
+    );
 
     test("a language change translates a generated title", () async {
       notifier().addPoint(firstInTree(0));
@@ -966,15 +977,18 @@ void main() {
       expect(build().talentTrees.map((t) => t.id), [0, 1, 2, 3, 4, 5]);
     });
 
-    test("the offered title follows the points, whatever the class's name", () async {
-      await select(wotlk, classNamesToIds["deathknight"]!);
-      expect(build().title, "Death Knight (0/0/0)");
-      notifier().addPoint(firstInTree(0));
-      expect(build().suggestedTitle, "Death Knight (1/0/0)");
+    test(
+      "the offered title follows the points, whatever the class's name",
+      () async {
+        await select(wotlk, classNamesToIds["deathknight"]!);
+        expect(build().title, "Death Knight (0/0/0)");
+        notifier().addPoint(firstInTree(0));
+        expect(build().suggestedTitle, "Death Knight (1/0/0)");
 
-      await notifier().relocalize("de");
-      expect(build().suggestedTitle, startsWith("Todesritter (1/0/0"));
-    });
+        await notifier().relocalize("de");
+        expect(build().suggestedTitle, startsWith("Todesritter (1/0/0"));
+      },
+    );
 
     test("titles from older versions still count as generated", () async {
       notifier().addPoint(firstInTree(0));
@@ -1000,6 +1014,89 @@ void main() {
       final linked = talents().expand((t) => t.supports ?? const <Talent>[]);
       expect(linked, isNotEmpty);
       expect(linked.where((t) => !all.contains(t)), isEmpty);
+    });
+
+    group("ranks-only imports follow the rules", () {
+      List<Talent> byPosition(List<Talent> tree) => [...tree]
+        ..sort((a, b) {
+          final r = a.row.compareTo(b.row);
+          return r != 0 ? r : a.column.compareTo(b.column);
+        });
+
+      String code(Map<int, int> ranks) {
+        final trees = [
+          for (final tree in build().talentTreeTalents.take(3))
+            byPosition(tree).map((t) => ranks[t.id] ?? 0).join(),
+        ];
+        return "vanilla-mage-${trees.join("-")}";
+      }
+
+      test("more points than the cap are rejected", () async {
+        final everything = {for (final t in talents()) t.id: t.ranks.length};
+        expect(await notifier().importFromShareCode(code(everything)), isFalse);
+      });
+
+      test("a talent without its row's points is rejected", () async {
+        final deepest = byPosition(build().talentTreeTalents[0]).last;
+        expect(deepest.row, greaterThan(0));
+        expect(
+          await notifier().importFromShareCode(code({deepest.id: 1})),
+          isFalse,
+        );
+      });
+
+      test("a prerequisite has to be full", () async {
+        final tree = build().talentTreeTalents[0];
+        final child = byPosition(tree)
+            .firstWhere((t) => t.dependencyId != null);
+        final ranks = {
+          for (final t in tree)
+            if (t.row < child.row && t.id != child.dependencyId)
+              t.id: t.ranks.length,
+        };
+        ranks[child.id] = 1;
+        final prerequisite = tree.firstWhere((t) => t.id == child.dependencyId);
+        expect(
+          ranks.values.reduce((a, b) => a + b) - 1,
+          greaterThanOrEqualTo(child.row * 5),
+          reason: "the row needs to be open without the prerequisite",
+        );
+        ranks[prerequisite.id] = prerequisite.ranks.length - 1;
+        expect(await notifier().importFromShareCode(code(ranks)), isFalse);
+
+        ranks[prerequisite.id] = prerequisite.ranks.length;
+        expect(await notifier().importFromShareCode(code(ranks)), isTrue);
+      });
+
+      test("a rejected code keeps the current build", () async {
+        notifier().addPoint(firstInTree(1));
+        final everything = {for (final t in talents()) t.id: t.ranks.length};
+        await notifier().importFromShareCode(code(everything));
+        expect(build().pointsSpentPerTree, [0, 1, 0]);
+      });
+    });
+
+    test("Legacy points import by column, not by row", () async {
+      await select(forever, mage);
+      final tree = [...build().talentTreeTalents[firstLegacyTreeId]]
+        ..sort((a, b) {
+          final r = a.row.compareTo(b.row);
+          return r != 0 ? r : a.column.compareTo(b.column);
+        });
+      String code(Talent spent) {
+        final legacy = tree.map((t) => t == spent ? 1 : 0).join();
+        final empty = [
+          for (final t in build().talentTreeTalents) "0" * t.length,
+        ];
+        empty[firstLegacyTreeId] = legacy;
+        return "forever-mage-${empty.join("-")}";
+      }
+
+      final open = tree.firstWhere((t) => t.column == 0);
+      final gated = tree.firstWhere((t) => t.column > 0);
+
+      expect(await notifier().importFromShareCode(code(gated)), isFalse);
+      expect(await notifier().importFromShareCode(code(open)), isTrue);
     });
   });
 }

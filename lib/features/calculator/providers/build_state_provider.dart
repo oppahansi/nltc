@@ -397,9 +397,10 @@ class BuildState extends _$BuildState {
       glyphIds: parsed.glyphIds,
     );
 
-    if (parsed.order != null && !_replayOrder(build, parsed.order!)) {
-      return false;
-    }
+    final legal = parsed.order != null
+        ? _replayOrder(build, parsed.order!)
+        : talent_rules.ranksAreLegal(build);
+    if (!legal) return false;
 
     // The code decides the version and class, whatever is selected right now, so
     // the rest of the app needs to follow. Changing settings rebuilds this

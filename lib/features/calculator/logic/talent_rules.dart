@@ -79,3 +79,36 @@ bool canRemovePoint(ClassBuild build, Talent talent) {
 
   return true;
 }
+
+/// Whether [build]'s ranks could have been reached by spending points one at a
+/// time under the rules above, for a build with ranks but no order. Spending only
+/// ever unlocks more apart from the point cap, which depends on the total alone,
+/// so spending whatever is allowed until nothing changes finds an order if one
+/// exists.
+bool ranksAreLegal(ClassBuild build) {
+  final talents = build.talentTreeTalents.expand((tree) => tree).toList();
+  final ranks = {for (final t in talents) t: t.currentRank};
+  final points = build.pointsSpentPerTree;
+  try {
+    for (final t in talents) {
+      t.currentRank = 0;
+    }
+    build.pointsSpentPerTree = List.filled(points.length, 0);
+
+    var spent = true;
+    while (spent) {
+      spent = false;
+      for (final t in talents) {
+        if (t.currentRank < ranks[t]! && isTalentEnabled(build, t)) {
+          t.currentRank++;
+          build.pointsSpentPerTree[t.talentTreeId]++;
+          spent = true;
+        }
+      }
+    }
+    return talents.every((t) => t.currentRank == ranks[t]);
+  } finally {
+    ranks.forEach((t, rank) => t.currentRank = rank);
+    build.pointsSpentPerTree = points;
+  }
+}
