@@ -17,11 +17,10 @@ class NativeBackup {
   static Future<bool> exportWithPicker() async {
     final dbPath = await Db.getDbPath();
     await Db.close();
-    final ok = await _ch.invokeMethod<bool>("exportDb", {
+    return _openPicker("exportDb", {
       "dbPath": dbPath,
       "suggestedName": "ltc_backup.db",
     });
-    return ok == true;
   }
 
   /// Opens system open dialog and replaces the DB with the chosen file. The file
@@ -32,10 +31,7 @@ class NativeBackup {
     final restorePath = "${await Db.getDbPath()}.restore";
     await Db.close();
     try {
-      final ok = await _ch.invokeMethod<bool>("importDb", {
-        "dbPath": restorePath,
-      });
-      if (ok != true) return false;
+      if (!await _openPicker("importDb", {"dbPath": restorePath})) return false;
       if (!await Db.isUserDb(restorePath)) {
         throw const FormatException("Not a backup of this app's builds");
       }
@@ -44,6 +40,19 @@ class NativeBackup {
     } finally {
       final leftover = File(restorePath);
       if (await leftover.exists()) await leftover.delete();
+    }
+  }
+
+  /// False if the user backed out, which both platforms report as an error.
+  static Future<bool> _openPicker(
+    String method,
+    Map<String, String> arguments,
+  ) async {
+    try {
+      return await _ch.invokeMethod<bool>(method, arguments) == true;
+    } on PlatformException catch (e) {
+      if (e.code == "CANCELLED") return false;
+      rethrow;
     }
   }
 }

@@ -71,6 +71,31 @@ void main() {
     await tearDownTestDb(dir);
   });
 
+  void pickerFails(String code) {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(_channel, (call) async {
+          throw PlatformException(code: code);
+        });
+  }
+
+  test("cancelling isn't a failure", () async {
+    pickerFails("CANCELLED");
+
+    expect(await NativeBackup.importWithPicker(), isFalse);
+    expect(await NativeBackup.exportWithPicker(), isFalse);
+    expect(await titles(), ["mine"]);
+  });
+
+  test("other picker errors are still failures", () async {
+    pickerFails("IO");
+
+    await expectLater(
+      NativeBackup.importWithPicker(),
+      throwsA(isA<PlatformException>()),
+    );
+    expect(await titles(), ["mine"]);
+  });
+
   test("a backup replaces the builds", () async {
     await addBuild("backed up");
     await Db.close();
